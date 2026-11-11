@@ -1,0 +1,20 @@
+{
+  "name": "hallmarked.quality.sweeping",
+  "color": "aqua",
+  "tool": {
+    "modifiers": [
+      {
+        "name": "sweeping_attack_speed",
+        "attribute": "minecraft:generic.attack_speed",
+        "operation": "multiply_total",
+        "value": 0.2
+      },
+      {
+        "name": "sweeping_entity_reach",
+        "attribute": "minecraft:player.entity_interaction_range",
+        "operation": "addition",
+        "value": 0.5
+      }
+    ]
+  }
+}

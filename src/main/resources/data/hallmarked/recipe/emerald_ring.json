@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    " e ",
+    "g g",
+    " g "
+  ],
+  "key": {
+    "e": {
+      "item": "minecraft:emerald"
+    },
+    "g": {
+      "item": "minecraft:gold_nugget"
+    }
+  },
+  "result": {
+    "id": "hallmarked:emerald_ring",
+    "count": 1
+  }
+}

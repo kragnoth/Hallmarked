@@ -1,0 +1,86 @@
+{
+  "name": "hallmarked.quality.mythic",
+  "color": "dark_purple",
+  "tool": {
+    "modifiers": [
+      {
+        "name": "mythic_dig_speed",
+        "attribute": "minecraft:player.block_break_speed",
+        "operation": "multiply_total",
+        "value": 0.15
+      },
+      {
+        "name": "mythic_attack_speed",
+        "attribute": "minecraft:generic.attack_speed",
+        "operation": "multiply_total",
+        "value": 0.15
+      },
+      {
+        "name": "mythic_attack_damage",
+        "attribute": "minecraft:generic.attack_damage",
+        "operation": "multiply_total",
+        "value": 0.2
+      },
+      {
+        "name": "mythic_entity_reach",
+        "attribute": "minecraft:player.entity_interaction_range",
+        "operation": "addition",
+        "value": 1
+      }
+    ]
+  },
+  "bow": {
+    "modifiers": [
+      {
+        "name": "mythic_projectile_damage",
+        "attribute": "hallmarked:projectile_damage",
+        "operation": "multiply_total",
+        "value": 0.2
+      }
+    ]
+  },
+  "armor": {
+    "modifiers": [
+      {
+        "name": "mythic_armor",
+        "attribute": "minecraft:generic.armor",
+        "operation": "addition",
+        "value": 1
+      },
+      {
+        "name": "mythic_armor_toughness",
+        "attribute": "minecraft:generic.armor_toughness",
+        "operation": "addition",
+        "value": 1.5
+      },
+      {
+        "name": "mythic_knockback_resistance",
+        "attribute": "minecraft:generic.knockback_resistance",
+        "operation": "addition",
+        "value": 0.075
+      }
+    ]
+  },
+  "bauble": {
+    "modifiers": [
+      {
+        "name": "mythic_damage_resistance",
+        "attribute": "hallmarked:damage_resistance",
+        "operation": "multiply_total",
+        "value": 0.05
+      },
+      {
+        "name": "mythic_max_health",
+        "attribute": "minecraft:generic.max_health",
+        "operation": "addition",
+        "value": 3
+      },
+      {
+        "name": "mythic_luck",
+        "attribute": "minecraft:generic.luck",
+        "operation": "addition",
+        "value": 0.5
+      }
+    ]
+  }
+}

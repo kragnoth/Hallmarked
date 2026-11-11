@@ -1,0 +1,20 @@
+{
+  "name": "hallmarked.quality.keen",
+  "color": "blue",
+  "tool": {
+    "modifiers": [
+      {
+        "name": "keen_attack_speed",
+        "attribute": "minecraft:generic.attack_speed",
+        "operation": "multiply_total",
+        "value": 0.1
+      },
+      {
+        "name": "keen_attack_damage",
+        "attribute": "minecraft:generic.attack_damage",
+        "operation": "multiply_total",
+        "value": 0.1
+      }
+    ]
+  }
+}

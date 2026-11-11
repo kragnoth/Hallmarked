@@ -1,0 +1,20 @@
+{
+  "name": "hallmarked.quality.horrible",
+  "color": "dark_gray",
+  "bauble": {
+    "modifiers": [
+      {
+        "name": "horrible_projectile_damage",
+        "attribute": "hallmarked:projectile_damage",
+        "operation": "multiply_total",
+        "value": -0.05
+      },
+      {
+        "name": "horrible_attack_damage",
+        "attribute": "minecraft:generic.attack_damage",
+        "operation": "multiply_total",
+        "value": -0.05
+      }
+    ]
+  }
+}

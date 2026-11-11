@@ -1,0 +1,80 @@
+{
+  "name": "hallmarked.quality.forsaken",
+  "color": "black",
+  "tool": {
+    "modifiers": [
+      {
+        "name": "forsaken_dig_speed",
+        "attribute": "minecraft:player.block_break_speed",
+        "operation": "multiply_total",
+        "value": -0.2
+      },
+      {
+        "name": "forsaken_attack_speed",
+        "attribute": "minecraft:generic.attack_speed",
+        "operation": "multiply_total",
+        "value": -0.2
+      },
+      {
+        "name": "forsaken_attack_damage",
+        "attribute": "minecraft:generic.attack_damage",
+        "operation": "multiply_total",
+        "value": -0.25
+      },
+      {
+        "name": "forsaken_entity_reach",
+        "attribute": "minecraft:player.entity_interaction_range",
+        "operation": "addition",
+        "value": -1
+      }
+    ]
+  },
+  "bow": {
+    "modifiers": [
+      {
+        "name": "forsaken_projectile_damage",
+        "attribute": "hallmarked:projectile_damage",
+        "operation": "multiply_total",
+        "value": -0.25
+      }
+    ]
+  },
+  "armor": {
+    "modifiers": [
+      {
+        "name": "forsaken_armor",
+        "attribute": "minecraft:generic.armor",
+        "operation": "addition",
+        "value": -2
+      },
+      {
+        "name": "forsaken_armor_toughness",
+        "attribute": "minecraft:generic.armor_toughness",
+        "operation": "addition",
+        "value": -1.5
+      },
+      {
+        "name": "forsaken_movement_speed",
+        "attribute": "minecraft:generic.movement_speed",
+        "operation": "multiply_total",
+        "value": -0.15
+      }
+    ]
+  },
+  "bauble": {
+    "modifiers": [
+      {
+        "name": "forsaken_luck",
+        "attribute": "minecraft:generic.luck",
+        "operation": "addition",
+        "value": -0.5
+      },
+      {
+        "name": "forsaken_max_health",
+        "attribute": "minecraft:generic.max_health",
+        "operation": "addition",
+        "value": -4
+      }
+    ]
+  }
+}

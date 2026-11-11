@@ -1,0 +1,14 @@
+{
+  "name": "hallmarked.quality.long",
+  "color": "blue",
+  "tool": {
+    "modifiers": [
+      {
+        "name": "long_entity_reach",
+        "attribute": "minecraft:player.entity_interaction_range",
+        "operation": "addition",
+        "value": 0.5
+      }
+    ]
+  }
+}

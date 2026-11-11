@@ -1,0 +1,36 @@
+{
+  "name": "hallmarked.quality.graceful",
+  "color": "aqua",
+  "tool": {
+    "modifiers": [
+      {
+        "name": "graceful_dig_speed",
+        "attribute": "minecraft:player.block_break_speed",
+        "operation": "multiply_total",
+        "value": 0.15
+      },
+      {
+        "name": "graceful_attack_speed",
+        "attribute": "minecraft:generic.attack_speed",
+        "operation": "multiply_total",
+        "value": 0.15
+      }
+    ]
+  },
+  "bauble": {
+    "modifiers": [
+      {
+        "name": "graceful_dig_speed",
+        "attribute": "minecraft:player.block_break_speed",
+        "operation": "multiply_total",
+        "value": 0.03
+      },
+      {
+        "name": "graceful_attack_speed",
+        "attribute": "minecraft:generic.attack_speed",
+        "operation": "multiply_total",
+        "value": 0.03
+      }
+    ]
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "name": "hallmarked.quality.healthy",
+  "color": "blue",
+  "bauble": {
+    "modifiers": [
+      {
+        "name": "speedy_max_health",
+        "attribute": "minecraft:generic.max_health",
+        "operation": "addition",
+        "value": 2
+      }
+    ]
+  }
+}

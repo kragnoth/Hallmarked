@@ -1,0 +1,24 @@
+{
+  "name": "hallmarked.quality.springy",
+  "color": "blue",
+  "leggings": {
+    "modifiers": [
+      {
+        "name": "springy_jump_height",
+        "attribute": "minecraft:generic.jump_strength",
+        "operation": "multiply_total",
+        "value": 0.25
+      }
+    ]
+  },
+  "bauble": {
+    "modifiers": [
+      {
+        "name": "springy_jump_height",
+        "attribute": "minecraft:generic.jump_strength",
+        "operation": "multiply_total",
+        "value": 0.25
+      }
+    ]
+  }
+}

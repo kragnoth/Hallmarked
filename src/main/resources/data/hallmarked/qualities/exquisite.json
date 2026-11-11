@@ -1,0 +1,74 @@
+{
+  "name": "hallmarked.quality.exquisite",
+  "color": "dark_aqua",
+  "tool": {
+    "modifiers": [
+      {
+        "name": "exquisite_dig_speed",
+        "attribute": "minecraft:player.block_break_speed",
+        "operation": "multiply_total",
+        "value": 0.08
+      },
+      {
+        "name": "exquisite_attack_speed",
+        "attribute": "minecraft:generic.attack_speed",
+        "operation": "multiply_total",
+        "value": 0.12
+      },
+      {
+        "name": "exquisite_attack_damage",
+        "attribute": "minecraft:generic.attack_damage",
+        "operation": "multiply_total",
+        "value": 0.12
+      }
+    ]
+  },
+  "bow": {
+    "modifiers": [
+      {
+        "name": "exquisite_projectile_damage",
+        "attribute": "hallmarked:projectile_damage",
+        "operation": "multiply_total",
+        "value": 0.12
+      }
+    ]
+  },
+  "armor": {
+    "modifiers": [
+      {
+        "name": "exquisite_armor",
+        "attribute": "minecraft:generic.armor",
+        "operation": "addition",
+        "value": 0.6
+      },
+      {
+        "name": "exquisite_armor_toughness",
+        "attribute": "minecraft:generic.armor_toughness",
+        "operation": "addition",
+        "value": 0.75
+      }
+    ]
+  },
+  "bauble": {
+    "modifiers": [
+      {
+        "name": "exquisite_damage_resistance",
+        "attribute": "hallmarked:damage_resistance",
+        "operation": "multiply_total",
+        "value": 0.02
+      },
+      {
+        "name": "exquisite_max_health",
+        "attribute": "minecraft:generic.max_health",
+        "operation": "addition",
+        "value": 1.5
+      },
+      {
+        "name": "exquisite_luck",
+        "attribute": "minecraft:generic.luck",
+        "operation": "addition",
+        "value": 0.3
+      }
+    ]
+  }
+}

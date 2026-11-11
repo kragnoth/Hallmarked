@@ -1,0 +1,14 @@
+{
+  "name": "hallmarked.quality.protective",
+  "color": "blue",
+  "armor": {
+    "modifiers": [
+      {
+        "name": "protective_armor",
+        "attribute": "minecraft:generic.armor",
+        "operation": "addition",
+        "value": 0.5
+      }
+    ]
+  }
+}

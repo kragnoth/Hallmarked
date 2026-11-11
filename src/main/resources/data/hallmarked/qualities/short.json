@@ -1,0 +1,14 @@
+{
+  "name": "hallmarked.quality.short",
+  "color": "red",
+  "tool": {
+    "modifiers": [
+      {
+        "name": "short_entity_reach",
+        "attribute": "minecraft:player.entity_interaction_range",
+        "operation": "addition",
+        "value": -1
+      }
+    ]
+  }
+}

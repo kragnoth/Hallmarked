@@ -1,0 +1,26 @@
+{
+  "name": "hallmarked.quality.broad",
+  "color": "yellow",
+  "tool": {
+    "modifiers": [
+      {
+        "name": "broad_dig_speed",
+        "attribute": "minecraft:player.block_break_speed",
+        "operation": "multiply_total",
+        "value": -0.05
+      },
+      {
+        "name": "broad_attack_speed",
+        "attribute": "minecraft:generic.attack_speed",
+        "operation": "multiply_total",
+        "value": -0.05
+      },
+      {
+        "name": "broad_attack_damage",
+        "attribute": "minecraft:generic.attack_damage",
+        "operation": "multiply_total",
+        "value": 0.1
+      }
+    ]
+  }
+}

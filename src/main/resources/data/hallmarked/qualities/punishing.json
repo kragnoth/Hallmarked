@@ -1,0 +1,20 @@
+{
+  "name": "hallmarked.quality.punishing",
+  "color": "light_purple",
+  "bauble": {
+    "modifiers": [
+      {
+        "name": "punishing_projectile_damage",
+        "attribute": "hallmarked:projectile_damage",
+        "operation": "multiply_total",
+        "value": 0.03
+      },
+      {
+        "name": "punishing_attack_damage",
+        "attribute": "minecraft:generic.attack_damage",
+        "operation": "multiply_total",
+        "value": 0.03
+      }
+    ]
+  }
+}

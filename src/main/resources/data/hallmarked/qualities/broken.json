@@ -1,0 +1,14 @@
+{
+  "name": "hallmarked.quality.broken",
+  "color": "dark_gray",
+  "tool": {
+    "modifiers": [
+      {
+        "name": "broken_attack_damage",
+        "attribute": "minecraft:generic.attack_damage",
+        "operation": "multiply_total",
+        "value": -0.15
+      }
+    ]
+  }
+}

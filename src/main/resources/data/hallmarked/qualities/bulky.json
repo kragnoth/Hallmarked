@@ -1,0 +1,20 @@
+{
+  "name": "hallmarked.quality.bulky",
+  "color": "dark_gray",
+  "tool": {
+    "modifiers": [
+      {
+        "name": "bulky_dig_speed",
+        "attribute": "minecraft:player.block_break_speed",
+        "operation": "multiply_total",
+        "value": -0.15
+      },
+      {
+        "name": "bulky_attack_speed",
+        "attribute": "minecraft:generic.attack_speed",
+        "operation": "multiply_total",
+        "value": -0.15
+      }
+    ]
+  }
+}

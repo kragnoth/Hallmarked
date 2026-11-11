@@ -1,0 +1,98 @@
+{
+  "name": "hallmarked.quality.divine",
+  "color": "gold",
+  "tool": {
+    "modifiers": [
+      {
+        "name": "divine_dig_speed",
+        "attribute": "minecraft:player.block_break_speed",
+        "operation": "multiply_total",
+        "value": 0.2
+      },
+      {
+        "name": "divine_attack_speed",
+        "attribute": "minecraft:generic.attack_speed",
+        "operation": "multiply_total",
+        "value": 0.2
+      },
+      {
+        "name": "divine_attack_damage",
+        "attribute": "minecraft:generic.attack_damage",
+        "operation": "multiply_total",
+        "value": 0.25
+      },
+      {
+        "name": "divine_entity_reach",
+        "attribute": "minecraft:player.entity_interaction_range",
+        "operation": "addition",
+        "value": 1.25
+      }
+    ]
+  },
+  "bow": {
+    "modifiers": [
+      {
+        "name": "divine_projectile_damage",
+        "attribute": "hallmarked:projectile_damage",
+        "operation": "multiply_total",
+        "value": 0.25
+      }
+    ]
+  },
+  "armor": {
+    "modifiers": [
+      {
+        "name": "divine_armor",
+        "attribute": "minecraft:generic.armor",
+        "operation": "addition",
+        "value": 1.25
+      },
+      {
+        "name": "divine_armor_toughness",
+        "attribute": "minecraft:generic.armor_toughness",
+        "operation": "addition",
+        "value": 2
+      },
+      {
+        "name": "divine_knockback_resistance",
+        "attribute": "minecraft:generic.knockback_resistance",
+        "operation": "addition",
+        "value": 0.1
+      },
+      {
+        "name": "divine_movement_speed",
+        "attribute": "minecraft:generic.movement_speed",
+        "operation": "multiply_total",
+        "value": 0.02
+      }
+    ]
+  },
+  "bauble": {
+    "modifiers": [
+      {
+        "name": "divine_damage_resistance",
+        "attribute": "hallmarked:damage_resistance",
+        "operation": "multiply_total",
+        "value": 0.07
+      },
+      {
+        "name": "divine_max_health",
+        "attribute": "minecraft:generic.max_health",
+        "operation": "addition",
+        "value": 4
+      },
+      {
+        "name": "divine_luck",
+        "attribute": "minecraft:generic.luck",
+        "operation": "addition",
+        "value": 0.65
+      },
+      {
+        "name": "divine_movement_speed",
+        "attribute": "minecraft:generic.movement_speed",
+        "operation": "multiply_total",
+        "value": 0.03
+      }
+    ]
+  }
+}

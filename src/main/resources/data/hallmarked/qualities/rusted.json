@@ -1,0 +1,20 @@
+{
+  "name": "hallmarked.quality.rusted",
+  "color": "red",
+  "tool": {
+    "modifiers": [
+      {
+        "name": "rusted_dig_speed",
+        "attribute": "minecraft:player.block_break_speed",
+        "operation": "multiply_total",
+        "value": -0.1
+      },
+      {
+        "name": "rusted_attack_damage",
+        "attribute": "minecraft:generic.attack_damage",
+        "operation": "multiply_total",
+        "value": -0.1
+      }
+    ]
+  }
+}

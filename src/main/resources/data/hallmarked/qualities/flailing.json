@@ -1,0 +1,14 @@
+{
+  "name": "hallmarked.quality.flailing",
+  "color": "blue",
+  "bauble": {
+    "modifiers": [
+      {
+        "name": "flailing_attack_speed",
+        "attribute": "minecraft:generic.attack_speed",
+        "operation": "multiply_total",
+        "value": 0.03
+      }
+    ]
+  }
+}

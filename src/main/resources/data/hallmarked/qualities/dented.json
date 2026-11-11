@@ -1,0 +1,14 @@
+{
+  "name": "hallmarked.quality.dented",
+  "color": "dark_gray",
+  "armor": {
+    "modifiers": [
+      {
+        "name": "dented_armor",
+        "attribute": "minecraft:generic.armor",
+        "operation": "addition",
+        "value": -1
+      }
+    ]
+  }
+}

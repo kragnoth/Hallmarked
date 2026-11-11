@@ -1,0 +1,20 @@
+{
+  "name": "hallmarked.quality.undying",
+  "color": "light_purple",
+  "bauble": {
+    "modifiers": [
+      {
+        "name": "undying_damage_resistance",
+        "attribute": "hallmarked:damage_resistance",
+        "operation": "multiply_total",
+        "value": 0.03
+      },
+      {
+        "name": "undying_max_health",
+        "attribute": "minecraft:generic.max_health",
+        "operation": "addition",
+        "value": 2
+      }
+    ]
+  }
+}

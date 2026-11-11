@@ -1,0 +1,14 @@
+{
+  "name": "hallmarked.quality.tall",
+  "color": "blue",
+  "boots": {
+    "modifiers": [
+      {
+        "name": "tall_step_height",
+        "attribute": "minecraft:generic.step_height",
+        "operation": "addition",
+        "value": 0.5
+      }
+    ]
+  }
+}

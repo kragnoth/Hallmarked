@@ -1,0 +1,14 @@
+{
+  "name": "hallmarked.quality.prospecting",
+  "color": "blue",
+  "bauble": {
+    "modifiers": [
+      {
+        "name": "prospecting_dig_speed",
+        "attribute": "minecraft:player.block_break_speed",
+        "operation": "multiply_total",
+        "value": 0.03
+      }
+    ]
+  }
+}

@@ -1,0 +1,98 @@
+{
+  "name": "hallmarked.quality.masterful",
+  "color": "light_purple",
+  "helmet": {
+    "modifiers": [
+      {
+        "name": "masterful_helmet_armor_toughness",
+        "attribute": "minecraft:generic.armor_toughness",
+        "operation": "addition",
+        "value": 1
+      },
+      {
+        "name": "masterful_helmet_armor",
+        "attribute": "minecraft:generic.armor",
+        "operation": "addition",
+        "value": 0.5
+      },
+      {
+        "name": "masterful_helmet_luck",
+        "attribute": "minecraft:generic.luck",
+        "operation": "addition",
+        "value": 0.5
+      }
+    ]
+  },
+  "chestplate": {
+    "modifiers": [
+      {
+        "name": "masterful_chestplate_armor_toughness",
+        "attribute": "minecraft:generic.armor_toughness",
+        "operation": "addition",
+        "value": 1
+      },
+      {
+        "name": "masterful_chestplate_armor",
+        "attribute": "minecraft:generic.armor",
+        "operation": "addition",
+        "value": 0.5
+      },
+      {
+        "name": "masterful_chestplate_knockback_resistance",
+        "attribute": "minecraft:generic.knockback_resistance",
+        "operation": "addition",
+        "value": 0.05
+      }
+    ]
+  },
+  "leggings": {
+    "modifiers": [
+      {
+        "name": "masterful_leggings_armor_toughness",
+        "attribute": "minecraft:generic.armor_toughness",
+        "operation": "addition",
+        "value": 1
+      },
+      {
+        "name": "masterful_leggings_armor",
+        "attribute": "minecraft:generic.armor",
+        "operation": "addition",
+        "value": 0.5
+      },
+      {
+        "name": "masterful_leggings_jump_height",
+        "attribute": "minecraft:generic.jump_strength",
+        "operation": "multiply_total",
+        "value": 0.25
+      }
+    ]
+  },
+  "boots": {
+    "modifiers": [
+      {
+        "name": "masterful_boots_armor_toughness",
+        "attribute": "minecraft:generic.armor_toughness",
+        "operation": "addition",
+        "value": 1
+      },
+      {
+        "name": "masterful_boots_armor",
+        "attribute": "minecraft:generic.armor",
+        "operation": "addition",
+        "value": 0.5
+      },
+      {
+        "name": "masterful_boots_step_height",
+        "attribute": "minecraft:generic.step_height",
+        "operation": "addition",
+        "value": 0.5
+      },
+      {
+        "name": "masterful_boots_movement_speed",
+        "attribute": "minecraft:generic.movement_speed",
+        "operation": "multiply_total",
+        "value": 0.1
+      }
+    ]
+  }
+}

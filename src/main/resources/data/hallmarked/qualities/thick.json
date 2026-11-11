@@ -1,0 +1,36 @@
+{
+  "name": "hallmarked.quality.thick",
+  "color": "yellow",
+  "shield": {
+    "modifiers": [
+      {
+        "name": "thick_shield_movement_speed",
+        "attribute": "minecraft:generic.movement_speed",
+        "operation": "multiply_total",
+        "value": -0.05
+      },
+      {
+        "name": "thick_shield_armor",
+        "attribute": "minecraft:generic.armor",
+        "operation": "addition",
+        "value": 0.5
+      }
+    ]
+  },
+  "armor": {
+    "modifiers": [
+      {
+        "name": "thick_movement_speed",
+        "attribute": "minecraft:generic.movement_speed",
+        "operation": "multiply_total",
+        "value": -0.05
+      },
+      {
+        "name": "thick_armor",
+        "attribute": "minecraft:generic.armor",
+        "operation": "addition",
+        "value": 0.5
+      }
+    ]
+  }
+}

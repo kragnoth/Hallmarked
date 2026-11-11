@@ -1,0 +1,20 @@
+{
+  "name": "hallmarked.quality.thin",
+  "color": "yellow",
+  "tool": {
+    "modifiers": [
+      {
+        "name": "thin_attack_speed",
+        "attribute": "minecraft:generic.attack_speed",
+        "operation": "multiply_total",
+        "value": 0.1
+      },
+      {
+        "name": "thin_attack_damage",
+        "attribute": "minecraft:generic.attack_damage",
+        "operation": "multiply_total",
+        "value": -0.05
+      }
+    ]
+  }
+}

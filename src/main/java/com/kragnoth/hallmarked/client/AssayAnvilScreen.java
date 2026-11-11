@@ -1,0 +1,58 @@
+package com.kragnoth.hallmarked.client;
+
+import com.kragnoth.hallmarked.Hallmarked;
+import com.kragnoth.hallmarked.menu.AssayAnvilMenu;
+import com.kragnoth.hallmarked.network.ReforgePayload;
+import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.screens.inventory.AbstractContainerScreen;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.player.Inventory;
+import net.neoforged.neoforge.network.PacketDistributor;
+
+public class AssayAnvilScreen extends AbstractContainerScreen<AssayAnvilMenu> {
+    private static final ResourceLocation BG = Hallmarked.id("textures/gui/assay_anvil.png");
+
+    // Hammer button: lives in the panel, sprites at (176,0) lit, (196,0) lit+hover, (216,0) dark.
+    private static final int HAMMER_X = 104, HAMMER_Y = 34, HAMMER_SIZE = 20;
+
+    public AssayAnvilScreen(AssayAnvilMenu menu, Inventory inv, Component title) {
+        super(menu, inv, title);
+        imageWidth = 176;
+        imageHeight = 166;
+        inventoryLabelY = imageHeight - 94;
+    }
+
+    @Override
+    public void render(GuiGraphics g, int mouseX, int mouseY, float partial) {
+        super.render(g, mouseX, mouseY, partial);
+        renderTooltip(g, mouseX, mouseY);
+        if (overHammer(mouseX, mouseY)) {
+            Component tip = menu.canReforge()
+                    ? Component.translatable("gui.hallmarked.reforge")
+                    : Component.translatable("gui.hallmarked.reforge.unavailable");
+            g.renderTooltip(font, tip, mouseX, mouseY);
+        }
+    }
+
+    @Override
+    protected void renderBg(GuiGraphics g, float partial, int mouseX, int mouseY) {
+        g.blit(BG, leftPos, topPos, 0, 0, imageWidth, imageHeight, 256, 256);
+        int u = !menu.canReforge() ? 216 : overHammer(mouseX, mouseY) ? 196 : 176;
+        g.blit(BG, leftPos + HAMMER_X, topPos + HAMMER_Y, u, 0, HAMMER_SIZE, HAMMER_SIZE, 256, 256);
+    }
+
+    private boolean overHammer(double mx, double my) {
+        return mx >= leftPos + HAMMER_X && mx < leftPos + HAMMER_X + HAMMER_SIZE
+                && my >= topPos + HAMMER_Y && my < topPos + HAMMER_Y + HAMMER_SIZE;
+    }
+
+    @Override
+    public boolean mouseClicked(double mx, double my, int button) {
+        if (button == 0 && overHammer(mx, my) && menu.canReforge()) {
+            PacketDistributor.sendToServer(new ReforgePayload(menu.containerId));
+            return true;
+        }
+        return super.mouseClicked(mx, my, button);
+    }
+}

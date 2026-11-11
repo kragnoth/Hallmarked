@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "hallmarked:block/assay_anvil"
+    },
+    "facing=east": {
+      "model": "hallmarked:block/assay_anvil",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "hallmarked:block/assay_anvil",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "hallmarked:block/assay_anvil",
+      "y": 270
+    }
+  }
+}

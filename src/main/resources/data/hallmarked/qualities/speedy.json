@@ -1,0 +1,24 @@
+{
+  "name": "hallmarked.quality.speedy",
+  "color": "blue",
+  "boots": {
+    "modifiers": [
+      {
+        "name": "speedy_movement_speed",
+        "attribute": "minecraft:generic.movement_speed",
+        "operation": "multiply_total",
+        "value": 0.1
+      }
+    ]
+  },
+  "bauble": {
+    "modifiers": [
+      {
+        "name": "speedy_movement_speed",
+        "attribute": "minecraft:generic.movement_speed",
+        "operation": "multiply_total",
+        "value": 0.05
+      }
+    ]
+  }
+}

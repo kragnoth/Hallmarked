@@ -1,0 +1,189 @@
+{
+  "parent": "minecraft:block/block",
+  "textures": {
+    "particle": "minecraft:block/anvil",
+    "face": "minecraft:block/anvil",
+    "top": "minecraft:block/anvil_top",
+    "column": "minecraft:block/polished_blackstone",
+    "base": "minecraft:block/smooth_stone",
+    "base_side": "minecraft:block/smooth_stone_slab_side"
+  },
+  "elements": [
+    {
+      "from": [
+        1,
+        0,
+        1
+      ],
+      "to": [
+        15,
+        3,
+        15
+      ],
+      "faces": {
+        "down": {
+          "texture": "#base",
+          "cullface": "down"
+        },
+        "up": {
+          "texture": "#base"
+        },
+        "north": {
+          "uv": [
+            1,
+            13,
+            15,
+            16
+          ],
+          "texture": "#base_side"
+        },
+        "south": {
+          "uv": [
+            1,
+            13,
+            15,
+            16
+          ],
+          "texture": "#base_side"
+        },
+        "east": {
+          "uv": [
+            1,
+            13,
+            15,
+            16
+          ],
+          "texture": "#base_side"
+        },
+        "west": {
+          "uv": [
+            1,
+            13,
+            15,
+            16
+          ],
+          "texture": "#base_side"
+        }
+      }
+    },
+    {
+      "from": [
+        4,
+        3,
+        4
+      ],
+      "to": [
+        12,
+        10,
+        12
+      ],
+      "faces": {
+        "north": {
+          "uv": [
+            4,
+            6,
+            12,
+            13
+          ],
+          "texture": "#column"
+        },
+        "south": {
+          "uv": [
+            4,
+            6,
+            12,
+            13
+          ],
+          "texture": "#column"
+        },
+        "east": {
+          "uv": [
+            4,
+            6,
+            12,
+            13
+          ],
+          "texture": "#column"
+        },
+        "west": {
+          "uv": [
+            4,
+            6,
+            12,
+            13
+          ],
+          "texture": "#column"
+        }
+      }
+    },
+    {
+      "from": [
+        0,
+        10,
+        2
+      ],
+      "to": [
+        16,
+        16,
+        14
+      ],
+      "faces": {
+        "down": {
+          "uv": [
+            0,
+            2,
+            16,
+            14
+          ],
+          "texture": "#face"
+        },
+        "up": {
+          "uv": [
+            0,
+            2,
+            16,
+            14
+          ],
+          "texture": "#top",
+          "rotation": 90
+        },
+        "north": {
+          "uv": [
+            0,
+            0,
+            16,
+            6
+          ],
+          "texture": "#face"
+        },
+        "south": {
+          "uv": [
+            0,
+            0,
+            16,
+            6
+          ],
+          "texture": "#face"
+        },
+        "east": {
+          "uv": [
+            2,
+            0,
+            14,
+            6
+          ],
+          "texture": "#face"
+        },
+        "west": {
+          "uv": [
+            2,
+            0,
+            14,
+            6
+          ],
+          "texture": "#face"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+{
+  "name": "hallmarked.quality.lucky_bauble",
+  "color": "blue",
+  "bauble": {
+    "modifiers": [
+      {
+        "name": "lucky_luck",
+        "attribute": "minecraft:generic.luck",
+        "operation": "addition",
+        "value": 0.2
+      }
+    ]
+  }
+}

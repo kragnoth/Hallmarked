@@ -1,0 +1,20 @@
+{
+  "name": "hallmarked.quality.blessed",
+  "color": "light_purple",
+  "bauble": {
+    "modifiers": [
+      {
+        "name": "blessed_luck",
+        "attribute": "minecraft:generic.luck",
+        "operation": "addition",
+        "value": 0.4
+      },
+      {
+        "name": "blessed_max_health",
+        "attribute": "minecraft:generic.max_health",
+        "operation": "addition",
+        "value": 2
+      }
+    ]
+  }
+}

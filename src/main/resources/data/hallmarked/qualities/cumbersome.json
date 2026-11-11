@@ -1,0 +1,20 @@
+{
+  "name": "hallmarked.quality.cumbersome",
+  "color": "dark_gray",
+  "armor": {
+    "modifiers": [
+      {
+        "name": "cumbersome_dig_speed",
+        "attribute": "minecraft:player.block_break_speed",
+        "operation": "multiply_total",
+        "value": -0.1
+      },
+      {
+        "name": "cumbersome_attack_speed",
+        "attribute": "minecraft:generic.attack_speed",
+        "operation": "multiply_total",
+        "value": -0.1
+      }
+    ]
+  }
+}

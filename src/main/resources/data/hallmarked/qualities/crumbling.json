@@ -1,0 +1,20 @@
+{
+  "name": "hallmarked.quality.crumbling",
+  "color": "dark_red",
+  "armor": {
+    "modifiers": [
+      {
+        "name": "crumbling_armor_toughness",
+        "attribute": "minecraft:generic.armor_toughness",
+        "operation": "addition",
+        "value": -1
+      },
+      {
+        "name": "crumbling_armor",
+        "attribute": "minecraft:generic.armor",
+        "operation": "addition",
+        "value": -1.5
+      }
+    ]
+  }
+}

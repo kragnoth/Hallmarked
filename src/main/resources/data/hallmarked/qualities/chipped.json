@@ -1,0 +1,20 @@
+{
+  "name": "hallmarked.quality.chipped",
+  "color": "red",
+  "tool": {
+    "modifiers": [
+      {
+        "name": "chipped_attack_speed",
+        "attribute": "minecraft:generic.attack_speed",
+        "operation": "multiply_total",
+        "value": -0.05
+      },
+      {
+        "name": "chipped_attack_damage",
+        "attribute": "minecraft:generic.attack_damage",
+        "operation": "multiply_total",
+        "value": -0.05
+      }
+    ]
+  }
+}

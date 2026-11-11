@@ -1,0 +1,14 @@
+{
+  "name": "hallmarked.quality.aiming",
+  "color": "blue",
+  "bauble": {
+    "modifiers": [
+      {
+        "name": "aiming_projectile_damage",
+        "attribute": "hallmarked:projectile_damage",
+        "operation": "multiply_total",
+        "value": 0.03
+      }
+    ]
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "name": "hallmarked.quality.tough",
+  "color": "blue",
+  "armor": {
+    "modifiers": [
+      {
+        "name": "tough_armor_toughness",
+        "attribute": "minecraft:generic.armor_toughness",
+        "operation": "addition",
+        "value": 1
+      }
+    ]
+  }
+}

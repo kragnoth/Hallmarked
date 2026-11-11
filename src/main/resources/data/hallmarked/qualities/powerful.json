@@ -1,0 +1,14 @@
+{
+  "name": "hallmarked.quality.powerful",
+  "color": "aqua",
+  "bow": {
+    "modifiers": [
+      {
+        "name": "powerful_projectile_damage",
+        "attribute": "hallmarked:projectile_damage",
+        "operation": "multiply_total",
+        "value": 0.1
+      }
+    ]
+  }
+}

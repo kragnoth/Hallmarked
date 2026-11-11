@@ -1,0 +1,24 @@
+{
+  "name": "hallmarked.quality.heavy",
+  "color": "red",
+  "shield": {
+    "modifiers": [
+      {
+        "name": "heavy_shield_movement_speed",
+        "attribute": "minecraft:generic.movement_speed",
+        "operation": "multiply_total",
+        "value": -0.1
+      }
+    ]
+  },
+  "armor": {
+    "modifiers": [
+      {
+        "name": "heavy_movement_speed",
+        "attribute": "minecraft:generic.movement_speed",
+        "operation": "multiply_total",
+        "value": -0.1
+      }
+    ]
+  }
+}

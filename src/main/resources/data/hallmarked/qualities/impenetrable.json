@@ -1,0 +1,26 @@
+{
+  "name": "hallmarked.quality.impenetrable",
+  "color": "light_purple",
+  "armor": {
+    "modifiers": [
+      {
+        "name": "impenetrable_armor",
+        "attribute": "minecraft:generic.armor",
+        "operation": "addition",
+        "value": 0.75
+      },
+      {
+        "name": "impenetrable_armor_toughness",
+        "attribute": "minecraft:generic.armor_toughness",
+        "operation": "addition",
+        "value": 1
+      },
+      {
+        "name": "impenetrable_knockback_resistance",
+        "attribute": "minecraft:generic.knockback_resistance",
+        "operation": "addition",
+        "value": 0.05
+      }
+    ]
+  }
+}

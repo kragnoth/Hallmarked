@@ -1,0 +1,30 @@
+{
+  "name": "hallmarked.quality.clumsy",
+  "color": "red",
+  "tool": {
+    "modifiers": [
+      {
+        "name": "clumsy_dig_speed",
+        "attribute": "minecraft:player.block_break_speed",
+        "operation": "multiply_total",
+        "value": -0.05
+      },
+      {
+        "name": "clumsy_attack_speed",
+        "attribute": "minecraft:generic.attack_speed",
+        "operation": "multiply_total",
+        "value": -0.05
+      }
+    ]
+  },
+  "bow": {
+    "modifiers": [
+      {
+        "name": "clumsy_projectile_damage",
+        "attribute": "hallmarked:projectile_damage",
+        "operation": "multiply_total",
+        "value": -0.05
+      }
+    ]
+  }
+}

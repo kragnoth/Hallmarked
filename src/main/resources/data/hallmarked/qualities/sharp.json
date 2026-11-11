@@ -1,0 +1,14 @@
+{
+  "name": "hallmarked.quality.sharp",
+  "color": "blue",
+  "tool": {
+    "modifiers": [
+      {
+        "name": "sharp_attack_damage",
+        "attribute": "minecraft:generic.attack_damage",
+        "operation": "multiply_total",
+        "value": 0.1
+      }
+    ]
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "name": "hallmarked.quality.light",
+  "color": "blue",
+  "bow": {
+    "modifiers": [
+      {
+        "name": "light_projectile_damage",
+        "attribute": "hallmarked:projectile_damage",
+        "operation": "multiply_total",
+        "value": 0.05
+      }
+    ]
+  }
+}

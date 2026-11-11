@@ -1,0 +1,14 @@
+{
+  "name": "hallmarked.quality.strengthening",
+  "color": "blue",
+  "bauble": {
+    "modifiers": [
+      {
+        "name": "strengthening_attack_damage",
+        "attribute": "minecraft:generic.attack_damage",
+        "operation": "multiply_total",
+        "value": 0.03
+      }
+    ]
+  }
+}

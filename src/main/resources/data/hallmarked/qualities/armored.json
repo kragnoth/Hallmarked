@@ -1,0 +1,14 @@
+{
+  "name": "hallmarked.quality.armored",
+  "color": "blue",
+  "bauble": {
+    "modifiers": [
+      {
+        "name": "armored_damage_resistance",
+        "attribute": "hallmarked:damage_resistance",
+        "operation": "multiply_total",
+        "value": 0.03
+      }
+    ]
+  }
+}

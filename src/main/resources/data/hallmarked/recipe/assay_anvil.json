@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "sas",
+    "oco"
+  ],
+  "key": {
+    "s": {
+      "item": "minecraft:smooth_stone_slab"
+    },
+    "a": {
+      "item": "minecraft:anvil"
+    },
+    "o": {
+      "item": "minecraft:obsidian"
+    },
+    "c": {
+      "item": "minecraft:crafting_table"
+    }
+  },
+  "result": {
+    "id": "hallmarked:assay_anvil",
+    "count": 1
+  }
+}

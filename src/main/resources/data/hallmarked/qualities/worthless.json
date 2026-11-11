@@ -1,0 +1,32 @@
+{
+  "name": "hallmarked.quality.worthless",
+  "color": "dark_red",
+  "tool": {
+    "modifiers": [
+      {
+        "name": "worthless_dig_speed",
+        "attribute": "minecraft:player.block_break_speed",
+        "operation": "multiply_base",
+        "value": -0.1
+      },
+      {
+        "name": "worthless_attack_speed",
+        "attribute": "minecraft:generic.attack_speed",
+        "operation": "multiply_total",
+        "value": -0.1
+      },
+      {
+        "name": "worthless_attack_damage",
+        "attribute": "minecraft:generic.attack_damage",
+        "operation": "multiply_total",
+        "value": -0.1
+      },
+      {
+        "name": "worthless_entity_reach",
+        "attribute": "minecraft:player.entity_interaction_range",
+        "operation": "addition",
+        "value": -1
+      }
+    ]
+  }
+}
