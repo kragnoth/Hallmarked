@@ -44,7 +44,20 @@ whose mod is missing is simply left out, so every set still works in a pack with
   tables +1) and the looter's Luck, never below a quarter of the listed chance.
 * **Any matching drop.** When gear is graded from loot (0.4 % per matching item) or mob gear (0.1 %), an item that is a
   set piece's base item may become that piece.
-* **Mountebank parcels** at Journeyman and above.
+* **Mountebank parcels** at Journeyman and above, and the token-bought Sworn Parcel (always a set piece).
+
+**Smart drops.** When a set piece drops for a player (a chest they open, a parcel they buy), there's a 60 % chance
+(config `Sets.SmartDropChance`) that it's a piece they're missing from a set they've already started: one they own at
+least one piece of (inventory, armor, ender chest, Curios) but haven't finished, preferring the set the chest belongs to.
+Unwanted pieces can be traded to a Mountebank for tokens ([GAMBLING.md](GAMBLING.md)).
+
+Simulated five-day playthroughs (Overworld and some Nether, no End), chance to have a full set by the end:
+
+| Player | Before smart drops | With smart drops |
+|---|---|---|
+| Casual, ~7 hours | ~0 % | 1 % (5 % reach 4 pieces) |
+| Average, ~12 hours | ~0 % | 10 % (25 % reach 4 pieces) |
+| Explorer, ~18 hours | 0.1 % | 30 % (55 % reach 4 pieces) |
 `/hallmarked sets give <set> [piece]` gives one for testing.
 
 ## Format

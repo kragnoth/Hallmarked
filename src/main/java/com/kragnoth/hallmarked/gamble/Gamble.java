@@ -43,7 +43,7 @@ public final class Gamble {
         ItemStack stack = null;
 
         if (parcel.setChance() > 0 && random.nextDouble() < parcel.setChance()) {
-            stack = com.kragnoth.hallmarked.sets.Sets.randomPiece(player.serverLevel().registryAccess(), random, parcel.categories());
+            stack = com.kragnoth.hallmarked.sets.Sets.randomPiece(player.serverLevel().registryAccess(), random, parcel.categories(), player);
             if (stack != null) return new Result(stack, Outcome.PLAIN);
         }
 

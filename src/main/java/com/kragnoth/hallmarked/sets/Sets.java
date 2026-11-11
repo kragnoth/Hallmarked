@@ -153,10 +153,55 @@ public final class Sets {
         return false;
     }
 
+    // ---- Smart drops ----------------------------------------------------------------------------
+
+    /** Set pieces the player owns: inventory (armor and hands included), ender chest and Curios slots. */
+    public static Map<String, Set<String>> owned(Player player) {
+        Map<String, Set<String>> out = new HashMap<>();
+        java.util.function.Consumer<ItemStack> add = s -> {
+            SetPiece p = s.isEmpty() ? null : pieceOf(s);
+            if (p != null) out.computeIfAbsent(p.set(), k -> new HashSet<>()).add(p.piece());
+        };
+        player.getInventory().items.forEach(add);
+        player.getInventory().armor.forEach(add);
+        player.getInventory().offhand.forEach(add);
+        for (int i = 0; i < player.getEnderChestInventory().getContainerSize(); i++) add.accept(player.getEnderChestInventory().getItem(i));
+        if (Hallmarked.curiosLoaded()) CuriosCompat.equipped(player).forEach(add);
+        return out;
+    }
+
+    /**
+     * With the configured chance, a missing piece of a set the player has started (prefers {@code preferred} when
+     * that set is one of them), else null. A set counts as started at one piece and stops counting once complete.
+     */
+    @Nullable
+    public static ItemStack smartPiece(@Nullable Player player, @Nullable GearSet preferred, RandomSource random, @Nullable RegistryAccess access) {
+        if (player == null || random.nextDouble() >= com.kragnoth.hallmarked.config.HallmarkedConfig.SMART_DROP.get()) return null;
+        Map<String, Set<String>> have = owned(player);
+        List<GearSet> started = new ArrayList<>();
+        for (GearSet s : STORE.all()) {
+            Set<String> h = have.get(s.name());
+            if (h != null && !h.isEmpty() && h.size() < s.pieces().size()) started.add(s);
+        }
+        if (started.isEmpty()) return null;
+        GearSet set = preferred != null && started.contains(preferred) ? preferred : started.get(random.nextInt(started.size()));
+        Set<String> h = have.get(set.name());
+        List<GearSet.Piece> missing = new ArrayList<>();
+        for (GearSet.Piece p : set.pieces()) if (!h.contains(p.key())) missing.add(p);
+        return missing.isEmpty() ? null : create(set, missing.get(random.nextInt(missing.size())), access);
+    }
+
     /** Any piece of any set whose base item falls in one of the categories (for a Mountebank's parcels). */
     @Nullable
     public static ItemStack randomPiece(@Nullable RegistryAccess access, RandomSource random, Set<Category> categories) {
+        return randomPiece(access, random, categories, null);
+    }
+
+    @Nullable
+    public static ItemStack randomPiece(@Nullable RegistryAccess access, RandomSource random, Set<Category> categories, @Nullable Player player) {
         if (Grading.GRADES.get(SET_GRADE) == null) return null;
+        ItemStack smart = smartPiece(player, null, random, access);
+        if (smart != null) return smart;
         List<ItemStack> options = new ArrayList<>();
         for (GearSet set : STORE.all()) {
             for (GearSet.Piece piece : set.pieces()) {
@@ -213,13 +258,19 @@ public final class Sets {
      * Adds set pieces to a loot roll from a table the set lists, chance scaled by luck (the table's loot-odds luck
      * plus the looter's): x(1 + LuckFactor * luck), never below a quarter of the base chance.
      */
-    public static void inject(List<ItemStack> loot, ResourceLocation table, double luck, RandomSource random, @Nullable RegistryAccess access) {
+    public static void inject(List<ItemStack> loot, ResourceLocation table, double luck, RandomSource random, @Nullable RegistryAccess access,
+                              @Nullable Player player) {
         if (Grading.GRADES.get(SET_GRADE) == null) return;
         double total = luck + com.kragnoth.hallmarked.tier.LootOdds.forTable(table).luck();
         double scale = Math.max(0.25, 1 + com.kragnoth.hallmarked.config.HallmarkedConfig.LUCK_FACTOR.get() * total);
         for (GearSet set : STORE.all()) {
             for (GearSet.TableEntry entry : set.tables()) {
                 if (!entry.matches(table) || random.nextDouble() >= entry.chance() * scale) continue;
+                ItemStack smart = smartPiece(player, set, random, access);
+                if (smart != null) {
+                    loot.add(smart);
+                    continue;
+                }
                 List<GearSet.Piece> options = new ArrayList<>();
                 for (GearSet.Piece p : set.pieces()) if (entry.pieces().isEmpty() || entry.pieces().contains(p.key())) options.add(p);
                 if (options.isEmpty()) continue;

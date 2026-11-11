@@ -408,5 +408,10 @@
   "hallmarked.set.lamplighter.coat": "Lamplighter's Iron-Lined Coat",
   "hallmarked.set.lamplighter.trousers": "Lamplighter's Trousers",
   "hallmarked.set.lamplighter.boots": "Lamplighter's Mail Boots",
-  "hallmarked.set.lamplighter.signet": "Lamplighter's Signet"
+  "hallmarked.set.lamplighter.signet": "Lamplighter's Signet",
+  "item.hallmarked.mountebank_token": "Mountebank's Token",
+  "hallmarked.parcel.sworn_parcel": "Sworn Parcel",
+  "hallmarked.trade_in.taken": "The Mountebank pockets %s (%s/%s toward a token)",
+  "hallmarked.trade_in.token": "The Mountebank presses a token into your hand",
+  "tooltip.hallmarked.token": "Two buy a Sworn Parcel: a set piece, he swears it."
 }

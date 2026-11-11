@@ -24,21 +24,26 @@ public final class MountebankTrades {
     public static void onTrades(VillagerTradesEvent event) {
         if (event.getType() != HMRegistries.MOUNTEBANK.get()) return;
         var trades = event.getTrades();
+        // A villager picks two offers from each level's list. Two listings per level, the second reserved for an
+        // "always" parcel when that level has one, guarantee it a slot.
         for (int level = 1; level <= 5; level++) {
             int lv = level;
-            trades.get(level).add((trader, random) -> parcelOffer(lv, random));
-            trades.get(level).add((trader, random) -> parcelOffer(lv, random));
+            trades.get(level).add((trader, random) -> parcelOffer(lv, random, false));
+            trades.get(level).add((trader, random) -> {
+                MerchantOffer always = parcelOffer(lv, random, true);
+                return always != null ? always : parcelOffer(lv, random, false);
+            });
         }
         // A fence buys scrap: the only thing he'll take off your hands.
         trades.get(1).add((trader, random) -> new MerchantOffer(new ItemCost(HMRegistries.SMITHS_SCRAP.get(), 6),
                 new ItemStack(Items.EMERALD), 12, 1, 0.05f));
     }
 
-    private static MerchantOffer parcelOffer(int level, RandomSource random) {
+    private static MerchantOffer parcelOffer(int level, RandomSource random, boolean always) {
         List<Parcel> options = new ArrayList<>();
         int total = 0;
         for (Parcel p : Parcel.STORE.all()) {
-            if (p.level() == level && p.weight() > 0) {
+            if (p.level() == level && p.weight() > 0 && p.always() == always) {
                 options.add(p);
                 total += p.weight();
             }
@@ -53,7 +58,7 @@ public final class MountebankTrades {
         int price = chosen.priceMin() + random.nextInt(chosen.priceMax() - chosen.priceMin() + 1);
         Optional<ItemCost> second = chosen.secondItem() == null ? Optional.empty()
                 : Optional.of(new ItemCost(chosen.secondItem(), chosen.secondCount()));
-        return new MerchantOffer(new ItemCost(Items.EMERALD, price), second, parcelStack(chosen), chosen.maxUses(), chosen.xp(), 0.05f);
+        return new MerchantOffer(new ItemCost(chosen.currency(), price), second, parcelStack(chosen), chosen.maxUses(), chosen.xp(), 0.05f);
     }
 
     public static ItemStack parcelStack(Parcel parcel) {

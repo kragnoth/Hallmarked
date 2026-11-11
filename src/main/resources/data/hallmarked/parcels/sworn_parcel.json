@@ -1,0 +1,18 @@
+{
+  "name": "hallmarked.parcel.sworn_parcel",
+  "level": 2,
+  "weight": 10,
+  "always": true,
+  "color": "green",
+  "currency": "hallmarked:mountebank_token",
+  "price": {
+    "min": 2,
+    "max": 2
+  },
+  "set_chance": 1.0,
+  "curse_chance": 0.0,
+  "exceptional_chance": 0.0,
+  "quality_chance": 0.0,
+  "max_uses": 4,
+  "xp": 5
+}

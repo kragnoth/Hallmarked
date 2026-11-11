@@ -51,7 +51,7 @@ public class GradeLootModifier extends LootModifier {
         }
         if (Grading.SOURCE_LOOT.equals(source) && ctx.getQueriedLootTableId() != null) {
             com.kragnoth.hallmarked.sets.Sets.inject(loot, ctx.getQueriedLootTableId(), ctx.getLuck(), ctx.getRandom(),
-                    ctx.getLevel().registryAccess());
+                    ctx.getLevel().registryAccess(), context(ctx).player());
         }
         return loot;
     }

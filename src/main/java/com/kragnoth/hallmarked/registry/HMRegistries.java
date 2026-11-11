@@ -174,6 +174,9 @@ public final class HMRegistries {
     public static final DeferredBlock<com.kragnoth.hallmarked.gamble.MountebankCofferBlock> MOUNTEBANK_COFFER =
             BLOCKS.register("mountebank_coffer", com.kragnoth.hallmarked.gamble.MountebankCofferBlock::new);
     public static final DeferredItem<BlockItem> MOUNTEBANK_COFFER_ITEM = ITEMS.registerSimpleBlockItem(MOUNTEBANK_COFFER);
+    /** Earned by handing a Mountebank set pieces; buys a Sworn Parcel. */
+    public static final DeferredItem<Item> MOUNTEBANK_TOKEN = ITEMS.registerSimpleItem("mountebank_token",
+            new Item.Properties().rarity(net.minecraft.world.item.Rarity.UNCOMMON));
     public static final DeferredItem<com.kragnoth.hallmarked.gamble.ParcelItem> PARCEL_ITEM =
             ITEMS.register("parcel", com.kragnoth.hallmarked.gamble.ParcelItem::new);
 
@@ -200,6 +203,7 @@ public final class HMRegistries {
                 out.accept(ASSAY_ANVIL_ITEM.get());
                 out.accept(ASHEN_ALTAR_ITEM.get());
                 out.accept(MOUNTEBANK_COFFER_ITEM.get());
+                out.accept(MOUNTEBANK_TOKEN.get());
                 out.accept(EMERALD_RING.get());
                 out.accept(EMERALD_AMULET.get());
                 out.accept(SMITHS_SCRAP.get());

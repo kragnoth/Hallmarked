@@ -1,8 +1,11 @@
 # The Mountebank
 
 A new villager profession. An unemployed villager takes the job at a **Mountebank's Coffer**
-(crafted: iron nugget top, iron nuggets either side of a barrel, gold ingot below). He sells sealed **parcels** and buys
-Smith's Scrap (6 for an emerald). A parcel's contents are decided the moment you open it (use it): a Rotten sword that
+(crafted: iron nugget top, iron nuggets either side of a barrel, gold ingot below). He sells sealed **parcels**, buys
+Smith's Scrap (6 for an emerald), and takes unwanted set pieces: right-click him holding one. Every 3 pieces (config
+`Sets.TradeInPieces`) earn a **Mountebank's Token**, and two tokens buy a **Sworn Parcel**, which always holds a set
+piece (60 % of the time one you're missing; see [SETS.md](SETS.md)). Every Mountebank offers the Sworn Parcel from
+Apprentice level on. A parcel's contents are decided the moment you open it (use it): a Rotten sword that
 bites you every time you strike the undead, or a helmet whose stats run past their normal limits.
 
 | Level | Parcel | Price | Holds | Grade luck | Curse | Exceptional | Set piece |
@@ -10,12 +13,14 @@ bites you every time you strike the undead, or a helmet whose stats run past the
 | Novice | Peddler's Bundle | 3-6 emeralds | anything | -1 | 25 % | 3 % | - |
 | Apprentice | Bundle of Arms | 6-10 | tools, weapons, bows | 0 | 20 % | 5 % | - |
 | Apprentice | Bundle of Harness | 6-10 | armor, shields | 0 | 20 % | 5 % | - |
+| Apprentice (always) | Sworn Parcel | 2 tokens | a set piece | - | 0 | 0 | 100 % |
 | Journeyman | Trinket Casket | 10-16 | baubles | +0.5 | 20 % | 8 % | - |
 | Journeyman | Sealed Crate | 10-16 | anything | +0.5 | 20 % | 8 % | 2 % |
 | Expert | Banded Strongbox | 18-28 + 2 gold | anything | +1.5 | 20 % | 12 % | 5 % |
 | Master | Nameless Reliquary | 32-48 + 1 diamond | anything | +3 | 30 % | 20 % | 12 % |
 
-Each villager level offers two parcels picked from that level's list, weighted.
+Each villager level offers two parcels picked from that level's list, weighted; a parcel with `"always": true` is
+guaranteed one of the two slots at its level. `"currency"` sets what the price is paid in (default emerald).
 
 * **Grades** roll with the grades' `"gamble"` weights (Shoddy 14, Common 30, Journeyman 30, Masterwork 20,
   Gearwrought 6) plus the parcel's luck. Material tier caps still apply. A parcel item is never Unappraised: the parcel

@@ -64,6 +64,10 @@ public final class ClientEvents {
                 e.getToolTip().add(Component.translatable("tooltip.hallmarked.scrap").withStyle(ChatFormatting.GRAY));
                 return;
             }
+            if (stack.is(HMRegistries.MOUNTEBANK_TOKEN.get())) {
+                e.getToolTip().add(Component.translatable("tooltip.hallmarked.token").withStyle(ChatFormatting.GRAY));
+                return;
+            }
             if (stack.is(HMRegistries.SMITHS_STAMP.get())) {
                 e.getToolTip().add(Component.translatable("tooltip.hallmarked.stamp").withStyle(ChatFormatting.GRAY));
                 return;

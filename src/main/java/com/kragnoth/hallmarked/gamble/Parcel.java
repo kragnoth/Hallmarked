@@ -24,8 +24,10 @@ import net.minecraft.world.item.Item;
  *   "second_cost": { "item": "minecraft:gold_ingot", "count": 1 },
  *   "categories": ["tool", "bow", "shield", "armor", "bauble"],
  *   "luck": -1.0, "quality_chance": 0.5, "curse_chance": 0.2, "exceptional_chance": 0.05, "set_chance": 0.0,
- *   "max_uses": 4, "xp": 2 }
+ *   "max_uses": 4, "xp": 2, "currency": "minecraft:emerald", "always": false }
  * }</pre>
+ * {@code always}: offered by every Mountebank at its level (one such parcel per level is guaranteed a slot).
+ * {@code currency}: what the price is paid in (default emerald; the Sworn Parcel takes Mountebank's Tokens).
  * {@code level} is the villager level (1 novice .. 5 master) that offers it; {@code categories} narrows what can be
  * inside (default: anything). Contents come from the {@code hallmarked:gamble/pool} item tag and roll with the grades'
  * {@code "gamble"} weights plus {@code luck}.
@@ -33,13 +35,13 @@ import net.minecraft.world.item.Item;
 public record Parcel(String name, int level, int weight, ChatFormatting color, int priceMin, int priceMax,
                      @Nullable Item secondItem, int secondCount, Set<Category> categories, double luck,
                      double qualityChance, double curseChance, double exceptionalChance, double setChance,
-                     int maxUses, int xp, JsonObject source) {
+                     int maxUses, int xp, Item currency, boolean always, JsonObject source) {
 
     public static final DataStore<Parcel> STORE = new DataStore<>("parcels", Parcel::parse, Parcel::name, Parcel::source);
 
     public static Parcel parse(ResourceLocation id, JsonObject json) {
         Strict.warnUnknownKeys(id, json, Set.of("name", "level", "weight", "color", "price", "second_cost", "categories",
-                "luck", "quality_chance", "curse_chance", "exceptional_chance", "set_chance", "max_uses", "xp"), "Parcel");
+                "luck", "quality_chance", "curse_chance", "exceptional_chance", "set_chance", "max_uses", "xp", "currency", "always"), "Parcel");
         String name = GsonHelper.getAsString(json, "name", id.getNamespace() + ".parcel." + id.getPath().replace('/', '.'));
         ChatFormatting color = ChatFormatting.getByName(GsonHelper.getAsString(json, "color", "gray"));
         if (color == null || !color.isColor()) color = ChatFormatting.GRAY;
@@ -64,7 +66,14 @@ public record Parcel(String name, int level, int weight, ChatFormatting color, i
                 Math.max(0, GsonHelper.getAsInt(json, "weight", 10)), color, min, max, second, secondCount, Set.copyOf(cats),
                 GsonHelper.getAsDouble(json, "luck", 0), p(json, "quality_chance", 0.5), p(json, "curse_chance", 0.2),
                 p(json, "exceptional_chance", 0.05), p(json, "set_chance", 0),
-                Math.max(1, Math.min(64, GsonHelper.getAsInt(json, "max_uses", 4))), Math.max(0, GsonHelper.getAsInt(json, "xp", 2)), source);
+                Math.max(1, Math.min(64, GsonHelper.getAsInt(json, "max_uses", 4))), Math.max(0, GsonHelper.getAsInt(json, "xp", 2)),
+                currency(json), GsonHelper.getAsBoolean(json, "always", false), source);
+    }
+
+    private static Item currency(JsonObject json) {
+        if (!json.has("currency")) return net.minecraft.world.item.Items.EMERALD;
+        ResourceLocation id = ResourceLocation.parse(GsonHelper.getAsString(json, "currency"));
+        return BuiltInRegistries.ITEM.getOptional(id).orElseThrow(() -> new IllegalArgumentException("unknown currency " + id));
     }
 
     private static double p(JsonObject json, String key, double def) {

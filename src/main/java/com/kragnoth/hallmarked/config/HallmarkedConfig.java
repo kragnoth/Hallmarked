@@ -17,6 +17,8 @@ public final class HallmarkedConfig {
     public static final ModConfigSpec.BooleanValue APPRAISAL;
     public static final ModConfigSpec.BooleanValue PROCS;
     public static final ModConfigSpec.BooleanValue MOB_PROCS;
+    public static final ModConfigSpec.DoubleValue SMART_DROP;
+    public static final ModConfigSpec.IntValue TRADE_IN;
 
     static {
         ModConfigSpec.Builder b = new ModConfigSpec.Builder();
@@ -60,6 +62,14 @@ public final class HallmarkedConfig {
                         "Procs that need another mod only exist when that mod is installed.")
                 .define("Enabled", true);
         MOB_PROCS = b.comment("If true, mobs wearing graded gear trigger its procs too.").define("MobsUseProcs", true);
+        b.pop();
+
+        b.push("Sets");
+        SMART_DROP = b.comment("Chance that a set piece dropping for a player (chests, parcels) is a missing piece of a set",
+                        "they have already started, instead of a random piece.")
+                .defineInRange("SmartDropChance", 0.6, 0.0, 1.0);
+        TRADE_IN = b.comment("Set pieces a Mountebank takes for one Mountebank's Token (hand them to him: right-click holding one).")
+                .defineInRange("TradeInPieces", 3, 1, 64);
         b.pop();
 
         b.push("Balance");
