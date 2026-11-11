@@ -42,6 +42,15 @@ public class AssayAnvilScreen extends AbstractContainerScreen<AssayAnvilMenu> {
         g.blit(BG, leftPos + HAMMER_X, topPos + HAMMER_Y, u, 0, HAMMER_SIZE, HAMMER_SIZE, 256, 256);
     }
 
+    /** Light parchment text: the dark wood panel swallows vanilla's 0x404040. */
+    private static final int LABEL_COLOR = 0xFFD9C7A6;
+
+    @Override
+    protected void renderLabels(GuiGraphics g, int mouseX, int mouseY) {
+        g.drawString(font, title, titleLabelX, titleLabelY, LABEL_COLOR, false);
+        g.drawString(font, playerInventoryTitle, inventoryLabelX, inventoryLabelY, LABEL_COLOR, false);
+    }
+
     private boolean overHammer(double mx, double my) {
         return mx >= leftPos + HAMMER_X && mx < leftPos + HAMMER_X + HAMMER_SIZE
                 && my >= topPos + HAMMER_Y && my < topPos + HAMMER_Y + HAMMER_SIZE;
