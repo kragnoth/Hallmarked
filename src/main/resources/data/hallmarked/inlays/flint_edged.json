@@ -1,0 +1,23 @@
+{
+  "name": "hallmarked.inlay.flint_edged",
+  "group": "edge",
+  "material": {
+    "item": "minecraft:flint"
+  },
+  "tool": {
+    "modifiers": [
+      {
+        "name": "flint_edged_damage",
+        "attribute": "minecraft:generic.attack_damage",
+        "operation": "multiply_total",
+        "value": 0.03
+      },
+      {
+        "name": "flint_edged_speed",
+        "attribute": "minecraft:generic.attack_speed",
+        "operation": "multiply_total",
+        "value": 0.03
+      }
+    ]
+  }
+}

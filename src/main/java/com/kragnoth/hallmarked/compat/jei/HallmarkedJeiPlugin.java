@@ -31,6 +31,7 @@ public class HallmarkedJeiPlugin implements IModPlugin {
     @Override
     public void registerCategories(IRecipeCategoryRegistration reg) {
         reg.addRecipeCategories(new ReforgeCategory(reg.getJeiHelpers().getGuiHelper()));
+        reg.addRecipeCategories(new InlayCategory(reg.getJeiHelpers().getGuiHelper()));
     }
 
     @Override
@@ -45,6 +46,9 @@ public class HallmarkedJeiPlugin implements IModPlugin {
                     .toList();
             reg.addRecipes(REFORGE, recipes);
         }
+        reg.addRecipes(InlayCategory.TYPE, List.copyOf(com.kragnoth.hallmarked.inlay.Inlays.STORE.all()));
+        reg.addIngredientInfo(new ItemStack(HMRegistries.GEARWRIGHTS_SEAL.get()), VanillaTypes.ITEM_STACK,
+                Component.translatable("jei.hallmarked.seal.info"));
         reg.addIngredientInfo(new ItemStack(HMRegistries.ASSAY_ANVIL_ITEM.get()), VanillaTypes.ITEM_STACK,
                 Component.translatable("jei.hallmarked.assay_anvil.info"));
         reg.addIngredientInfo(List.of(new ItemStack(HMRegistries.EMERALD_RING.get()), new ItemStack(HMRegistries.EMERALD_AMULET.get())),
@@ -54,5 +58,12 @@ public class HallmarkedJeiPlugin implements IModPlugin {
     @Override
     public void registerRecipeCatalysts(IRecipeCatalystRegistration reg) {
         reg.addRecipeCatalyst(new ItemStack(HMRegistries.ASSAY_ANVIL_ITEM.get()), REFORGE);
+        reg.addRecipeCatalyst(new ItemStack(net.minecraft.world.item.Items.SMITHING_TABLE), InlayCategory.TYPE);
+    }
+
+    /** Teach JEI's smithing category about the single data-driven inlay recipe (shown generically). */
+    @Override
+    public void registerVanillaCategoryExtensions(mezz.jei.api.registration.IVanillaCategoryExtensionRegistration reg) {
+        reg.getSmithingCategory().addExtension(com.kragnoth.hallmarked.inlay.InlayRecipe.class, new InlaySmithingExtension());
     }
 }

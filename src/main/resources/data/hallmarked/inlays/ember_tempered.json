@@ -1,0 +1,17 @@
+{
+  "name": "hallmarked.inlay.ember_tempered",
+  "group": "ember",
+  "material": {
+    "item": "minecraft:blaze_powder"
+  },
+  "armor": {
+    "modifiers": [
+      {
+        "name": "ember_tempered_burning",
+        "attribute": "minecraft:generic.burning_time",
+        "operation": "multiply_base",
+        "value": -0.15
+      }
+    ]
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "hallmarked:smiths_stamp"
+    },
+    {
+      "tag": "c:nether_stars"
+    }
+  ],
+  "result": {
+    "id": "hallmarked:gearwrights_seal",
+    "count": 1
+  }
+}

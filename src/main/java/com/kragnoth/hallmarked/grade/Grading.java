@@ -236,9 +236,8 @@ public final class Grading {
     @Nullable
     public static Component desiredName(ItemStack stack) {
         GradeData d = dataOf(stack);
-        if (d == null) return null;
-        Grade g = GRADES.get(d.grade());
-        if (g == null) return null;
+        Grade g = d == null ? null : GRADES.get(d.grade());
+        if (g == null) return tintedName(stack, findGrade("common"));
 
         List<Fused> fused = fusions(d);
 
@@ -275,12 +274,21 @@ public final class Grading {
             if (prefix == null && (type == Affix.Type.PREFIX || type == Affix.Type.FLAW)) prefix = key;
             else if (suffix == null && type == Affix.Type.SUFFIX) suffix = key;
         }
-        if (prefix == null && suffix == null) return null;
+        if (prefix == null && suffix == null) return tintedName(stack, g);
 
         MutableComponent name = Component.translatable(stack.getItem().getDescriptionId());
         if (prefix != null) name = Component.translatable("hallmarked.name.prefixed", Component.translatable(prefix), name);
         if (suffix != null) name = Component.translatable("hallmarked.name.suffixed", name, Component.translatable(suffix));
         return name.withStyle(g.color());
+    }
+
+    /** Plain-named items with inlays get their grade's inlay tint (Common: copper), so homebrew work stands out. */
+    @Nullable
+    private static Component tintedName(ItemStack stack, @Nullable Grade g) {
+        if (g == null || g.inlayTint() == null) return null;
+        if (stack.getOrDefault(HMRegistries.INLAYS.get(), List.of()).isEmpty() && !stack.has(HMRegistries.SEALED_INLAY.get())) return null;
+        return Component.translatable("hallmarked.name.tinted", Component.translatable(stack.getItem().getDescriptionId()))
+                .withStyle(net.minecraft.network.chat.Style.EMPTY.withColor(g.inlayTint()));
     }
 
     /** Keeps ITEM_NAME in step with the grade and the current base item (e.g. after a netherite upgrade). */

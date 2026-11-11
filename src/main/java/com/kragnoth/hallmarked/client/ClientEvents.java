@@ -4,6 +4,8 @@ import com.kragnoth.hallmarked.Hallmarked;
 import com.kragnoth.hallmarked.grade.Grade;
 import com.kragnoth.hallmarked.grade.Grading;
 import com.kragnoth.hallmarked.grade.Marks;
+import com.kragnoth.hallmarked.inlay.Inlay;
+import com.kragnoth.hallmarked.inlay.Inlays;
 import com.kragnoth.hallmarked.quality.Quality;
 import com.kragnoth.hallmarked.quality.Reforging;
 import com.kragnoth.hallmarked.registry.HMRegistries;
@@ -58,9 +60,19 @@ public final class ClientEvents {
         @SubscribeEvent(priority = EventPriority.LOW)
         public static void tooltip(ItemTooltipEvent e) {
             ItemStack stack = e.getItemStack();
+            if (stack.is(HMRegistries.SMITHS_STAMP.get())) {
+                e.getToolTip().add(Component.translatable("tooltip.hallmarked.stamp").withStyle(ChatFormatting.GRAY));
+                return;
+            }
+            if (Inlays.isSeal(stack)) {
+                e.getToolTip().add(Component.translatable("tooltip.hallmarked.seal").withStyle(ChatFormatting.GRAY));
+                return;
+            }
             String qualityName = stack.get(HMRegistries.QUALITY.get());
             Grade grade = Grading.gradeOf(stack);
-            if (qualityName == null && grade == null) return;
+            List<Inlay> inlays = Inlays.on(stack);
+            Inlay sealed = Inlays.sealed(stack);
+            if (qualityName == null && grade == null && inlays.isEmpty() && sealed == null) return;
 
             List<Marks.Entry> entries = Marks.of(stack);
             List<Component> block = new ArrayList<>();
@@ -80,6 +92,15 @@ public final class ClientEvents {
                 block.add(Component.empty());
                 block.add(Component.translatable(grade.name()).withStyle(grade.color()));
                 addLines(block, entries, Marks.Origin.AFFIX, advanced, Grading.fusions(Grading.dataOf(stack)));
+            }
+
+            // Inlay block
+            if (!inlays.isEmpty() || sealed != null) {
+                block.add(Component.empty());
+                block.add(Component.translatable("tooltip.hallmarked.inlays", Inlays.used(stack), Inlays.slots(stack))
+                        .withStyle(s -> s.withColor(Inlay.COLOR)));
+                for (Inlay inlay : inlays) addInlay(block, entries, inlay, -1, false);
+                if (sealed != null) addInlay(block, entries, sealed, Marks.SEALED_INDEX, true);
             }
 
             List<Component> tip = e.getToolTip();
@@ -126,6 +147,28 @@ public final class ClientEvents {
 
             list.sort(positivesFirst);
             for (Marks.Entry en : list) block.add(statLine(en, " ", advanced));
+        }
+
+        /** One inlay: its name (copper; sealed ones gold), then its stats and virtual enchantment levels. */
+        private static void addInlay(List<Component> block, List<Marks.Entry> all, Inlay inlay, int index, boolean sealed) {
+            MutableComponent name = Component.literal(" ").append(Component.translatable(inlay.name()));
+            if (sealed) {
+                name.append(Component.literal(" (").append(Component.translatable("tooltip.hallmarked.sealed")).append(")"))
+                        .withStyle(ChatFormatting.GOLD);
+            } else {
+                name.withStyle(s -> s.withColor(Inlay.COLOR));
+            }
+            block.add(name);
+            for (Marks.Entry en : all) {
+                if (en.origin() == Marks.Origin.INLAY && !en.shadow() && en.label().equals(inlay.name()) && en.index() == index) {
+                    block.add(statLine(en, "   ", false));
+                }
+            }
+            for (var ench : inlay.enchantments().entrySet()) {
+                Component enchName = Component.translatable("enchantment." + ench.getKey().getNamespace() + "." + ench.getKey().getPath());
+                block.add(Component.literal("   ").append(Component.translatable("tooltip.hallmarked.inlay_enchant", ench.getValue(), enchName))
+                        .withStyle(ChatFormatting.BLUE));
+            }
         }
 
         private static MutableComponent statLine(Marks.Entry en, String indent, boolean advanced) {

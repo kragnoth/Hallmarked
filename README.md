@@ -13,6 +13,10 @@ It was built for the **Gearwright's Hollow** modpack.
   better than crafted gear, Luck tips the odds, and a crafted Gearwrought piece is rare but possible.
   Matching affix pairs fuse into named compounds (Honed + of Haste becomes *Duelist's*) that also shape item titles.
   See [docs/GRADES.md](docs/GRADES.md).
+- **Inlays:** add known, fixed stats at the smithing table with a Smith's Stamp and a common material. Quartz gives
+  +1 Sharpness, Lapis gives +1 Fortune and Looting, Copper gives +1 Unbreaking, and so on. The number of slots
+  depends on the grade, with Common gear as the canvas. A rare **Gearwright's Seal** (made with a Nether Star or a
+  Dragon Egg) adds one permanent extra inlay that can repeat one already present. See [docs/INLAYS.md](docs/INLAYS.md).
 - **53 qualities** across tools, bows, shields, armor (per piece) and baubles, ranging from *Worthless* to *Ascended*.
 - **Auto-marking:** the first time a piece of equipment enters your inventory, it has a chance (50 % by default) to roll a quality.
 - **Assay Anvil:** place equipment and a material in it, then strike the hammer to re-roll the mark. Valid materials are the

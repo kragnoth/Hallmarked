@@ -21,7 +21,7 @@ import org.jetbrains.annotations.Nullable;
 public final class Marks {
     private Marks() {}
 
-    public enum Origin { QUALITY, AFFIX }
+    public enum Origin { QUALITY, AFFIX, INLAY }
 
     /**
      * @param slot        slot group the modifier is applied in; null means a bauble (applied to the player while worn)
@@ -70,7 +70,25 @@ public final class Marks {
                 }
             }
         }
+        for (com.kragnoth.hallmarked.inlay.Inlay inlay : com.kragnoth.hallmarked.inlay.Inlays.on(stack)) {
+            emitInlay(out, stack, inlay, "inlay/", -1);
+        }
+        com.kragnoth.hallmarked.inlay.Inlay sealed = com.kragnoth.hallmarked.inlay.Inlays.sealed(stack);
+        // Distinct id prefix so a sealed copy of an inlay stacks with the regular one instead of replacing it.
+        if (sealed != null) emitInlay(out, stack, sealed, "sealed/", SEALED_INDEX);
         return out;
+    }
+
+    /** {@link Entry#index()} value marking the sealed inlay's modifiers. */
+    public static final int SEALED_INDEX = -2;
+
+    private static void emitInlay(List<Entry> out, ItemStack stack, com.kragnoth.hallmarked.inlay.Inlay inlay, String prefix, int index) {
+        Equipment.Applied ap = Equipment.applied(inlay, stack);
+        if (ap == null) return;
+        for (Affix.Mod m : inlay.section(ap.section())) {
+            m.attribute().ifPresent(attr -> emit(out, attr, prefix + m.name() + ap.idSuffix(),
+                    m.min(), m.operation(), ap.slot(), Origin.INLAY, inlay.name(), m.min(), m.max(), index));
+        }
     }
 
     private static void emit(List<Entry> out, Holder<Attribute> attr, String path, double amount, AttributeModifier.Operation op,

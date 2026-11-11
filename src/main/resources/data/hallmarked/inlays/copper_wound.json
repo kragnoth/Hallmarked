@@ -1,0 +1,22 @@
+{
+  "name": "hallmarked.inlay.copper_wound",
+  "group": "binding",
+  "material": {
+    "tag": "c:ingots/copper"
+  },
+  "tool": {
+    "modifiers": []
+  },
+  "bow": {
+    "modifiers": []
+  },
+  "shield": {
+    "modifiers": []
+  },
+  "armor": {
+    "modifiers": []
+  },
+  "enchantments": {
+    "minecraft:unbreaking": 1
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "name": "hallmarked.inlay.restrung",
+  "group": "string",
+  "material": {
+    "tag": "c:strings"
+  },
+  "bow": {
+    "modifiers": [
+      {
+        "name": "restrung_projectile",
+        "attribute": "hallmarked:projectile_damage",
+        "operation": "multiply_total",
+        "value": 0.04
+      }
+    ]
+  }
+}

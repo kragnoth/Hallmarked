@@ -19,5 +19,6 @@
   "weights": {
     "crafted": 7,
     "loot": 19
-  }
+  },
+  "inlay_slots": 1
 }

@@ -1,0 +1,27 @@
+{
+  "name": "hallmarked.inlay.riveted",
+  "group": "plate",
+  "material": {
+    "tag": "c:nuggets/iron"
+  },
+  "armor": {
+    "modifiers": [
+      {
+        "name": "riveted_armor",
+        "attribute": "minecraft:generic.armor",
+        "operation": "addition",
+        "value": 1
+      }
+    ]
+  },
+  "shield": {
+    "modifiers": [
+      {
+        "name": "riveted_shield_armor",
+        "attribute": "minecraft:generic.armor",
+        "operation": "addition",
+        "value": 1
+      }
+    ]
+  }
+}

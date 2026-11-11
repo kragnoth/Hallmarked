@@ -1,0 +1,27 @@
+{
+  "name": "hallmarked.inlay.tide_etched",
+  "group": "tide",
+  "material": {
+    "tag": "c:gems/prismarine"
+  },
+  "helmet": {
+    "modifiers": [
+      {
+        "name": "tide_etched_oxygen",
+        "attribute": "minecraft:generic.oxygen_bonus",
+        "operation": "addition",
+        "value": 1
+      }
+    ]
+  },
+  "leggings": {
+    "modifiers": [
+      {
+        "name": "tide_etched_swim",
+        "attribute": "minecraft:generic.water_movement_efficiency",
+        "operation": "addition",
+        "value": 0.15
+      }
+    ]
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "name": "hallmarked.inlay.resonant",
+  "group": "reach",
+  "material": {
+    "tag": "c:gems/amethyst"
+  },
+  "tool": {
+    "modifiers": [
+      {
+        "name": "resonant_reach",
+        "attribute": "minecraft:player.entity_interaction_range",
+        "operation": "addition",
+        "value": 0.5
+      }
+    ]
+  }
+}

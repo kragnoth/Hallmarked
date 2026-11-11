@@ -1,0 +1,13 @@
+{
+  "name": "hallmarked.inlay.protective_lacquer",
+  "group": "ward",
+  "material": {
+    "item": "minecraft:honeycomb"
+  },
+  "armor": {
+    "modifiers": []
+  },
+  "enchantments": {
+    "minecraft:protection": 1
+  }
+}

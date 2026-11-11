@@ -1,0 +1,17 @@
+{
+  "name": "hallmarked.inlay.geared",
+  "group": "mechanism",
+  "material": {
+    "tag": "c:dusts/redstone"
+  },
+  "tool": {
+    "modifiers": [
+      {
+        "name": "geared_dig_speed",
+        "attribute": "minecraft:player.block_break_speed",
+        "operation": "multiply_total",
+        "value": 0.08
+      }
+    ]
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "name": "hallmarked.inlay.feathered",
+  "group": "fall",
+  "material": {
+    "tag": "c:feathers"
+  },
+  "boots": {
+    "modifiers": [
+      {
+        "name": "feathered_fall_damage",
+        "attribute": "minecraft:generic.fall_damage_multiplier",
+        "operation": "multiply_base",
+        "value": -0.15
+      }
+    ]
+  }
+}

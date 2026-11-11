@@ -1,0 +1,13 @@
+{
+  "name": "hallmarked.inlay.quartz_honed",
+  "group": "edge",
+  "material": {
+    "tag": "c:gems/quartz"
+  },
+  "tool": {
+    "modifiers": []
+  },
+  "enchantments": {
+    "minecraft:sharpness": 1
+  }
+}

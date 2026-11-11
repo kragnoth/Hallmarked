@@ -77,6 +77,18 @@ public final class HMRegistries {
                     .persistent(GradeData.CODEC)
                     .networkSynchronized(GradeData.STREAM_CODEC));
 
+    /** Inlay names applied at the smithing table, in order. */
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<java.util.List<String>>> INLAYS =
+            COMPONENTS.registerComponentType("inlays", b -> b
+                    .persistent(Codec.STRING.listOf())
+                    .networkSynchronized(ByteBufCodecs.STRING_UTF8.apply(ByteBufCodecs.list())));
+
+    /** The one inlay applied with a Gearwright's Seal: outside the slot count, ignores group limits, permanent. */
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<String>> SEALED_INLAY =
+            COMPONENTS.registerComponentType("sealed_inlay", b -> b
+                    .persistent(Codec.STRING)
+                    .networkSynchronized(ByteBufCodecs.STRING_UTF8));
+
     public static final DeferredHolder<MapCodec<? extends IGlobalLootModifier>, MapCodec<GradeLootModifier>> GRADE_LOOT =
             LOOT_MODIFIERS.register("grade_loot", () -> GradeLootModifier.CODEC);
 
@@ -84,6 +96,8 @@ public final class HMRegistries {
             RECIPE_TYPES.register("reforge_material", () -> RecipeType.simple(Hallmarked.id("reforge_material")));
     public static final DeferredHolder<RecipeSerializer<?>, ReforgeMaterialRecipe.Serializer> REFORGE_MATERIAL_SERIALIZER =
             RECIPE_SERIALIZERS.register("reforge_material", ReforgeMaterialRecipe.Serializer::new);
+    public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<com.kragnoth.hallmarked.inlay.InlayRecipe>> INLAY_SERIALIZER =
+            RECIPE_SERIALIZERS.register("inlay", com.kragnoth.hallmarked.inlay.InlayRecipe.Serializer::new);
     public static final DeferredHolder<IngredientType<?>, IngredientType<GradedIngredient>> GRADED_INGREDIENT =
             INGREDIENT_TYPES.register("graded", () -> new IngredientType<>(GradedIngredient.CODEC, GradedIngredient.STREAM_CODEC));
 
@@ -98,6 +112,12 @@ public final class HMRegistries {
     public static final DeferredItem<BlockItem> ASSAY_ANVIL_ITEM = ITEMS.registerSimpleBlockItem(ASSAY_ANVIL);
     public static final DeferredItem<Item> EMERALD_RING = ITEMS.registerSimpleItem("emerald_ring", new Item.Properties().stacksTo(1));
     public static final DeferredItem<Item> EMERALD_AMULET = ITEMS.registerSimpleItem("emerald_amulet", new Item.Properties().stacksTo(1));
+    /** Universal inlay template, consumed at the smithing table. */
+    public static final DeferredItem<Item> SMITHS_STAMP = ITEMS.registerSimpleItem("smiths_stamp", new Item.Properties());
+    /** Rare template: applies one extra, permanent inlay regardless of free slots. */
+    public static final DeferredItem<Item> GEARWRIGHTS_SEAL = ITEMS.registerSimpleItem("gearwrights_seal",
+            new Item.Properties().rarity(net.minecraft.world.item.Rarity.EPIC)
+                    .component(net.minecraft.core.component.DataComponents.ENCHANTMENT_GLINT_OVERRIDE, true));
 
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<AssayAnvilBlockEntity>> ASSAY_ANVIL_BE =
             BLOCK_ENTITIES.register("assay_anvil",
@@ -113,6 +133,8 @@ public final class HMRegistries {
                 out.accept(ASSAY_ANVIL_ITEM.get());
                 out.accept(EMERALD_RING.get());
                 out.accept(EMERALD_AMULET.get());
+                out.accept(SMITHS_STAMP.get());
+                out.accept(GEARWRIGHTS_SEAL.get());
             })
             .build());
 

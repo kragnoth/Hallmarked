@@ -76,7 +76,7 @@ public record Affix(String name, Type type, int weight, String group, Map<Catego
                 if (!ResourceLocation.isValidPath(modName)) throw new IllegalArgumentException("invalid modifier name '" + modName + "' (use a-z 0-9 _ - . /)");
                 mods.add(new Mod(modName,
                         ResourceLocation.parse(GsonHelper.getAsString(m, "attribute").toLowerCase(Locale.ROOT)),
-                        parseOp(GsonHelper.getAsString(m, "operation", "multiply_total")), min, max));
+                        parseOperation(GsonHelper.getAsString(m, "operation", "multiply_total")), min, max));
             }
             sections.put(c, List.copyOf(mods));
         }
@@ -85,7 +85,7 @@ public record Affix(String name, Type type, int weight, String group, Map<Catego
         return new Affix(name, type, weight, group, sections, source);
     }
 
-    static AttributeModifier.Operation parseOp(String s) {
+    public static AttributeModifier.Operation parseOperation(String s) {
         return switch (s.toLowerCase(Locale.ROOT)) {
             case "addition", "add", "add_value" -> AttributeModifier.Operation.ADD_VALUE;
             case "multiply_base", "add_multiplied_base" -> AttributeModifier.Operation.ADD_MULTIPLIED_BASE;

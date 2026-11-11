@@ -1,0 +1,17 @@
+{
+  "name": "hallmarked.inlay.padded",
+  "group": "padding",
+  "material": {
+    "tag": "c:leathers"
+  },
+  "armor": {
+    "modifiers": [
+      {
+        "name": "padded_knockback_resistance",
+        "attribute": "minecraft:generic.knockback_resistance",
+        "operation": "addition",
+        "value": 0.04
+      }
+    ]
+  }
+}

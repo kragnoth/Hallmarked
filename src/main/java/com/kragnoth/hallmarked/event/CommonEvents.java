@@ -47,6 +47,7 @@ public final class CommonEvents {
         event.addListener(Grading.GRADES.loader());
         event.addListener(Grading.AFFIXES.loader());
         event.addListener(Grading.FUSIONS.loader());
+        event.addListener(com.kragnoth.hallmarked.inlay.Inlays.STORE.loader());
         event.addListener(new com.kragnoth.hallmarked.grade.TitleWords.Loader());
     }
 
@@ -167,7 +168,7 @@ public final class CommonEvents {
 
         if (grading && !stack.has(HMRegistries.GRADE.get()) && Grading.canGrade(stack)) {
             Grading.grade(stack, Grading.SOURCE_CRAFTED, player.getLuck(), player.getRandom(), Grading.Context.of(player));
-        } else if (stack.has(HMRegistries.GRADE.get())) {
+        } else if (stack.has(HMRegistries.GRADE.get()) || stack.has(HMRegistries.INLAYS.get()) || stack.has(HMRegistries.SEALED_INLAY.get())) {
             Grading.refreshName(stack);
         }
 

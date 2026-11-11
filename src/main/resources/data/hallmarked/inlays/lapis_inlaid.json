@@ -1,0 +1,14 @@
+{
+  "name": "hallmarked.inlay.lapis_inlaid",
+  "group": "fortune",
+  "material": {
+    "tag": "c:gems/lapis"
+  },
+  "tool": {
+    "modifiers": []
+  },
+  "enchantments": {
+    "minecraft:fortune": 1,
+    "minecraft:looting": 1
+  }
+}

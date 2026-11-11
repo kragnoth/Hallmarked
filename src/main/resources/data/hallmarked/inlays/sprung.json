@@ -1,0 +1,17 @@
+{
+  "name": "hallmarked.inlay.sprung",
+  "group": "fall",
+  "material": {
+    "tag": "c:slime_balls"
+  },
+  "boots": {
+    "modifiers": [
+      {
+        "name": "sprung_safe_fall",
+        "attribute": "minecraft:generic.safe_fall_distance",
+        "operation": "addition",
+        "value": 2
+      }
+    ]
+  }
+}

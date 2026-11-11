@@ -22,10 +22,14 @@ import net.minecraft.util.GsonHelper;
  * @param hidden      no grade line in the tooltip (used for Common)
  * @param luckScaling how strongly Luck pushes this grade's weight up (negative pushes it down)
  * @param weights     base weight per roll source ("crafted", "loot", or any source a loot modifier names)
+ * @param inlaySlots  how many inlays this grade of work accepts at the smithing table
+ * @param inlayTint   if set, an inlaid item of this grade shows its (otherwise plain) name in this colour
  */
 public record Grade(String name, ChatFormatting color, int rank, int minAffixes, int maxAffixes,
                     int maxPrefixes, int maxSuffixes, int flaws, float rollMin, float rollMax,
-                    boolean titled, boolean hidden, double luckScaling, Map<String, Double> weights, JsonObject source) {
+                    boolean titled, boolean hidden, double luckScaling, Map<String, Double> weights,
+                    int inlaySlots, @org.jetbrains.annotations.Nullable net.minecraft.network.chat.TextColor inlayTint,
+                    JsonObject source) {
 
     /** Weight for a roll source. Custom sources a grade doesn't list fall back to "loot", then "crafted". */
     public double weight(String source) {
@@ -53,6 +57,9 @@ public record Grade(String name, ChatFormatting color, int rank, int minAffixes,
                 GsonHelper.getAsInt(json, "flaws", 0),
                 GsonHelper.getAsFloat(roll, "min", 0f), GsonHelper.getAsFloat(roll, "max", 1f),
                 GsonHelper.getAsBoolean(json, "titled", false), GsonHelper.getAsBoolean(json, "hidden", false),
-                GsonHelper.getAsDouble(json, "luck_scaling", 0.0), Map.copyOf(weights), source);
+                GsonHelper.getAsDouble(json, "luck_scaling", 0.0), Map.copyOf(weights),
+                Math.max(0, GsonHelper.getAsInt(json, "inlay_slots", 0)),
+                json.has("inlay_tint") ? net.minecraft.network.chat.TextColor.parseColor(GsonHelper.getAsString(json, "inlay_tint")).result().orElse(null) : null,
+                source);
     }
 }

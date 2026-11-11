@@ -1,0 +1,17 @@
+{
+  "name": "hallmarked.inlay.gilt",
+  "group": "gilt",
+  "material": {
+    "tag": "c:nuggets/gold"
+  },
+  "bauble": {
+    "modifiers": [
+      {
+        "name": "gilt_luck",
+        "attribute": "minecraft:generic.luck",
+        "operation": "addition",
+        "value": 0.25
+      }
+    ]
+  }
+}

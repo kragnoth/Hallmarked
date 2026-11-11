@@ -1,0 +1,17 @@
+{
+  "name": "hallmarked.inlay.far_reaching",
+  "group": "reach",
+  "material": {
+    "tag": "c:ender_pearls"
+  },
+  "tool": {
+    "modifiers": [
+      {
+        "name": "far_reaching_block_reach",
+        "attribute": "minecraft:player.block_interaction_range",
+        "operation": "addition",
+        "value": 0.5
+      }
+    ]
+  }
+}
