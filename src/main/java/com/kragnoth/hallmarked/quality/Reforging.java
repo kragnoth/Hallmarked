@@ -76,6 +76,7 @@ public final class Reforging {
      */
     public static int materialCost(Level level, ItemStack equipment, ItemStack material) {
         if (equipment.isEmpty() || material.isEmpty() || !isEligible(equipment)) return 0;
+        if (equipment.getOrDefault(HMRegistries.TEMPERED.get(), false)) return 0; // tempered pieces are locked
         if (equipment.getItem().isValidRepairItem(equipment, material)) return 1;
         ReforgeMaterialRecipe.Input in = new ReforgeMaterialRecipe.Input(equipment, material);
         ReforgeMaterialRecipe best = null;

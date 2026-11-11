@@ -1,0 +1,23 @@
+{
+  "name": "hallmarked.affix.bloodbound",
+  "type": "forbidden",
+  "weight": 10,
+  "tool": {
+    "modifiers": [
+      {
+        "name": "bloodbound_damage",
+        "attribute": "minecraft:generic.attack_damage",
+        "operation": "multiply_total",
+        "min": 0.15,
+        "max": 0.25
+      },
+      {
+        "name": "bloodbound_health",
+        "attribute": "minecraft:generic.max_health",
+        "operation": "addition",
+        "min": -2,
+        "max": -2
+      }
+    ]
+  }
+}

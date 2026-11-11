@@ -35,7 +35,7 @@ public final class HallmarkedCommands {
 
     /** Folders under data/hallmarked/ that make up the editable defaults. */
     private static final List<String> FOLDERS = List.of(
-            "qualities", "grades", "affixes", "fusions", "titles", "loot_modifiers", "recipe/reforge", "recipe/inlay", "inlays", "loot_table/inject", "tags/item");
+            "qualities", "grades", "affixes", "fusions", "titles", "loot_modifiers", "recipe/reforge", "recipe/inlay", "inlays", "uniques", "tempering", "regions", "loot_table/inject", "tags/item");
 
     private enum Target { WORLD, KUBEJS }
 
@@ -49,7 +49,8 @@ public final class HallmarkedCommands {
                 .then(ItemCommands.inspect())
                 .then(ItemCommands.grade())
                 .then(ItemCommands.quality())
-                .then(ItemCommands.affix()));
+                .then(ItemCommands.affix())
+                .then(ItemCommands.unique()));
     }
 
     private static int rebuild(CommandContext<CommandSourceStack> ctx, Target target) {

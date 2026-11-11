@@ -86,6 +86,24 @@ public final class HMRegistries {
                     .persistent(net.minecraft.network.chat.ComponentSerialization.CODEC)
                     .networkSynchronized(net.minecraft.network.chat.ComponentSerialization.STREAM_CODEC));
 
+    /** Set by the Ashen Altar: no further tempering, reforging or inlays. */
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Boolean>> TEMPERED =
+            COMPONENTS.registerComponentType("tempered", b -> b
+                    .persistent(Codec.BOOL)
+                    .networkSynchronized(ByteBufCodecs.BOOL));
+
+    /** Name of the unique this item is. */
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<String>> UNIQUE =
+            COMPONENTS.registerComponentType("unique", b -> b
+                    .persistent(Codec.STRING)
+                    .networkSynchronized(ByteBufCodecs.STRING_UTF8));
+
+    /** Found gear of an "appraise" grade: affixes hidden and inactive until struck at an Assay Anvil. */
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Boolean>> UNAPPRAISED =
+            COMPONENTS.registerComponentType("unappraised", b -> b
+                    .persistent(Codec.BOOL)
+                    .networkSynchronized(ByteBufCodecs.BOOL));
+
     /** Inlay names applied at the smithing table, in order. */
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<java.util.List<String>>> INLAYS =
             COMPONENTS.registerComponentType("inlays", b -> b
@@ -119,10 +137,15 @@ public final class HMRegistries {
     // ---- Blocks / items --------------------------------------------------------------------
     public static final DeferredBlock<AssayAnvilBlock> ASSAY_ANVIL = BLOCKS.register("assay_anvil", AssayAnvilBlock::new);
     public static final DeferredItem<BlockItem> ASSAY_ANVIL_ITEM = ITEMS.registerSimpleBlockItem(ASSAY_ANVIL);
+    public static final DeferredBlock<com.kragnoth.hallmarked.tempering.AshenAltarBlock> ASHEN_ALTAR =
+            BLOCKS.register("ashen_altar", com.kragnoth.hallmarked.tempering.AshenAltarBlock::new);
+    public static final DeferredItem<BlockItem> ASHEN_ALTAR_ITEM = ITEMS.registerSimpleBlockItem(ASHEN_ALTAR);
     public static final DeferredItem<Item> EMERALD_RING = ITEMS.registerSimpleItem("emerald_ring", new Item.Properties().stacksTo(1));
     public static final DeferredItem<Item> EMERALD_AMULET = ITEMS.registerSimpleItem("emerald_amulet", new Item.Properties().stacksTo(1));
     /** Universal inlay template, consumed at the smithing table. */
     public static final DeferredItem<Item> SMITHS_STAMP = ITEMS.registerSimpleItem("smiths_stamp", new Item.Properties());
+    /** Salvaged from unwanted gear at a grindstone; makes stamps and works as a reforge material. */
+    public static final DeferredItem<Item> SMITHS_SCRAP = ITEMS.registerSimpleItem("smiths_scrap", new Item.Properties());
     /** Rare template: applies one extra, permanent inlay regardless of free slots. */
     public static final DeferredItem<Item> GEARWRIGHTS_SEAL = ITEMS.registerSimpleItem("gearwrights_seal",
             new Item.Properties().rarity(net.minecraft.world.item.Rarity.EPIC)
@@ -140,8 +163,10 @@ public final class HMRegistries {
             .icon(() -> new ItemStack(ASSAY_ANVIL_ITEM.get()))
             .displayItems((params, out) -> {
                 out.accept(ASSAY_ANVIL_ITEM.get());
+                out.accept(ASHEN_ALTAR_ITEM.get());
                 out.accept(EMERALD_RING.get());
                 out.accept(EMERALD_AMULET.get());
+                out.accept(SMITHS_SCRAP.get());
                 out.accept(SMITHS_STAMP.get());
                 out.accept(GEARWRIGHTS_SEAL.get());
             })

@@ -28,5 +28,7 @@
     "scope": "player"
   },
   "beam": true,
-  "champion": true
+  "champion": true,
+  "salvage": 4,
+  "appraise": true
 }

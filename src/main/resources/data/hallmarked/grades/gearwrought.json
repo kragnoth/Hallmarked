@@ -28,5 +28,7 @@
     "scope": "server"
   },
   "beam": true,
-  "champion": true
+  "champion": true,
+  "salvage": 8,
+  "appraise": true
 }

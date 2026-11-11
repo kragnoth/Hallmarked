@@ -21,6 +21,14 @@ It was built for the **Gearwright's Hollow** modpack.
   announced to the whole server. Mobs spawn with graded gear and fight with it. Masterwork and Gearwrought drops, and the mobs carrying
   them, show Diablo-style loot beams, and those mobs get a title like *"Zombie, Bearer of Grim Ledger"*. Tooltips stay compact, with Shift
   for the full stats. Stamps and Seals also turn up in structure chests.
+- **The loot loop:**
+  - Salvage unwanted gear into **Smith's Scrap**.
+  - Found Masterwork, Gearwrought and Unique pieces arrive **Unappraised** until you strike them at the Assay Anvil.
+  - Hand-written **Uniques** carry lore.
+  - Gamble a piece at the **Ashen Altar**: it may ascend, gain a forbidden affix, or be marred, and is locked either way.
+  - Deeper, farther and stranger places roll better.
+
+  See [docs/LOOT_LOOP.md](docs/LOOT_LOOP.md).
 - **53 qualities** across tools, bows, shields, armor (per piece) and baubles, ranging from *Worthless* to *Ascended*.
 - **Auto-marking:** the first time a piece of equipment enters your inventory, it has a chance (50 % by default) to roll a quality.
 - **Assay Anvil:** place equipment and a material in it, then strike the hammer to re-roll the mark. Valid materials are the

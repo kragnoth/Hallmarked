@@ -1,0 +1,7 @@
+{
+  "type": "hallmarked:reforge_material",
+  "material": {
+    "item": "hallmarked:smiths_scrap"
+  },
+  "cost": 2
+}

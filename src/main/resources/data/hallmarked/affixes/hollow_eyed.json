@@ -1,0 +1,23 @@
+{
+  "name": "hallmarked.affix.hollow_eyed",
+  "type": "forbidden",
+  "weight": 10,
+  "tool": {
+    "modifiers": [
+      {
+        "name": "hollow_eyed_reach",
+        "attribute": "minecraft:player.entity_interaction_range",
+        "operation": "addition",
+        "min": 1.0,
+        "max": 1.5
+      },
+      {
+        "name": "hollow_eyed_speed",
+        "attribute": "minecraft:generic.attack_speed",
+        "operation": "multiply_total",
+        "min": -0.08,
+        "max": -0.08
+      }
+    ]
+  }
+}

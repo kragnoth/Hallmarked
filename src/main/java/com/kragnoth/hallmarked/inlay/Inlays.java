@@ -62,6 +62,7 @@ public final class Inlays {
     @Nullable
     public static Inlay find(ItemStack template, ItemStack equipment, ItemStack material) {
         if (equipment.isEmpty() || Equipment.categoryOf(equipment) == null) return null;
+        if (equipment.getOrDefault(HMRegistries.TEMPERED.get(), false)) return null; // tempered pieces are locked
         if (isSeal(template)) return findSealed(equipment, material);
         if (used(equipment) >= slots(equipment)) return null;
         List<Inlay> present = on(equipment);

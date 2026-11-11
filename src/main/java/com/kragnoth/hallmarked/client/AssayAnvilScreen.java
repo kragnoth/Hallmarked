@@ -28,9 +28,11 @@ public class AssayAnvilScreen extends AbstractContainerScreen<AssayAnvilMenu> {
         super.render(g, mouseX, mouseY, partial);
         renderTooltip(g, mouseX, mouseY);
         if (overHammer(mouseX, mouseY)) {
-            Component tip = menu.canReforge()
-                    ? Component.translatable("gui.hallmarked.reforge")
-                    : Component.translatable("gui.hallmarked.reforge.unavailable");
+            Component tip = switch (menu.action()) {
+                case AssayAnvilMenu.ACTION_APPRAISE -> Component.translatable("gui.hallmarked.appraise");
+                case AssayAnvilMenu.ACTION_REFORGE -> Component.translatable("gui.hallmarked.reforge");
+                default -> Component.translatable("gui.hallmarked.reforge.unavailable");
+            };
             g.renderTooltip(font, tip, mouseX, mouseY);
         }
     }

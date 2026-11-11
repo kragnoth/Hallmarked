@@ -1,0 +1,30 @@
+{
+  "name": "hallmarked.unique.widows_toll",
+  "lore": "hallmarked.unique.widows_toll.lore",
+  "items": {
+    "item": "minecraft:crossbow"
+  },
+  "chance": {
+    "loot": 0.01,
+    "mob": 0.002
+  },
+  "bow": {
+    "modifiers": [
+      {
+        "name": "widows_toll_projectile",
+        "attribute": "hallmarked:projectile_damage",
+        "operation": "multiply_total",
+        "value": 0.18
+      },
+      {
+        "name": "widows_toll_luck",
+        "attribute": "minecraft:generic.luck",
+        "operation": "addition",
+        "value": 0.5
+      }
+    ]
+  },
+  "enchantments": {
+    "minecraft:quick_charge": 1
+  }
+}

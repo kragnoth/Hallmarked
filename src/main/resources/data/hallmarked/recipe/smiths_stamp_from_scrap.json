@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "ss",
+    "ss"
+  ],
+  "key": {
+    "s": {
+      "item": "hallmarked:smiths_scrap"
+    }
+  },
+  "result": {
+    "id": "hallmarked:smiths_stamp",
+    "count": 1
+  }
+}

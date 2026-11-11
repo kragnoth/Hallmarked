@@ -30,6 +30,27 @@ public final class Grading {
     public static final DataStore<Affix> AFFIXES = new DataStore<>("affixes", Affix::parse, Affix::name, Affix::source);
     public static final DataStore<Grade> GRADES = new DataStore<>("grades", Grade::parse, Grade::name, Grade::source);
     public static final DataStore<Fusion> FUSIONS = new DataStore<>("fusions", Fusion::parse, Fusion::name, Fusion::source);
+    /** Server-only: where a roll happens adjusts its odds. */
+    public static final DataStore<Region> REGIONS = new DataStore<>("regions", Region::parse, Region::name, Region::source);
+    public static final DataStore<Unique> UNIQUES = new DataStore<>("uniques", Unique::parse, Unique::name, Unique::source);
+    /** Grade given to uniques (data: grades/unique.json, weights 0 so it never rolls normally). */
+    public static final String UNIQUE_GRADE = "hallmarked.grade.unique";
+
+    @Nullable
+    public static Unique uniqueOf(ItemStack stack) {
+        return UNIQUES.get(stack.get(HMRegistries.UNIQUE.get()));
+    }
+
+    /** Found gear may become a unique: each unique for this base item gets its own chance for the source. */
+    @Nullable
+    private static Unique rollUnique(ItemStack stack, String source, RandomSource random) {
+        if (SOURCE_CRAFTED.equals(source) || GRADES.get(UNIQUE_GRADE) == null) return null;
+        for (Unique u : UNIQUES.all()) {
+            double c = u.chance(source);
+            if (c > 0 && u.items().test(stack) && random.nextDouble() < c) return u;
+        }
+        return null;
+    }
 
     public static final String SOURCE_CRAFTED = "crafted";
     public static final String SOURCE_LOOT = "loot";
@@ -69,10 +90,17 @@ public final class Grading {
     public static Grade pickGrade(ItemStack stack, String source, double luck, RandomSource random, Context ctx) {
         double factor = HallmarkedConfig.LUCK_FACTOR.get();
         List<Grade> grades = new ArrayList<>(GRADES.all());
+        // Regions: luck adds, grade multipliers multiply.
+        Map<String, Double> regionMult = new java.util.HashMap<>();
+        for (Region r : REGIONS.all()) {
+            if (!r.matches(source, ctx.level(), ctx.pos())) continue;
+            luck += r.luck();
+            r.gradeMultipliers().forEach((k, v) -> regionMult.merge(k, v, (a, b) -> a * b));
+        }
         Map<Grade, Double> base = new LinkedHashMap<>();
         for (Grade g : grades) {
             double mult = Math.max(0.1, 1.0 + luck * factor * g.luckScaling());
-            base.put(g, g.weight(source) * mult);
+            base.put(g, g.weight(source) * mult * regionMult.getOrDefault(g.name(), 1.0));
         }
         GradeRollEvent event = NeoForge.EVENT_BUS.post(
                 new GradeRollEvent(stack.copy(), source, luck, ctx.player(), ctx.level(), ctx.pos(), base));
@@ -159,22 +187,40 @@ public final class Grading {
 
     /** Rolls and stamps a grade (plus affixes and title) onto the stack. */
     public static boolean grade(ItemStack stack, String source, double luck, RandomSource random, Context ctx) {
-        Grade g = pickGrade(stack, source, luck, random, ctx);
+        Unique unique = rollUnique(stack, source, random);
+        Grade g = unique != null ? GRADES.get(UNIQUE_GRADE) : pickGrade(stack, source, luck, random, ctx);
         if (g == null) return false;
-        GradeData rolled = rollData(stack, g, random);
+        if (unique != null) stack.set(HMRegistries.UNIQUE.get(), unique.name());
+        GradeData rolled = unique != null ? new GradeData(g.name(), List.of(), "", "") : rollData(stack, g, random);
         ItemGradedEvent event = NeoForge.EVENT_BUS.post(new ItemGradedEvent(stack.copy(), source, ctx.player(), ctx.level(), rolled));
         GradeData result = event.getResult() != null ? event.getResult() : rolled; // never leave an item ungraded (would re-roll forever)
         stack.set(HMRegistries.GRADE.get(), result);
-        refreshName(stack);
         Grade finalGrade = GRADES.get(result.grade());
-        if (finalGrade != null && finalGrade.announce() != null && ctx.player() instanceof net.minecraft.server.level.ServerPlayer sp) {
+        // Found (not crafted) top-grade gear arrives Unappraised; its fanfare waits for the reveal at the anvil.
+        boolean sealedAway = finalGrade != null && finalGrade.appraise() && !SOURCE_CRAFTED.equals(source);
+        if (sealedAway) stack.set(HMRegistries.UNAPPRAISED.get(), true);
+        refreshName(stack);
+        if (!sealedAway && finalGrade != null && finalGrade.announce() != null
+                && ctx.player() instanceof net.minecraft.server.level.ServerPlayer sp) {
             announce(sp, stack, finalGrade);
         }
         return true;
     }
 
+    public static boolean isUnappraised(ItemStack stack) {
+        return stack.getOrDefault(HMRegistries.UNAPPRAISED.get(), false);
+    }
+
+    /** Reveals an unappraised item (Assay Anvil): affixes become active, the real name appears, fanfare plays. */
+    public static void appraise(ItemStack stack, @Nullable net.minecraft.server.level.ServerPlayer player) {
+        stack.remove(HMRegistries.UNAPPRAISED.get());
+        refreshName(stack);
+        Grade g = gradeOf(stack);
+        if (player != null && g != null && g.announce() != null) announce(player, stack, g);
+    }
+
     /** Sound + action bar for the finder; server-wide grades also get a chat line for everyone. */
-    private static void announce(net.minecraft.server.level.ServerPlayer player, ItemStack stack, Grade g) {
+    public static void announce(net.minecraft.server.level.ServerPlayer player, ItemStack stack, Grade g) {
         Grade.Announce a = g.announce();
         net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.getHolder(a.sound()).ifPresent(sound ->
                 player.playNotifySound(sound.value(), net.minecraft.sounds.SoundSource.PLAYERS, 1.0F, a.pitch()));
@@ -257,6 +303,11 @@ public final class Grading {
         Grade g = d == null ? null : GRADES.get(d.grade());
         if (g == null) return tintedName(stack, findGrade("common"));
 
+        if (isUnappraised(stack)) {
+            return Component.translatable("hallmarked.name.unappraised", baseName(stack)).withStyle(g.color());
+        }
+        Unique unique = uniqueOf(stack);
+        if (unique != null) return Component.translatable(unique.name()).withStyle(g.color());
         List<Fused> fused = fusions(d);
 
         if (g.titled() && d.titled()) {

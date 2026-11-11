@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
-    "hallmarked:assay_anvil"
+    "hallmarked:assay_anvil",
+    "hallmarked:ashen_altar"
   ]
 }

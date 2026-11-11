@@ -21,7 +21,7 @@ import org.jetbrains.annotations.Nullable;
 public final class Marks {
     private Marks() {}
 
-    public enum Origin { QUALITY, AFFIX, INLAY }
+    public enum Origin { QUALITY, AFFIX, INLAY, UNIQUE }
 
     /**
      * @param slot        slot group the modifier is applied in; null means a bauble (applied to the player while worn)
@@ -55,7 +55,7 @@ public final class Marks {
             }
         }
 
-        GradeData d = Grading.dataOf(stack);
+        GradeData d = Grading.isUnappraised(stack) ? null : Grading.dataOf(stack);
         if (d != null) {
             for (int i = 0; i < d.affixes().size(); i++) {
                 GradeData.Rolled r = d.affixes().get(i);
@@ -70,6 +70,17 @@ public final class Marks {
                 }
             }
         }
+        Unique unique = Grading.isUnappraised(stack) ? null : Grading.uniqueOf(stack);
+        if (unique != null) {
+            Equipment.Applied ap = Equipment.applied(unique, stack);
+            if (ap != null) {
+                for (Affix.Mod m : unique.section(ap.section())) {
+                    m.attribute().ifPresent(attr -> emit(out, attr, "unique/" + m.name() + ap.idSuffix(),
+                            m.min(), m.operation(), ap.slot(), Origin.UNIQUE, unique.name(), m.min(), m.max(), -1));
+                }
+            }
+        }
+
         for (com.kragnoth.hallmarked.inlay.Inlay inlay : com.kragnoth.hallmarked.inlay.Inlays.on(stack)) {
             emitInlay(out, stack, inlay, "inlay/", -1);
         }

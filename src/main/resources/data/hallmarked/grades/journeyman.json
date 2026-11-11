@@ -21,5 +21,6 @@
     "loot": 36,
     "mob": 30
   },
-  "inlay_slots": 1
+  "inlay_slots": 1,
+  "salvage": 2
 }

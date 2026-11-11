@@ -1,0 +1,26 @@
+{
+  "name": "hallmarked.unique.quiet_charm",
+  "lore": "hallmarked.unique.quiet_charm.lore",
+  "items": {
+    "item": "hallmarked:emerald_amulet"
+  },
+  "chance": {
+    "loot": 0.02
+  },
+  "bauble": {
+    "modifiers": [
+      {
+        "name": "quiet_charm_luck",
+        "attribute": "minecraft:generic.luck",
+        "operation": "addition",
+        "value": 1.0
+      },
+      {
+        "name": "quiet_charm_resist",
+        "attribute": "hallmarked:damage_resistance",
+        "operation": "multiply_total",
+        "value": 0.03
+      }
+    ]
+  }
+}

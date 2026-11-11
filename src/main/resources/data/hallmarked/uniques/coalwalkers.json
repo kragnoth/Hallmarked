@@ -1,0 +1,33 @@
+{
+  "name": "hallmarked.unique.coalwalkers",
+  "lore": "hallmarked.unique.coalwalkers.lore",
+  "items": {
+    "item": "minecraft:iron_boots"
+  },
+  "chance": {
+    "loot": 0.01,
+    "mob": 0.002
+  },
+  "boots": {
+    "modifiers": [
+      {
+        "name": "coalwalker_burning",
+        "attribute": "minecraft:generic.burning_time",
+        "operation": "multiply_base",
+        "value": -0.5
+      },
+      {
+        "name": "coalwalker_fall",
+        "attribute": "minecraft:generic.safe_fall_distance",
+        "operation": "addition",
+        "value": 3
+      },
+      {
+        "name": "coalwalker_speed",
+        "attribute": "minecraft:generic.movement_speed",
+        "operation": "multiply_total",
+        "value": 0.05
+      }
+    ]
+  }
+}

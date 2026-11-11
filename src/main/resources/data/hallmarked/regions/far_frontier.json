@@ -1,0 +1,9 @@
+{
+  "name": "hallmarked.region.far_frontier",
+  "dimension": "minecraft:overworld",
+  "min_distance": 10000,
+  "luck": 0.75,
+  "grade_multipliers": {
+    "hallmarked.grade.gearwrought": 1.5
+  }
+}

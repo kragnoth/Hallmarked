@@ -1,0 +1,34 @@
+{
+  "name": "hallmarked.grade.unique",
+  "color": "light_purple",
+  "rank": 5,
+  "affixes": {
+    "min": 0,
+    "max": 0
+  },
+  "max_prefixes": 0,
+  "max_suffixes": 0,
+  "flaws": 0,
+  "roll": {
+    "min": 1.0,
+    "max": 1.0
+  },
+  "titled": false,
+  "hidden": false,
+  "luck_scaling": 0.0,
+  "weights": {
+    "crafted": 0,
+    "loot": 0,
+    "mob": 0
+  },
+  "inlay_slots": 1,
+  "salvage": 6,
+  "appraise": true,
+  "beam": true,
+  "champion": true,
+  "announce": {
+    "sound": "minecraft:ui.toast.challenge_complete",
+    "pitch": 0.8,
+    "scope": "server"
+  }
+}

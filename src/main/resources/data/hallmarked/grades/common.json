@@ -22,5 +22,6 @@
     "mob": 45
   },
   "inlay_slots": 2,
-  "inlay_tint": "#C87533"
+  "inlay_tint": "#C87533",
+  "salvage": 1
 }

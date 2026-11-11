@@ -11,7 +11,7 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 /** Server -> client: qualities, grades and affixes (as JSON) so tooltips and item modifiers match the server. */
-public record SyncQualitiesPayload(List<String> qualities, List<String> grades, List<String> affixes, List<String> fusions, List<String> inlays) implements CustomPacketPayload {
+public record SyncQualitiesPayload(List<String> qualities, List<String> grades, List<String> affixes, List<String> fusions, List<String> inlays, List<String> uniques) implements CustomPacketPayload {
     public static final Type<SyncQualitiesPayload> TYPE = new Type<>(Hallmarked.id("sync_data"));
     private static final StreamCodec<io.netty.buffer.ByteBuf, List<String>> STRINGS = ByteBufCodecs.stringUtf8(1 << 20).apply(ByteBufCodecs.list()); // NeoForge splits oversized packets
     public static final StreamCodec<FriendlyByteBuf, SyncQualitiesPayload> CODEC = StreamCodec.composite(
@@ -20,11 +20,12 @@ public record SyncQualitiesPayload(List<String> qualities, List<String> grades, 
             STRINGS, SyncQualitiesPayload::affixes,
             STRINGS, SyncQualitiesPayload::fusions,
             STRINGS, SyncQualitiesPayload::inlays,
+            STRINGS, SyncQualitiesPayload::uniques,
             SyncQualitiesPayload::new);
 
     public static SyncQualitiesPayload snapshot() {
         return new SyncQualitiesPayload(Qualities.toWire(), Grading.GRADES.toWire(), Grading.AFFIXES.toWire(), Grading.FUSIONS.toWire(),
-                com.kragnoth.hallmarked.inlay.Inlays.STORE.toWire());
+                com.kragnoth.hallmarked.inlay.Inlays.STORE.toWire(), Grading.UNIQUES.toWire());
     }
 
     @Override
@@ -42,6 +43,7 @@ public record SyncQualitiesPayload(List<String> qualities, List<String> grades, 
             Grading.AFFIXES.fromWire(msg.affixes());
             Grading.FUSIONS.fromWire(msg.fusions());
             com.kragnoth.hallmarked.inlay.Inlays.STORE.fromWire(msg.inlays());
+            Grading.UNIQUES.fromWire(msg.uniques());
         });
     }
 }

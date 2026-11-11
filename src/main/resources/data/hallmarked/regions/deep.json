@@ -1,0 +1,6 @@
+{
+  "name": "hallmarked.region.deep",
+  "dimension": "minecraft:overworld",
+  "max_y": 0,
+  "luck": 0.5
+}

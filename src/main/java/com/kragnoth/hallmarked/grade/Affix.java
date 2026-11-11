@@ -31,7 +31,8 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 public record Affix(String name, Type type, int weight, String group, Map<Category, List<Mod>> sections, JsonObject source)
         implements Sectioned {
 
-    public enum Type { PREFIX, SUFFIX, FLAW }
+    /** FORBIDDEN affixes never roll normally; only the Ashen Altar grants them. */
+    public enum Type { PREFIX, SUFFIX, FLAW, FORBIDDEN }
 
     public record Mod(String name, ResourceLocation attributeId, AttributeModifier.Operation operation, double min, double max) {
         public double value(float roll) {

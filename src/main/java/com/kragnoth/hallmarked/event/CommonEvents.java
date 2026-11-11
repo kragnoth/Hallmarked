@@ -48,6 +48,9 @@ public final class CommonEvents {
         event.addListener(Grading.AFFIXES.loader());
         event.addListener(Grading.FUSIONS.loader());
         event.addListener(com.kragnoth.hallmarked.inlay.Inlays.STORE.loader());
+        event.addListener(Grading.UNIQUES.loader());
+        event.addListener(Grading.REGIONS.loader());
+        event.addListener(com.kragnoth.hallmarked.tempering.Tempering.OUTCOMES.loader());
         event.addListener(new com.kragnoth.hallmarked.grade.TitleWords.Loader());
     }
 

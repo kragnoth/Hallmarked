@@ -1,0 +1,23 @@
+{
+  "name": "hallmarked.affix.grave_touched",
+  "type": "forbidden",
+  "weight": 10,
+  "bauble": {
+    "modifiers": [
+      {
+        "name": "grave_touched_resist",
+        "attribute": "hallmarked:damage_resistance",
+        "operation": "multiply_total",
+        "min": 0.04,
+        "max": 0.06
+      },
+      {
+        "name": "grave_touched_luck",
+        "attribute": "minecraft:generic.luck",
+        "operation": "addition",
+        "min": -0.5,
+        "max": -0.5
+      }
+    ]
+  }
+}

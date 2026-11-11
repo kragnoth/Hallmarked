@@ -137,6 +137,26 @@ final class ItemCommands {
                 }));
     }
 
+    private static final SuggestionProvider<CommandSourceStack> UNIQUES = (c, b) ->
+            SharedSuggestionProvider.suggest(Grading.UNIQUES.all().stream().map(u -> shortId(u.name())), b);
+
+    static LiteralArgumentBuilder<CommandSourceStack> unique() {
+        return Commands.literal("unique").then(Commands.literal("set")
+                .then(Commands.argument("unique", StringArgumentType.word()).suggests(UNIQUES).executes(c -> {
+                    String arg = StringArgumentType.getString(c, "unique");
+                    var u = Grading.UNIQUES.get(arg);
+                    if (u == null) u = Grading.UNIQUES.get("hallmarked.unique." + arg);
+                    Grade g = Grading.GRADES.get(Grading.UNIQUE_GRADE);
+                    if (u == null || g == null) return fail(c, "Unknown unique (or the unique grade is disabled)");
+                    ItemStack s = held(c);
+                    s.set(HMRegistries.UNIQUE.get(), u.name());
+                    s.set(HMRegistries.GRADE.get(), new GradeData(g.name(), List.of(), "", ""));
+                    s.remove(HMRegistries.UNAPPRAISED.get());
+                    Grading.refreshName(s);
+                    return ok(c, "Made unique " + u.name());
+                })));
+    }
+
     static LiteralArgumentBuilder<CommandSourceStack> affix() {
         return Commands.literal("affix")
                 .then(Commands.literal("add")

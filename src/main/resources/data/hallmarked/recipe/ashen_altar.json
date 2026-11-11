@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "pattern": [
+    "c c",
+    "bob",
+    "bbb"
+  ],
+  "key": {
+    "c": {
+      "tag": "minecraft:candles"
+    },
+    "o": {
+      "item": "minecraft:crying_obsidian"
+    },
+    "b": {
+      "item": "minecraft:polished_blackstone"
+    }
+  },
+  "result": {
+    "id": "hallmarked:ashen_altar",
+    "count": 1
+  }
+}

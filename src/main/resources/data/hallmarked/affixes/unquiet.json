@@ -1,0 +1,23 @@
+{
+  "name": "hallmarked.affix.unquiet",
+  "type": "forbidden",
+  "weight": 10,
+  "shield": {
+    "modifiers": [
+      {
+        "name": "unquiet_health",
+        "attribute": "minecraft:generic.max_health",
+        "operation": "addition",
+        "min": 4,
+        "max": 6
+      },
+      {
+        "name": "unquiet_slow",
+        "attribute": "minecraft:generic.movement_speed",
+        "operation": "multiply_total",
+        "min": -0.05,
+        "max": -0.05
+      }
+    ]
+  }
+}

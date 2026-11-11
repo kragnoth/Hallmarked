@@ -1,0 +1,6 @@
+{
+  "name": "hallmarked.region.frontier",
+  "dimension": "minecraft:overworld",
+  "min_distance": 3000,
+  "luck": 0.75
+}

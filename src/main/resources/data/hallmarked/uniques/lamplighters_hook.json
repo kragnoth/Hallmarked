@@ -1,0 +1,30 @@
+{
+  "name": "hallmarked.unique.lamplighters_hook",
+  "lore": "hallmarked.unique.lamplighters_hook.lore",
+  "items": {
+    "item": "minecraft:iron_sword"
+  },
+  "chance": {
+    "loot": 0.01,
+    "mob": 0.002
+  },
+  "tool": {
+    "modifiers": [
+      {
+        "name": "lamplighter_damage",
+        "attribute": "minecraft:generic.attack_damage",
+        "operation": "multiply_total",
+        "value": 0.12
+      },
+      {
+        "name": "lamplighter_reach",
+        "attribute": "minecraft:player.entity_interaction_range",
+        "operation": "addition",
+        "value": 0.75
+      }
+    ]
+  },
+  "enchantments": {
+    "minecraft:looting": 1
+  }
+}

@@ -60,6 +60,10 @@ public final class ClientEvents {
         @SubscribeEvent(priority = EventPriority.LOW)
         public static void tooltip(ItemTooltipEvent e) {
             ItemStack stack = e.getItemStack();
+            if (stack.is(HMRegistries.SMITHS_SCRAP.get())) {
+                e.getToolTip().add(Component.translatable("tooltip.hallmarked.scrap").withStyle(ChatFormatting.GRAY));
+                return;
+            }
             if (stack.is(HMRegistries.SMITHS_STAMP.get())) {
                 e.getToolTip().add(Component.translatable("tooltip.hallmarked.stamp").withStyle(ChatFormatting.GRAY));
                 return;
@@ -97,7 +101,22 @@ public final class ClientEvents {
             if (grade != null && !grade.hidden()) {
                 block.add(Component.empty());
                 block.add(Component.translatable(grade.name()).withStyle(grade.color()));
-                addLines(block, entries, Marks.Origin.AFFIX, advanced, Grading.fusions(Grading.dataOf(stack)));
+                if (stack.getOrDefault(HMRegistries.TEMPERED.get(), false)) {
+                    block.add(Component.translatable("tooltip.hallmarked.tempered").withStyle(ChatFormatting.DARK_RED));
+                }
+                if (Grading.isUnappraised(stack)) {
+                    block.add(Component.translatable("tooltip.hallmarked.unappraised").withStyle(ChatFormatting.DARK_GRAY, ChatFormatting.ITALIC));
+                } else if (Grading.uniqueOf(stack) != null) {
+                    var u = Grading.uniqueOf(stack);
+                    if (u.lore() != null) block.add(Component.translatable(u.lore()).withStyle(ChatFormatting.DARK_PURPLE, ChatFormatting.ITALIC));
+                    addLines(block, entries, Marks.Origin.UNIQUE, advanced, List.of());
+                    for (var ench : u.enchantments().entrySet()) {
+                        block.add(Component.literal(" ").append(Component.translatable("tooltip.hallmarked.inlay_enchant", ench.getValue(), enchantmentName(ench.getKey())))
+                                .withStyle(ChatFormatting.BLUE));
+                    }
+                } else {
+                    addLines(block, entries, Marks.Origin.AFFIX, advanced, Grading.fusions(Grading.dataOf(stack)));
+                }
             }
 
             // Inlay block
@@ -116,7 +135,7 @@ public final class ClientEvents {
             boolean advanced = e.getFlags().isAdvanced();
             List<Component> tip = e.getToolTip();
             // Titled items show their base item under the title, Diablo-style.
-            if (grade != null && grade.titled() && !tip.isEmpty()) {
+            if (grade != null && (grade.titled() || Grading.uniqueOf(stack) != null) && !Grading.isUnappraised(stack) && !tip.isEmpty()) {
                 tip.add(1, Grading.baseName(stack).copy().withStyle(ChatFormatting.GRAY));
             }
 
@@ -141,7 +160,12 @@ public final class ClientEvents {
             }
             if (grade != null && !grade.hidden()) {
                 MutableComponent line = Component.translatable(grade.name()).withStyle(grade.color());
-                List<Component> names = affixNames(stack);
+                if (stack.getOrDefault(HMRegistries.TEMPERED.get(), false)) {
+                    line.append(Component.literal(" ").append(Component.translatable("tooltip.hallmarked.tempered.short")).withStyle(ChatFormatting.DARK_RED));
+                }
+                List<Component> names = Grading.isUnappraised(stack)
+                        ? List.of(Component.translatable("tooltip.hallmarked.unappraised.short").withStyle(ChatFormatting.DARK_GRAY, ChatFormatting.ITALIC))
+                        : affixNames(stack);
                 if (!names.isEmpty()) {
                     line.append(Component.literal(": ").withStyle(ChatFormatting.DARK_GRAY));
                     for (int i = 0; i < names.size(); i++) {
@@ -182,8 +206,11 @@ public final class ClientEvents {
                 }
                 var a = Grading.AFFIXES.get(d.affixes().get(i).affix());
                 if (a == null) continue;
-                out.add(Component.translatable(a.name()).withStyle(a.type() == com.kragnoth.hallmarked.grade.Affix.Type.FLAW
-                        ? ChatFormatting.RED : ChatFormatting.GRAY));
+                out.add(Component.translatable(a.name()).withStyle(switch (a.type()) {
+                    case FLAW -> ChatFormatting.RED;
+                    case FORBIDDEN -> ChatFormatting.DARK_PURPLE;
+                    default -> ChatFormatting.GRAY;
+                }));
             }
             return out;
         }

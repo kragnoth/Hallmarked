@@ -64,8 +64,15 @@ public class AssayAnvilMenu extends AbstractContainerMenu {
         addDataSlots(data);
     }
 
+    public static final int ACTION_NONE = 0, ACTION_REFORGE = 1, ACTION_APPRAISE = 2;
+
+    /** What the hammer will do: server-computed, synced through the data slot. */
+    public int action() {
+        return data.get(0);
+    }
+
     public boolean canReforge() {
-        return data.get(0) == 1;
+        return action() != ACTION_NONE;
     }
 
     public ItemStack equipment() {
@@ -76,7 +83,9 @@ public class AssayAnvilMenu extends AbstractContainerMenu {
     public void broadcastChanges() {
         // Recompute availability on the server before syncing it to the client.
         if (!level.isClientSide) {
-            data.set(0, Reforging.canReforge(level, items.getStackInSlot(0), items.getStackInSlot(1)) ? 1 : 0);
+            ItemStack eq = items.getStackInSlot(0);
+            data.set(0, com.kragnoth.hallmarked.grade.Grading.isUnappraised(eq) ? ACTION_APPRAISE
+                    : Reforging.canReforge(level, eq, items.getStackInSlot(1)) ? ACTION_REFORGE : ACTION_NONE);
         }
         super.broadcastChanges();
     }
@@ -86,6 +95,16 @@ public class AssayAnvilMenu extends AbstractContainerMenu {
         access.execute((level, p) -> {
             ItemStack equip = items.getStackInSlot(0);
             ItemStack mat = items.getStackInSlot(1);
+            if (com.kragnoth.hallmarked.grade.Grading.isUnappraised(equip)) {
+                // Appraisal is free: the anvil reads the marks, it doesn't change them.
+                ItemStack revealed = equip.copy();
+                com.kragnoth.hallmarked.grade.Grading.appraise(revealed,
+                        player instanceof net.minecraft.server.level.ServerPlayer sp ? sp : null);
+                setEquipment(revealed);
+                level.playSound(null, p, SoundEvents.AMETHYST_BLOCK_RESONATE, SoundSource.BLOCKS, 1.0F, 0.8F);
+                broadcastChanges();
+                return;
+            }
             int cost = Reforging.materialCost(level, equip, mat);
             if (cost <= 0 || mat.getCount() < cost) return;
 

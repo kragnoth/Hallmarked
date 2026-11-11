@@ -1,0 +1,36 @@
+{
+  "name": "hallmarked.unique.gearwrights_apron",
+  "lore": "hallmarked.unique.gearwrights_apron.lore",
+  "items": {
+    "item": "minecraft:leather_chestplate"
+  },
+  "chance": {
+    "loot": 0.01,
+    "mob": 0.002
+  },
+  "chestplate": {
+    "modifiers": [
+      {
+        "name": "apron_armor",
+        "attribute": "minecraft:generic.armor",
+        "operation": "addition",
+        "value": 3
+      },
+      {
+        "name": "apron_toughness",
+        "attribute": "minecraft:generic.armor_toughness",
+        "operation": "addition",
+        "value": 1
+      },
+      {
+        "name": "apron_health",
+        "attribute": "minecraft:generic.max_health",
+        "operation": "addition",
+        "value": 4
+      }
+    ]
+  },
+  "enchantments": {
+    "minecraft:unbreaking": 2
+  }
+}
