@@ -56,7 +56,8 @@ public final class HallmarkedCommands {
                 .then(TestCommands.championCommand())
                 .then(TestCommands.oddsCommand())
                 .then(TestCommands.appraiseCommand())
-                .then(TestCommands.dataCommand()));
+                .then(TestCommands.dataCommand())
+                .then(TierCommands.command()));
     }
 
     private static int rebuild(CommandContext<CommandSourceStack> ctx, Target target) {

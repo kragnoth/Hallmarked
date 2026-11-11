@@ -137,5 +137,6 @@ Resulting loot odds (Luck 0, no region):
 
 Caps apply to loot, mob gear and crafted gear alike. They don't apply to uniques, to forced grades in the test commands
 (`grade=...`), or to the Ashen Altar: tempering is how a crude piece is pushed past what its material allows.
-`/hallmarked odds [source] [luck] [table]` shows the capped odds for the held item.
+`/hallmarked odds [source] [luck] [table]` shows the capped odds for the held item, and `/hallmarked tiers export` lists
+modded gear with no tier and writes a suggested datapack for it (see [TESTING.md](TESTING.md)).
 
