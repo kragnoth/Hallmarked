@@ -4,11 +4,9 @@
     "#hallmarked:tier/plain"
   ],
   "tool_tiers": [
-    "stone",
-    "gold"
+    "stone"
   ],
   "armor_materials": [
-    "minecraft:gold",
     "minecraft:chainmail"
   ],
   "max_grade": "hallmarked.grade.journeyman",

@@ -570,6 +570,11 @@ final class TestCommands {
                     .append(cap.maxRoll() < 1f ? String.format(", affix rolls up to %.2f", cap.maxRoll()) : "")
                     .append(cap.shift() > 0 ? " (raised " + cap.shift() + " by this table)" : ""), false);
         }
+        var itemTier = com.kragnoth.hallmarked.tier.ItemTier.of(probe);
+        if (itemTier != null && (itemTier.luck() != 0 || itemTier.rollBonus() > 0)) {
+            c.getSource().sendSuccess(() -> Component.literal(String.format("  Tier %s: luck %+.1f, affix rolls %.0f%% closer to best",
+                    shortId(itemTier.name()), itemTier.luck(), itemTier.rollBonus() * 100)), false);
+        }
         if (table != null) {
             var eff = com.kragnoth.hallmarked.tier.LootOdds.forTable(table);
             c.getSource().sendSuccess(() -> Component.literal(String.format("  Table %s: luck %+.1f, cap shift %d", table, eff.luck(), eff.capShift())), false);

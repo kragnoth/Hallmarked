@@ -120,6 +120,8 @@ public final class Grading {
             r.gradeMultipliers().forEach((k, v) -> regionMult.merge(k, v, (a, b) -> a * b));
         }
         luck += com.kragnoth.hallmarked.tier.LootOdds.forTable(ctx.table()).luck();
+        var itemTier = com.kragnoth.hallmarked.tier.ItemTier.of(stack);
+        if (itemTier != null) luck += itemTier.luck();
         Map<Grade, Double> base = new LinkedHashMap<>();
         for (Grade g : grades) {
             double mult = Math.max(0.1, 1.0 + luck * factor * g.luckScaling());
@@ -223,7 +225,13 @@ public final class Grading {
                 rollCap = cap.maxRoll();
             }
         }
-        GradeData rolled = unique != null ? new GradeData(g.name(), List.of(), "", "") : capRolls(rollData(stack, g, random), rollCap);
+        float rollBonus = 0f;
+        if (unique == null) {
+            var tier = com.kragnoth.hallmarked.tier.ItemTier.of(stack);
+            if (tier != null) rollBonus = tier.rollBonus();
+        }
+        GradeData rolled = unique != null ? new GradeData(g.name(), List.of(), "", "")
+                : capRolls(boostRolls(rollData(stack, g, random), rollBonus), rollCap);
         ItemGradedEvent event = NeoForge.EVENT_BUS.post(new ItemGradedEvent(stack.copy(), source, ctx.player(), ctx.level(), rolled));
         GradeData result = event.getResult() != null ? event.getResult() : rolled; // never leave an item ungraded (would re-roll forever)
         stack.set(HMRegistries.GRADE.get(), result);
@@ -246,7 +254,7 @@ public final class Grading {
     @Nullable
     public static Cap capFor(ItemStack stack, Context ctx) {
         var tier = com.kragnoth.hallmarked.tier.ItemTier.of(stack);
-        if (tier == null) return null;
+        if (tier == null || tier.maxGrade() == null) return null;
         Grade top = findGrade(tier.maxGrade());
         if (top == null) return null;
         int shift = com.kragnoth.hallmarked.tier.LootOdds.forTable(ctx.table()).capShift();
@@ -261,6 +269,18 @@ public final class Grading {
         Grade overflow = findGrade(tier.overflowGrade());
         if (overflow == null || overflow.rank() > best.rank()) overflow = best;
         return new Cap(best, overflow, shift > 0 ? 1f : tier.maxRoll(), tier, shift);
+    }
+
+    /** Moves prefix and suffix rolls (not flaws) {@code bonus} of the way toward 1.0. */
+    private static GradeData boostRolls(GradeData d, float bonus) {
+        if (bonus <= 0f) return d;
+        List<GradeData.Rolled> out = new ArrayList<>();
+        for (GradeData.Rolled r : d.affixes()) {
+            Affix a = AFFIXES.get(r.affix());
+            boolean flaw = a != null && a.type() == Affix.Type.FLAW;
+            out.add(flaw ? r : new GradeData.Rolled(r.affix(), r.roll() + (1f - r.roll()) * bonus));
+        }
+        return new GradeData(d.grade(), out, d.titleFirst(), d.titleSecond());
     }
 
     /** Clamps prefix and suffix rolls (not flaws) to {@code max}. */

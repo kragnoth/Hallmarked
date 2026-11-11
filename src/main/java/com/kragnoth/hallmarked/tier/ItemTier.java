@@ -31,17 +31,20 @@ import net.minecraft.world.item.Tiers;
  * }</pre>
  * An item matches through {@code items} (ids or #tags) first, then, for untagged gear, its vanilla tool tier
  * ({@code wood}, {@code stone}, {@code iron}, {@code gold}, {@code diamond}, {@code netherite}) or armor material id.
+ * {@code max_grade} is optional (no cap). {@code luck} adds to grade rolls; {@code roll_bonus} moves each affix roll that
+ * fraction of the way toward 1.0 (gold takes a mark best, as it takes enchantments best).
  * The first match by priority (high first) wins. Gear in no tier is uncapped. A roll above {@code max_grade} becomes
  * {@code overflow_grade} (Common by default), so a better material always means better odds.
  */
 public record ItemTier(String name, List<String> items, Set<String> toolTiers, Set<ResourceLocation> armorMaterials,
-                       String maxGrade, float maxRoll, String overflowGrade, Set<String> blockedQualities, int priority, JsonObject source) {
+                       @Nullable String maxGrade, float maxRoll, String overflowGrade, Set<String> blockedQualities,
+                       double luck, float rollBonus, int priority, JsonObject source) {
 
     public static final DataStore<ItemTier> STORE = new DataStore<>("item_tiers", ItemTier::parse, ItemTier::name, ItemTier::source);
 
     public static ItemTier parse(ResourceLocation id, JsonObject json) {
         Strict.warnUnknownKeys(id, json, Set.of("name", "items", "tool_tiers", "armor_materials", "max_grade", "max_roll",
-                "overflow_grade", "blocked_qualities", "priority"), "Item tier");
+                "overflow_grade", "blocked_qualities", "luck", "roll_bonus", "priority"), "Item tier");
         String name = GsonHelper.getAsString(json, "name", id.toString());
         List<String> items = new ArrayList<>();
         for (JsonElement e : GsonHelper.getAsJsonArray(json, "items", new com.google.gson.JsonArray())) items.add(e.getAsString());
@@ -53,13 +56,14 @@ public record ItemTier(String name, List<String> items, Set<String> toolTiers, S
             armor.add(ResourceLocation.parse(e.getAsString()));
         Set<String> blocked = new java.util.HashSet<>();
         for (JsonElement e : GsonHelper.getAsJsonArray(json, "blocked_qualities", new com.google.gson.JsonArray())) blocked.add(e.getAsString());
-        String maxGrade = GsonHelper.getAsString(json, "max_grade");
+        String maxGrade = json.has("max_grade") ? GsonHelper.getAsString(json, "max_grade") : null;
         float maxRoll = Math.max(0f, Math.min(1f, GsonHelper.getAsFloat(json, "max_roll", 1f)));
         JsonObject source = json.deepCopy();
         source.addProperty("name", name);
         return new ItemTier(name, List.copyOf(items), Set.copyOf(toolTiers), Set.copyOf(armor), maxGrade, maxRoll,
                 GsonHelper.getAsString(json, "overflow_grade", "hallmarked.grade.common"),
-                Set.copyOf(blocked), GsonHelper.getAsInt(json, "priority", 0), source);
+                Set.copyOf(blocked), Math.max(-10, Math.min(10, GsonHelper.getAsDouble(json, "luck", 0))),
+                Math.max(0f, Math.min(1f, GsonHelper.getAsFloat(json, "roll_bonus", 0f))), GsonHelper.getAsInt(json, "priority", 0), source);
     }
 
     public boolean matches(ItemStack stack) {

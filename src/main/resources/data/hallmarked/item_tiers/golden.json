@@ -1,0 +1,15 @@
+{
+  "name": "hallmarked.tier.golden",
+  "items": [
+    "#hallmarked:tier/golden"
+  ],
+  "tool_tiers": [
+    "gold"
+  ],
+  "armor_materials": [
+    "minecraft:gold"
+  ],
+  "luck": 1.0,
+  "roll_bonus": 0.2,
+  "priority": 1
+}

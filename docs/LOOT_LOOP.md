@@ -89,8 +89,13 @@ Two server-side data types shape how good a drop can be.
 | Tier | Default items | Highest grade | Affix rolls up to | Blocked qualities |
 |---|---|---|---|---|
 | Crude | wooden tools, leather armor | Journeyman | 0.4 | Ascended, Divine, Mythic, Legendary |
-| Plain | stone and gold tools, gold and chainmail armor | Journeyman | 0.6 | Ascended, Divine |
+| Plain | stone tools, chainmail armor | Journeyman | 0.6 | Ascended, Divine |
+| Golden | gold tools and armor | no cap, +1 luck | rolls 20 % closer to best | none |
 | (none) | iron, diamond, netherite, anything unlisted | no cap | no cap | none |
+
+Gold takes a mark best, as it takes enchantments best: its grade rolls get +1 luck and every affix roll moves 20 % of the
+way toward its maximum (`luck` and `roll_bonus`), traded against gold's poor durability. Any tier can use those two keys,
+and `max_grade` is optional.
 
 A roll above the cap becomes the tier's `overflow_grade` (Common by default), so better materials always roll better.
 Items match by `items` (ids or `#tags`; `#hallmarked:tier/crude` and `#hallmarked:tier/plain` start empty for modded
@@ -121,10 +126,13 @@ Resulting loot odds (Luck 0, no region):
 | Chest | Gear | Shoddy | Common | Journeyman | Masterwork | Gearwrought |
 |---|---|---|---|---|---|---|
 | village | crude / plain | 10 % | 57 % | 33 % | 0 | 0 |
+| village | gold | 8 % | 41 % | 35 % | 15 % | 1.9 % |
 | village | iron and up | 10 % | 47 % | 33 % | 10 % | 0.4 % |
 | other | crude / plain | 6 % | 58 % | 36 % | 0 | 0 |
+| other | gold | 5 % | 32 % | 37 % | 22 % | 3.9 % |
 | other | iron and up | 6 % | 36 % | 36 % | 19 % | 3 % |
 | ancient city | crude / plain | 5 % | 36 % | 37 % | 22 % | 0 |
+| ancient city | gold | 3 % | 29 % | 38 % | 25 % | 4.6 % |
 | ancient city | iron and up | 5 % | 32 % | 37 % | 22 % | 4 % |
 
 Caps apply to loot, mob gear and crafted gear alike. They don't apply to uniques, to forced grades in the test commands
