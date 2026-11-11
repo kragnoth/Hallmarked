@@ -61,6 +61,9 @@ public record GradedIngredient(Ingredient items, Optional<String> minGrade, Opti
             int rank = rankOf(stack);
             Grade min = minGrade.map(Grading::findGrade).orElse(null);
             Grade max = maxGrade.map(Grading::findGrade).orElse(null);
+            // Fail closed if a named grade isn't loaded (typo, or client before data sync).
+            if (minGrade.isPresent() && min == null) return false;
+            if (maxGrade.isPresent() && max == null) return false;
             if (min != null && rank < min.rank()) return false;
             if (max != null && rank > max.rank()) return false;
         }
@@ -77,14 +80,19 @@ public record GradedIngredient(Ingredient items, Optional<String> minGrade, Opti
     /** Display stacks are stamped with the minimum grade/quality so JEI shows what's required. */
     @Override
     public Stream<ItemStack> getItems() {
-        @Nullable Grade min = minGrade.map(Grading::findGrade).orElse(null);
+        // Stamped by name, not by lookup: NeoForge caches these, possibly before grade data has loaded.
+        @Nullable String min = minGrade.map(GradedIngredient::fullGradeName).orElse(null);
         List<ItemStack> base = List.of(items.getItems());
         return base.stream().map(s -> {
             ItemStack c = s.copy();
-            if (min != null) c.set(HMRegistries.GRADE.get(), new GradeData(min.name(), List.of(), "", ""));
+            if (min != null) c.set(HMRegistries.GRADE.get(), new GradeData(min, List.of(), "", ""));
             quality.ifPresent(q -> c.set(HMRegistries.QUALITY.get(), Quality.normalizeName(q)));
             return c;
         });
+    }
+
+    private static String fullGradeName(String nameOrId) {
+        return nameOrId.contains(".") ? nameOrId : "hallmarked.grade." + nameOrId;
     }
 
     @Override

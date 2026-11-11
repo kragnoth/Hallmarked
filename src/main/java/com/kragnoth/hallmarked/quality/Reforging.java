@@ -1,6 +1,5 @@
 package com.kragnoth.hallmarked.quality;
 
-import com.kragnoth.hallmarked.config.HallmarkedConfig;
 import com.kragnoth.hallmarked.recipe.ReforgeMaterialRecipe;
 import com.kragnoth.hallmarked.registry.HMRegistries;
 import java.util.ArrayList;
@@ -24,12 +23,9 @@ public final class Reforging {
         return Qualities.get(stack.get(HMRegistries.QUALITY.get()));
     }
 
+    /** Excluded via the {@code hallmarked:equipment/excluded} tag (synced, so client and server always agree). */
     public static boolean isBlacklisted(ItemStack stack) {
-        String id = BuiltInRegistries.ITEM.getKey(stack.getItem()).toString();
-        for (String s : HallmarkedConfig.BLACKLIST.get()) {
-            if (s.trim().equals(id)) return true;
-        }
-        return false;
+        return stack.is(Equipment.EXCLUDED);
     }
 
     /** Every quality that could be rolled for this item, honouring the armor pooling rules. */
@@ -54,10 +50,10 @@ public final class Reforging {
     @Nullable
     public static Quality roll(ItemStack stack, RandomSource random) {
         List<Quality> pool = pool(stack);
-        int total = 0;
+        long total = 0;
         for (Quality q : pool) total += q.weight();
         if (total <= 0) return null;
-        int pick = random.nextInt(total);
+        long pick = (long) (random.nextDouble() * total);
         for (Quality q : pool) {
             pick -= q.weight();
             if (pick < 0) return q;

@@ -101,10 +101,10 @@ public final class ClientEvents {
         private static void addLines(List<Component> block, List<Marks.Entry> all, Marks.Origin origin, boolean advanced,
                                      List<Grading.Fused> fused) {
             List<Marks.Entry> list = new ArrayList<>();
-            for (Marks.Entry en : all) if (en.origin() == origin) list.add(en);
+            for (Marks.Entry en : all) if (en.origin() == origin && !en.shadow()) list.add(en);
             if (list.isEmpty()) return;
 
-            EquipmentSlotGroup slot = list.get(0).slot();
+            EquipmentSlotGroup slot = list.get(0).displaySlot();
             Component heading = slot == null
                     ? Component.translatable("tooltip.hallmarked.bauble")
                     : Component.translatable("item.modifiers." + slot.getSerializedName());

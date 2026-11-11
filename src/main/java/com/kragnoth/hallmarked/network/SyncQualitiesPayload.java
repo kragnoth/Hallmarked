@@ -13,7 +13,7 @@ import net.neoforged.neoforge.network.handling.IPayloadContext;
 /** Server -> client: qualities, grades and affixes (as JSON) so tooltips and item modifiers match the server. */
 public record SyncQualitiesPayload(List<String> qualities, List<String> grades, List<String> affixes, List<String> fusions) implements CustomPacketPayload {
     public static final Type<SyncQualitiesPayload> TYPE = new Type<>(Hallmarked.id("sync_data"));
-    private static final StreamCodec<io.netty.buffer.ByteBuf, List<String>> STRINGS = ByteBufCodecs.STRING_UTF8.apply(ByteBufCodecs.list());
+    private static final StreamCodec<io.netty.buffer.ByteBuf, List<String>> STRINGS = ByteBufCodecs.stringUtf8(1 << 20).apply(ByteBufCodecs.list()); // NeoForge splits oversized packets
     public static final StreamCodec<FriendlyByteBuf, SyncQualitiesPayload> CODEC = StreamCodec.composite(
             STRINGS, SyncQualitiesPayload::qualities,
             STRINGS, SyncQualitiesPayload::grades,

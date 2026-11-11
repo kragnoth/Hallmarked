@@ -53,10 +53,23 @@ public final class Equipment {
             "se.mickelus.tetra.items.modular.impl.bow.ModularBowItem");
     private static final String TETRA_SHIELD = "se.mickelus.tetra.items.modular.impl.shield.ModularShieldItem";
 
+    /** Category per item (tags and classes are item-level). Cleared when tags reload. Concurrent: JEI indexes off-thread. */
+    private static final java.util.Map<Item, java.util.Optional<Category>> CACHE = new java.util.concurrent.ConcurrentHashMap<>();
+
+    public static void clearCache() {
+        CACHE.clear();
+    }
+
     /** The broad category of the item, or null if it can't carry marks. Armor pieces resolve to ARMOR. */
     @Nullable
     public static Category categoryOf(ItemStack stack) {
-        if (stack.isEmpty() || stack.is(EXCLUDED)) return null;
+        if (stack.isEmpty()) return null;
+        return CACHE.computeIfAbsent(stack.getItem(), i -> java.util.Optional.ofNullable(compute(stack))).orElse(null);
+    }
+
+    @Nullable
+    private static Category compute(ItemStack stack) {
+        if (stack.is(EXCLUDED)) return null;
         if (CuriosCompat.isCurio(stack)) return Category.BAUBLE;
 
         // 1. Tags

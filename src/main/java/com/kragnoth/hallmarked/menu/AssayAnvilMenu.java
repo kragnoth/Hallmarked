@@ -29,7 +29,7 @@ public class AssayAnvilMenu extends AbstractContainerMenu {
 
     private final ContainerLevelAccess access;
     private final IItemHandler items;
-    /** [0] = 1 when the server says reforging is possible. Server-authoritative because the config is common-side. */
+    /** [0] = 1 when the server says reforging is possible. Server-authoritative: recipes and data decide. */
     private final ContainerData data;
     private final Level level;
 
@@ -92,11 +92,11 @@ public class AssayAnvilMenu extends AbstractContainerMenu {
             Quality rolled = Reforging.roll(equip, level.getRandom());
             if (rolled == null) return;
             ReforgeEvent event = NeoForge.EVENT_BUS.post(new ReforgeEvent(player, equip.copy(), mat.copy(), cost, rolled));
-            if (event.isCanceled() || event.getQuality() == null) return;
+            if (event.isCanceled() || event.getQuality() == null || event.getCost() > mat.getCount()) return;
 
             ItemStack result = equip.copy();
             result.set(HMRegistries.QUALITY.get(), event.getQuality().name());
-            if (event.getCost() > 0) items.extractItem(1, Math.min(event.getCost(), mat.getCount()), false);
+            if (event.getCost() > 0) items.extractItem(1, event.getCost(), false);
             setEquipment(result);
             level.playSound(null, p, SoundEvents.ANVIL_USE, SoundSource.BLOCKS, 1.0F, 1.0F);
             broadcastChanges();
@@ -124,8 +124,9 @@ public class AssayAnvilMenu extends AbstractContainerMenu {
             if (!moveItemStackTo(stack, playerStart, playerEnd, true)) return ItemStack.EMPTY;
         } else {
             // Equipment first (if the slot is empty), otherwise treat it as material.
-            boolean moved = Reforging.isEligible(stack) && moveItemStackTo(stack, 0, 1, false);
-            if (!moved && !moveItemStackTo(stack, 1, 2, false)) {
+            boolean equipment = Reforging.isEligible(stack);
+            boolean moved = equipment ? moveItemStackTo(stack, 0, 1, false) : moveItemStackTo(stack, 1, 2, false);
+            if (!moved) {
                 int hotbarStart = playerEnd - 9;
                 if (index < hotbarStart) {
                     if (!moveItemStackTo(stack, hotbarStart, playerEnd, false)) return ItemStack.EMPTY;

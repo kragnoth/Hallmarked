@@ -68,7 +68,7 @@ public record Quality(String name, ChatFormatting color, int weight, Map<Categor
             if (f != null) color = f;
         }
 
-        int weight = Math.max(0, GsonHelper.getAsInt(json, "weight", 1));
+        int weight = Math.min(1_000_000, Math.max(0, GsonHelper.getAsInt(json, "weight", 1)));
 
         Map<Category, List<Mod>> sections = new EnumMap<>(Category.class);
         for (Category c : Category.values()) {
@@ -80,8 +80,11 @@ public record Quality(String name, ChatFormatting color, int weight, Map<Categor
                 JsonObject m = e.getAsJsonObject();
                 String attr = GsonHelper.getAsString(m, "attribute").toLowerCase(Locale.ROOT);
                 if (attr.startsWith("quality_equipment:")) attr = "hallmarked:" + attr.substring("quality_equipment:".length());
+                String modName = GsonHelper.getAsString(m, "name").toLowerCase(Locale.ROOT);
+                // Modifier names become attribute-modifier ids; reject anything that isn't a valid id path.
+                if (!ResourceLocation.isValidPath(modName)) throw new IllegalArgumentException("invalid modifier name '" + modName + "' (use a-z 0-9 _ - . /)");
                 mods.add(new Mod(
-                        GsonHelper.getAsString(m, "name").toLowerCase(Locale.ROOT),
+                        modName,
                         ResourceLocation.parse(attr),
                         parseOperation(GsonHelper.getAsString(m, "operation", "multiply_total")),
                         GsonHelper.getAsDouble(m, "value")));

@@ -24,15 +24,23 @@ public final class Marks {
     public enum Origin { QUALITY, AFFIX }
 
     /**
-     * @param slot  slot group for item modifiers; null means a bauble (applied to the player while worn)
-     * @param label translation key of the quality or affix this came from
-     * @param min   affix range low end (equal to max for qualities)
-     * @param max   affix range high end
-     * @param index index into the item's rolled affixes (-1 for quality modifiers)
+     * @param slot        slot group the modifier is applied in; null means a bauble (applied to the player while worn)
+     * @param displaySlot slot group shown in the tooltip heading (HAND for bows, which apply in either hand)
+     * @param shadow      a second copy for the other hand; applied, but not listed twice in tooltips
+     * @param label       translation key of the quality or affix this came from
+     * @param min         affix range low end (equal to max for qualities)
+     * @param max         affix range high end
+     * @param index       index into the item's rolled affixes (-1 for quality modifiers)
      */
     public record Entry(Holder<Attribute> attribute, AttributeModifier modifier, @Nullable EquipmentSlotGroup slot,
+                        @Nullable EquipmentSlotGroup displaySlot, boolean shadow,
                         Origin origin, String label, double min, double max, int index) {}
 
+    /**
+     * Modifier ids are qualified by slot group ("hallmarked:keen_attack_damage/mainhand"). Vanilla replaces a modifier
+     * with the same id on the same attribute, so two items sharing a mark (e.g. a bow in each hand) would otherwise
+     * overwrite each other, and unequipping one would strip the other's bonus.
+     */
     public static List<Entry> of(ItemStack stack) {
         List<Entry> out = new ArrayList<>();
 
@@ -41,9 +49,8 @@ public final class Marks {
             Equipment.Applied ap = Equipment.applied(q, stack);
             if (ap != null) {
                 for (Quality.Mod m : q.section(ap.section())) {
-                    m.attribute().ifPresent(attr -> out.add(new Entry(attr,
-                            new AttributeModifier(Hallmarked.id(m.name() + ap.idSuffix()), m.value(), m.operation()),
-                            ap.slot(), Origin.QUALITY, q.name(), m.value(), m.value(), -1)));
+                    m.attribute().ifPresent(attr -> emit(out, attr, m.name() + ap.idSuffix(), m.value(), m.operation(),
+                            ap.slot(), Origin.QUALITY, q.name(), m.value(), m.value(), -1));
                 }
             }
         }
@@ -58,13 +65,27 @@ public final class Marks {
                 if (ap == null) continue;
                 final int idx = i;
                 for (Affix.Mod m : a.section(ap.section())) {
-                    m.attribute().ifPresent(attr -> out.add(new Entry(attr,
-                            new AttributeModifier(Hallmarked.id("affix/" + idx + "/" + m.name() + ap.idSuffix()), m.value(r.roll()), m.operation()),
-                            ap.slot(), Origin.AFFIX, a.name(), m.min(), m.max(), idx)));
+                    m.attribute().ifPresent(attr -> emit(out, attr, "affix/" + idx + "/" + m.name() + ap.idSuffix(),
+                            m.value(r.roll()), m.operation(), ap.slot(), Origin.AFFIX, a.name(), m.min(), m.max(), idx));
                 }
             }
         }
         return out;
+    }
+
+    private static void emit(List<Entry> out, Holder<Attribute> attr, String path, double amount, AttributeModifier.Operation op,
+                             @Nullable EquipmentSlotGroup group, Origin origin, String label, double min, double max, int index) {
+        if (group == null) { // bauble: the player-side sync qualifies the id with the curio slot
+            out.add(new Entry(attr, new AttributeModifier(Hallmarked.id(path), amount, op), null, null, false, origin, label, min, max, index));
+        } else if (group == EquipmentSlotGroup.HAND) {
+            out.add(new Entry(attr, new AttributeModifier(Hallmarked.id(path + "/mainhand"), amount, op),
+                    EquipmentSlotGroup.MAINHAND, EquipmentSlotGroup.HAND, false, origin, label, min, max, index));
+            out.add(new Entry(attr, new AttributeModifier(Hallmarked.id(path + "/offhand"), amount, op),
+                    EquipmentSlotGroup.OFFHAND, EquipmentSlotGroup.HAND, true, origin, label, min, max, index));
+        } else {
+            out.add(new Entry(attr, new AttributeModifier(Hallmarked.id(path + "/" + group.getSerializedName()), amount, op),
+                    group, group, false, origin, label, min, max, index));
+        }
     }
 
     /** True if the stack is worn as a bauble rather than in an equipment slot. */

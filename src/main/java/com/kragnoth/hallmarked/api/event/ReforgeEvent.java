@@ -30,7 +30,7 @@ public class ReforgeEvent extends Event implements ICancellableEvent {
     public ItemStack getEquipment() { return equipment; }
     public ItemStack getMaterial() { return material; }
     public int getCost() { return cost; }
-    /** Materials consumed; clamped to what's in the slot. 0 makes the reforge free. */
+    /** Materials consumed. 0 makes the reforge free; more than the slot holds refuses the reforge. */
     public void setCost(int cost) { this.cost = Math.max(0, cost); }
     public Quality getQuality() { return quality; }
     public void setQuality(Quality quality) { this.quality = quality; }

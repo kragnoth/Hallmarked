@@ -41,6 +41,10 @@ public class GradeLootModifier extends LootModifier {
     @Override
     protected ObjectArrayList<ItemStack> doApply(ObjectArrayList<ItemStack> loot, LootContext ctx) {
         if (!HallmarkedConfig.GRADING.get()) return loot;
+        // Some worldgen code fills containers on worker threads. Don't roll (or post events) off-thread;
+        // those items are graded on pickup instead.
+        var server = ctx.getLevel().getServer();
+        if (server != null && !server.isSameThread()) return loot;
         for (ItemStack stack : loot) {
             if (stack.has(HMRegistries.GRADE.get()) || !Grading.canGrade(stack)) continue;
             Grading.grade(stack, source, ctx.getLuck(), ctx.getRandom(), context(ctx));

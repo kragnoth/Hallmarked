@@ -55,7 +55,7 @@ public record Affix(String name, Type type, int weight, String group, Map<Catego
     public static Affix parse(ResourceLocation id, JsonObject json) {
         String name = GsonHelper.getAsString(json, "name", id.getNamespace() + ".affix." + id.getPath().replace('/', '.'));
         Type type = Type.valueOf(GsonHelper.getAsString(json, "type", "prefix").toUpperCase(Locale.ROOT));
-        int weight = Math.max(0, GsonHelper.getAsInt(json, "weight", 10));
+        int weight = Math.min(1_000_000, Math.max(0, GsonHelper.getAsInt(json, "weight", 10)));
         String group = GsonHelper.getAsString(json, "group", name);
 
         Map<Category, List<Mod>> sections = new EnumMap<>(Category.class);
@@ -72,7 +72,9 @@ public record Affix(String name, Type type, int weight, String group, Map<Catego
                     min = GsonHelper.getAsDouble(m, "min");
                     max = GsonHelper.getAsDouble(m, "max");
                 }
-                mods.add(new Mod(GsonHelper.getAsString(m, "name").toLowerCase(Locale.ROOT),
+                String modName = GsonHelper.getAsString(m, "name").toLowerCase(Locale.ROOT);
+                if (!ResourceLocation.isValidPath(modName)) throw new IllegalArgumentException("invalid modifier name '" + modName + "' (use a-z 0-9 _ - . /)");
+                mods.add(new Mod(modName,
                         ResourceLocation.parse(GsonHelper.getAsString(m, "attribute").toLowerCase(Locale.ROOT)),
                         parseOp(GsonHelper.getAsString(m, "operation", "multiply_total")), min, max));
             }

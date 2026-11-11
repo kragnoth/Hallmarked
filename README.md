@@ -57,8 +57,8 @@ Item tags (`hallmarked:equipment/*`) decide what counts as equipment. To dump ev
 run `/hallmarked defaults rebuild world` (or `kubejs`); it backs up your existing files first.
 
 ## Config
-`config/hallmarked-common.toml` has these options:
-- `Blacklist` (reforge materials are now recipes; see docs/INTEGRATION.md)
+`config/hallmarked-common.toml` has these options. Exclusions use the `hallmarked:equipment/excluded` item tag, and reforge
+materials are recipes; both sync to clients, unlike the config.
 - `AutoReforge`, `AutoReforgeChance`
 - `Grading.Enabled`, `Grading.LuckFactor`
 - `MaxDamageResistance`

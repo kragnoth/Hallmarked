@@ -12,8 +12,8 @@ import com.kragnoth.hallmarked.registry.HMRegistries;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.WeakHashMap;
 import net.minecraft.core.Holder;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.DamageTypeTags;
@@ -28,6 +28,8 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.AddReloadListenerEvent;
 import net.neoforged.neoforge.event.ItemAttributeModifierEvent;
 import net.neoforged.neoforge.event.OnDatapackSyncEvent;
+import net.neoforged.neoforge.event.TagsUpdatedEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
 import net.neoforged.neoforge.event.entity.living.LivingIncomingDamageEvent;
 import net.neoforged.neoforge.event.tick.PlayerTickEvent;
@@ -100,8 +102,8 @@ public final class CommonEvents {
     // ---- Per-player tick: first-seen rolls, legacy migration, names, bauble modifiers ------
 
     private static final int INTERVAL = 10;
-    /** Bauble modifiers currently applied to each player: id -> attribute. Transient, rebuilt on respawn/login. */
-    private static final Map<Player, Map<ResourceLocation, Holder<Attribute>>> APPLIED_BAUBLES = new WeakHashMap<>();
+    /** Last known health, kept in persistent data so bauble max-health isn't lost to the login clamp. */
+    private static final String HEALTH_KEY = "hallmarked_health";
 
     @SubscribeEvent
     public static void onPlayerTick(PlayerTickEvent.Post event) {
@@ -110,6 +112,38 @@ public final class CommonEvents {
 
         scanInventory(player);
         if (Hallmarked.curiosLoaded()) syncBaubles(player);
+        if (player.isAlive()) player.getPersistentData().putFloat(HEALTH_KEY, player.getHealth());
+    }
+
+    /**
+     * Vanilla loads saved health before our (transient) bauble modifiers exist, clamping it to the lower max.
+     * Apply baubles immediately on login, then restore the health the player actually had.
+     */
+    @SubscribeEvent
+    public static void onLogin(PlayerEvent.PlayerLoggedInEvent event) {
+        if (!(event.getEntity() instanceof ServerPlayer player)) return;
+        float capBefore = player.getMaxHealth();
+        boolean clamped = player.getHealth() >= capBefore - 0.01F; // loaded health was cut down to the bauble-less max
+        if (Hallmarked.curiosLoaded()) syncBaubles(player);
+        var data = player.getPersistentData();
+        if (clamped && data.contains(HEALTH_KEY) && player.isAlive()) {
+            float saved = data.getFloat(HEALTH_KEY);
+            if (saved > player.getHealth()) player.setHealth(Math.min(saved, player.getMaxHealth()));
+        }
+    }
+
+    /** Fires before the player file is written, so this is the exact health at logout (no combat-log healing). */
+    @SubscribeEvent
+    public static void onLogout(PlayerEvent.PlayerLoggedOutEvent event) {
+        if (event.getEntity() instanceof ServerPlayer player && player.isAlive()) {
+            player.getPersistentData().putFloat(HEALTH_KEY, player.getHealth());
+        }
+    }
+
+    /** Tags can change on /reload; equipment categories are cached per item. */
+    @SubscribeEvent
+    public static void onTagsUpdated(TagsUpdatedEvent event) {
+        com.kragnoth.hallmarked.quality.Equipment.clearCache();
     }
 
     private static void scanInventory(ServerPlayer player) {
@@ -144,6 +178,13 @@ public final class CommonEvents {
         }
     }
 
+    private static final String BAUBLE_PREFIX = "bauble/";
+
+    /**
+     * Stateless: the player's attributes are the record of what's applied. Every Hallmarked modifier whose id starts
+     * with "bauble/" is compared against what the worn curios want right now; extras are removed, missing or changed
+     * ones are (re)added. Nothing to drift out of step after respawns, crashes or other mods copying attributes.
+     */
     private static void syncBaubles(ServerPlayer player) {
         Map<ResourceLocation, Desired> desired = new HashMap<>();
         List<ItemStack> worn = CuriosCompat.equipped(player);
@@ -154,23 +195,24 @@ public final class CommonEvents {
                     HallmarkedConfig.AUTO_REFORGE_CHANCE.get(), HallmarkedConfig.GRADING.get());
             for (Marks.Entry e : Marks.of(stack)) {
                 if (e.slot() != null) continue;
-                ResourceLocation id = Hallmarked.id("bauble/" + slot + "/" + e.modifier().id().getPath());
+                ResourceLocation id = Hallmarked.id(BAUBLE_PREFIX + slot + "/" + e.modifier().id().getPath());
                 desired.put(id, new Desired(e.attribute(), new AttributeModifier(id, e.modifier().amount(), e.modifier().operation())));
             }
         }
 
-        Map<ResourceLocation, Holder<Attribute>> applied = APPLIED_BAUBLES.computeIfAbsent(player, p -> new HashMap<>());
-
-        var it = applied.entrySet().iterator();
-        while (it.hasNext()) {
-            var e = it.next();
-            Desired d = desired.get(e.getKey());
-            if (d == null || !d.attribute().equals(e.getValue())) {
-                AttributeInstance inst = player.getAttribute(e.getValue());
-                if (inst != null) inst.removeModifier(e.getKey());
-                it.remove();
+        // Remove anything of ours that shouldn't be there (or sits on the wrong attribute).
+        BuiltInRegistries.ATTRIBUTE.holders().forEach(holder -> {
+            AttributeInstance inst = player.getAttribute(holder);
+            if (inst == null) return;
+            for (AttributeModifier mod : List.copyOf(inst.getModifiers())) {
+                ResourceLocation id = mod.id();
+                if (!id.getNamespace().equals(Hallmarked.MODID) || !id.getPath().startsWith(BAUBLE_PREFIX)) continue;
+                Desired d = desired.get(id);
+                if (d == null || !d.attribute().unwrapKey().equals(holder.unwrapKey())) inst.removeModifier(id);
             }
-        }
+        });
+
+        // Add missing or changed.
         for (var e : desired.entrySet()) {
             AttributeInstance inst = player.getAttribute(e.getValue().attribute());
             if (inst == null) continue;
@@ -180,7 +222,6 @@ public final class CommonEvents {
                 if (current != null) inst.removeModifier(e.getKey());
                 inst.addTransientModifier(want);
             }
-            applied.put(e.getKey(), e.getValue().attribute());
         }
         if (player.getHealth() > player.getMaxHealth()) player.setHealth(player.getMaxHealth());
     }

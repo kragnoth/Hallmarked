@@ -42,7 +42,7 @@ public record Grade(String name, ChatFormatting color, int rank, int minAffixes,
         JsonObject roll = GsonHelper.getAsJsonObject(json, "roll", new JsonObject());
         JsonObject w = GsonHelper.getAsJsonObject(json, "weights", new JsonObject());
         Map<String, Double> weights = new HashMap<>();
-        for (var e : w.entrySet()) weights.put(e.getKey(), Math.max(0.0, e.getValue().getAsDouble()));
+        for (var e : w.entrySet()) weights.put(e.getKey(), Math.min(1.0e6, Math.max(0.0, e.getValue().getAsDouble())));
 
         JsonObject source = json.deepCopy();
         source.addProperty("name", name);

@@ -8,7 +8,6 @@ public final class HallmarkedConfig {
 
     public static final ModConfigSpec SPEC;
 
-    public static final ModConfigSpec.ConfigValue<List<? extends String>> BLACKLIST;
     public static final ModConfigSpec.BooleanValue AUTO_REFORGE;
     public static final ModConfigSpec.DoubleValue AUTO_REFORGE_CHANCE;
     public static final ModConfigSpec.DoubleValue MAX_DAMAGE_RESISTANCE;
@@ -18,12 +17,8 @@ public final class HallmarkedConfig {
     static {
         ModConfigSpec.Builder b = new ModConfigSpec.Builder();
 
-        // Reforge materials are recipes now: data/<ns>/recipe/*.json with "type": "hallmarked:reforge_material".
-        b.push("Materials");
-        BLACKLIST = b
-                .comment("Equipment that can never receive a quality (neither at the Assay Anvil nor automatically).")
-                .defineListAllowEmpty("Blacklist", List.of(), () -> "minecraft:stick", o -> o instanceof String);
-        b.pop();
+        // Reforge materials are recipes (type hallmarked:reforge_material) and exclusions are the
+        // hallmarked:equipment/excluded item tag. Both sync to clients, unlike a common config.
 
         b.push("Reforging");
         AUTO_REFORGE = b

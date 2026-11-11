@@ -46,7 +46,7 @@ public final class Grading {
     }
 
     public static boolean canGrade(ItemStack stack) {
-        return !stack.isEmpty() && Equipment.categoryOf(stack) != null && !Reforging.isBlacklisted(stack);
+        return !stack.isEmpty() && Equipment.categoryOf(stack) != null; // excluded tag is checked inside categoryOf
     }
 
     // ---- Grade selection -------------------------------------------------------------------
@@ -74,7 +74,7 @@ public final class Grading {
             base.put(g, g.weight(source) * mult);
         }
         GradeRollEvent event = NeoForge.EVENT_BUS.post(
-                new GradeRollEvent(stack, source, luck, ctx.player(), ctx.level(), ctx.pos(), base));
+                new GradeRollEvent(stack.copy(), source, luck, ctx.player(), ctx.level(), ctx.pos(), base));
         double[] w = new double[grades.size()];
         double total = 0;
         for (int i = 0; i < grades.size(); i++) {
@@ -102,10 +102,10 @@ public final class Grading {
 
     @Nullable
     private static Affix pickFrom(List<Affix> pool, Set<String> usedGroups, RandomSource random) {
-        int total = 0;
+        long total = 0;
         for (Affix a : pool) if (!usedGroups.contains(a.group())) total += a.weight();
         if (total <= 0) return null;
-        int pick = random.nextInt(total);
+        long pick = (long) (random.nextDouble() * total);
         for (Affix a : pool) {
             if (usedGroups.contains(a.group())) continue;
             pick -= a.weight();
@@ -161,8 +161,9 @@ public final class Grading {
         Grade g = pickGrade(stack, source, luck, random, ctx);
         if (g == null) return false;
         GradeData rolled = rollData(stack, g, random);
-        ItemGradedEvent event = NeoForge.EVENT_BUS.post(new ItemGradedEvent(stack, source, ctx.player(), ctx.level(), rolled));
-        stack.set(HMRegistries.GRADE.get(), event.getResult());
+        ItemGradedEvent event = NeoForge.EVENT_BUS.post(new ItemGradedEvent(stack.copy(), source, ctx.player(), ctx.level(), rolled));
+        GradeData result = event.getResult() != null ? event.getResult() : rolled; // never leave an item ungraded (would re-roll forever)
+        stack.set(HMRegistries.GRADE.get(), result);
         refreshName(stack);
         return true;
     }
@@ -243,15 +244,16 @@ public final class Grading {
 
         if (g.titled() && d.titled()) {
             // A fusion's title noun replaces the second word, so the name says what the piece does.
-            Component second = Component.literal(d.titleSecond());
+            // Words are passed as plain Strings, not Component.literal: literal args collapse to strings on save,
+            // so a Component would never compare equal after a reload and the name would be rewritten every scan.
+            Object second = d.titleSecond();
             for (Fused f : fused) {
                 if (f.fusion().title() != null) {
                     second = Component.translatable(f.fusion().title());
                     break;
                 }
             }
-            return Component.translatable("hallmarked.name.title",
-                    Component.literal(d.titleFirst()), second).withStyle(g.color());
+            return Component.translatable("hallmarked.name.title", d.titleFirst(), second).withStyle(g.color());
         }
 
         // Display units in roll order: a fusion stands in for both its parts.
@@ -284,7 +286,17 @@ public final class Grading {
     /** Keeps ITEM_NAME in step with the grade and the current base item (e.g. after a netherite upgrade). */
     public static void refreshName(ItemStack stack) {
         Component want = desiredName(stack);
-        if (want == null) return;
-        if (!want.equals(stack.get(DataComponents.ITEM_NAME))) stack.set(DataComponents.ITEM_NAME, want);
+        Component current = stack.get(DataComponents.ITEM_NAME);
+        if (want == null) {
+            // Grade gone or no longer named (e.g. data changed on /reload): drop a name we generated, keep anyone else's.
+            if (isOurName(current)) stack.set(DataComponents.ITEM_NAME, stack.getItem().components().get(DataComponents.ITEM_NAME));
+            return;
+        }
+        if (!want.equals(current)) stack.set(DataComponents.ITEM_NAME, want);
+    }
+
+    private static boolean isOurName(@Nullable Component c) {
+        return c != null && c.getContents() instanceof net.minecraft.network.chat.contents.TranslatableContents t
+                && t.getKey().startsWith("hallmarked.name.");
     }
 }
