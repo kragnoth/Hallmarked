@@ -21,14 +21,18 @@ import net.minecraft.util.GsonHelper;
  * @param titled      gets a generated two-word title instead of a prefix/suffix name
  * @param hidden      no grade line in the tooltip (used for Common)
  * @param luckScaling how strongly Luck pushes this grade's weight up (negative pushes it down)
- * @param weights     base weight per source ("crafted", "loot")
+ * @param weights     base weight per roll source ("crafted", "loot", or any source a loot modifier names)
  */
 public record Grade(String name, ChatFormatting color, int rank, int minAffixes, int maxAffixes,
                     int maxPrefixes, int maxSuffixes, int flaws, float rollMin, float rollMax,
                     boolean titled, boolean hidden, double luckScaling, Map<String, Double> weights, JsonObject source) {
 
+    /** Weight for a roll source. Custom sources a grade doesn't list fall back to "loot", then "crafted". */
     public double weight(String source) {
-        return weights.getOrDefault(source, weights.getOrDefault("crafted", 0.0));
+        Double w = weights.get(source);
+        if (w == null) w = weights.get("loot");
+        if (w == null) w = weights.get("crafted");
+        return w == null ? 0.0 : w;
     }
 
     public static Grade parse(ResourceLocation id, JsonObject json) {

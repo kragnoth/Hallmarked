@@ -67,13 +67,21 @@ public final class DataStore<T> {
                         .comparing((Map.Entry<ResourceLocation, JsonElement> e) -> !e.getKey().getNamespace().equals(Hallmarked.MODID))
                         .thenComparing(e -> e.getKey().toString()));
                 List<T> loaded = new ArrayList<>();
+                java.util.Set<String> disabled = new java.util.HashSet<>();
                 for (var e : entries) {
                     try {
-                        loaded.add(parser.apply(e.getKey(), e.getValue().getAsJsonObject()));
+                        JsonObject json = e.getValue().getAsJsonObject();
+                        // {"name": "...", "enabled": false} switches off an entry (including built-ins) by name.
+                        if (json.has("enabled") && !json.get("enabled").getAsBoolean()) {
+                            if (json.has("name")) disabled.add(json.get("name").getAsString());
+                            continue;
+                        }
+                        loaded.add(parser.apply(e.getKey(), json));
                     } catch (Exception ex) {
                         Hallmarked.LOG.error("Skipping malformed {} entry {}: {}", folder, e.getKey(), ex.getMessage());
                     }
                 }
+                loaded.removeIf(t -> disabled.contains(nameOf.apply(t)));
                 set(loaded);
                 Hallmarked.LOG.info("Loaded {} {}", byName.size(), folder);
             }

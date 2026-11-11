@@ -45,6 +45,7 @@ public final class CommonEvents {
         event.addListener(Grading.GRADES.loader());
         event.addListener(Grading.AFFIXES.loader());
         event.addListener(Grading.FUSIONS.loader());
+        event.addListener(new com.kragnoth.hallmarked.grade.TitleWords.Loader());
     }
 
     /** Fires for each joining player and for everyone after /reload. */
@@ -52,6 +53,11 @@ public final class CommonEvents {
     public static void onDatapackSync(OnDatapackSyncEvent event) {
         SyncQualitiesPayload payload = SyncQualitiesPayload.snapshot();
         event.getRelevantPlayers().forEach(p -> PacketDistributor.sendToPlayer(p, payload));
+    }
+
+    @SubscribeEvent
+    public static void onRegisterCommands(net.neoforged.neoforge.event.RegisterCommandsEvent event) {
+        com.kragnoth.hallmarked.command.HallmarkedCommands.register(event.getDispatcher());
     }
 
     // ---- Item modifiers (quality + affixes on tools, bows, shields, armor) -----------------

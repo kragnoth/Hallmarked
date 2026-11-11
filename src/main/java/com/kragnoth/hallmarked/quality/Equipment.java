@@ -1,22 +1,47 @@
 package com.kragnoth.hallmarked.quality;
 
+import com.kragnoth.hallmarked.Hallmarked;
 import com.kragnoth.hallmarked.compat.CuriosCompat;
 import java.util.Set;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.tags.TagKey;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.BowItem;
 import net.minecraft.world.item.CrossbowItem;
+import net.minecraft.world.item.Equipable;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.ShieldItem;
 import net.minecraft.world.item.TieredItem;
 import org.jetbrains.annotations.Nullable;
 
-/** Decides which equipment category an item belongs to. */
+/**
+ * Decides which equipment category an item belongs to.
+ *
+ * <p>Tags are authoritative: {@code hallmarked:equipment/<category>} (which pull in the vanilla and {@code c:}
+ * tool/armor tags by default). Class checks are only a fallback for items a mod forgot to tag, e.g. a sword
+ * from a careless port that extends {@code SwordItem} but sits in no tag. {@code hallmarked:equipment/excluded}
+ * beats everything.
+ */
 public final class Equipment {
     private Equipment() {}
 
-    // Tetra's modular items don't extend the vanilla classes, so match them by class name (no hard dependency).
+    public static final TagKey<Item> TOOL = tag("tool");
+    public static final TagKey<Item> BOW = tag("bow");
+    public static final TagKey<Item> SHIELD = tag("shield");
+    public static final TagKey<Item> HELMET = tag("helmet");
+    public static final TagKey<Item> CHESTPLATE = tag("chestplate");
+    public static final TagKey<Item> LEGGINGS = tag("leggings");
+    public static final TagKey<Item> BOOTS = tag("boots");
+    public static final TagKey<Item> EXCLUDED = tag("excluded");
+
+    private static TagKey<Item> tag(String name) {
+        return TagKey.create(Registries.ITEM, Hallmarked.id("equipment/" + name));
+    }
+
+    // Tetra's modular items don't extend the vanilla classes; matched by name so there's no hard dependency.
     private static final Set<String> TETRA_TOOLS = Set.of(
             "se.mickelus.tetra.items.modular.ModularItem",
             "se.mickelus.tetra.items.modular.impl.ModularSingleHeadedItem",
@@ -28,11 +53,19 @@ public final class Equipment {
             "se.mickelus.tetra.items.modular.impl.bow.ModularBowItem");
     private static final String TETRA_SHIELD = "se.mickelus.tetra.items.modular.impl.shield.ModularShieldItem";
 
-    /** The broad category of the item, or null if it can't carry a quality. Piece-specific armor resolves to ARMOR. */
+    /** The broad category of the item, or null if it can't carry marks. Armor pieces resolve to ARMOR. */
     @Nullable
     public static Category categoryOf(ItemStack stack) {
-        if (stack.isEmpty()) return null;
+        if (stack.isEmpty() || stack.is(EXCLUDED)) return null;
         if (CuriosCompat.isCurio(stack)) return Category.BAUBLE;
+
+        // 1. Tags
+        if (stack.is(TOOL)) return Category.TOOL;
+        if (stack.is(BOW)) return Category.BOW;
+        if (stack.is(SHIELD)) return Category.SHIELD;
+        if (stack.is(HELMET) || stack.is(CHESTPLATE) || stack.is(LEGGINGS) || stack.is(BOOTS)) return Category.ARMOR;
+
+        // 2. Fallback for untagged items
         Item item = stack.getItem();
         String cls = item.getClass().getName();
         if (item instanceof TieredItem || TETRA_TOOLS.contains(cls)) return Category.TOOL;
@@ -42,21 +75,37 @@ public final class Equipment {
         return null;
     }
 
-    /** For armor, the piece-specific category (HELMET..BOOTS); null otherwise. */
+    /** For armor, the piece (HELMET..BOOTS): tag first, then ArmorItem type, then the item's equip slot. */
     @Nullable
     public static Category armorPiece(ItemStack stack) {
-        if (!(stack.getItem() instanceof ArmorItem armor)) return null;
-        return switch (armor.getType()) {
-            case HELMET -> Category.HELMET;
-            case CHESTPLATE -> Category.CHESTPLATE;
-            case LEGGINGS -> Category.LEGGINGS;
-            default -> Category.BOOTS; // BOOTS and BODY (animal armor) both land here
-        };
+        if (stack.is(HELMET)) return Category.HELMET;
+        if (stack.is(CHESTPLATE)) return Category.CHESTPLATE;
+        if (stack.is(LEGGINGS)) return Category.LEGGINGS;
+        if (stack.is(BOOTS)) return Category.BOOTS;
+        if (stack.getItem() instanceof ArmorItem armor) {
+            return switch (armor.getType()) {
+                case HELMET -> Category.HELMET;
+                case CHESTPLATE -> Category.CHESTPLATE;
+                case LEGGINGS -> Category.LEGGINGS;
+                default -> Category.BOOTS;
+            };
+        }
+        if (stack.getItem() instanceof Equipable eq) {
+            EquipmentSlot slot = eq.getEquipmentSlot();
+            return switch (slot) {
+                case HEAD -> Category.HELMET;
+                case CHEST -> Category.CHESTPLATE;
+                case LEGS -> Category.LEGGINGS;
+                case FEET -> Category.BOOTS;
+                default -> null;
+            };
+        }
+        return null;
     }
 
     /**
      * The section of {@code q} (a quality or affix) that applies to {@code stack}, and the slot it applies in.
-     * Returns null when the quality has nothing for this item.
+     * Returns null when it has nothing for this item.
      */
     @Nullable
     public static Applied applied(Sectioned q, ItemStack stack) {

@@ -44,6 +44,9 @@ still load. Items that carry the old mod's quality are converted automatically w
 Grades live in `data/<namespace>/grades/*.json`, affixes in `data/<namespace>/affixes/*.json` and fusions in `data/<namespace>/fusions/*.json`.
 See [docs/GRADES.md](docs/GRADES.md) for their formats.
 
+Item tags (`hallmarked:equipment/*`) decide what counts as equipment. To dump every default into editable files,
+run `/hallmarked defaults rebuild world` (or `kubejs`); it backs up your existing files first.
+
 ## Config
 `config/hallmarked-common.toml` has these options:
 - `Fallback`, `Overrides`, `Blacklist`

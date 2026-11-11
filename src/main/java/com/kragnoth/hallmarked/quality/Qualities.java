@@ -61,13 +61,20 @@ public final class Qualities {
                     .thenComparing(e -> e.getKey().toString()));
 
             List<Quality> loaded = new ArrayList<>();
+            java.util.Set<String> disabled = new java.util.HashSet<>();
             for (var e : entries) {
                 try {
-                    loaded.add(Quality.parse(e.getKey(), e.getValue().getAsJsonObject()));
+                    JsonObject json = e.getValue().getAsJsonObject();
+                    if (json.has("enabled") && !json.get("enabled").getAsBoolean()) {
+                        if (json.has("name")) disabled.add(Quality.normalizeName(json.get("name").getAsString()));
+                        continue;
+                    }
+                    loaded.add(Quality.parse(e.getKey(), json));
                 } catch (Exception ex) {
                     Hallmarked.LOG.error("Skipping malformed quality {}: {}", e.getKey(), ex.getMessage());
                 }
             }
+            loaded.removeIf(q -> disabled.contains(q.name()));
             set(loaded);
             Hallmarked.LOG.info("Loaded {} qualities", byName.size());
         }

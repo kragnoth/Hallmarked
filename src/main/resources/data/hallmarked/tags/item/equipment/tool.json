@@ -1,0 +1,26 @@
+{
+  "replace": false,
+  "values": [
+    "#minecraft:swords",
+    "#minecraft:axes",
+    "#minecraft:pickaxes",
+    "#minecraft:shovels",
+    "#minecraft:hoes",
+    {
+      "id": "#c:tools/melee_weapon",
+      "required": false
+    },
+    {
+      "id": "#c:tools/mining_tool",
+      "required": false
+    },
+    {
+      "id": "#c:tools/mace",
+      "required": false
+    },
+    {
+      "id": "#c:tools/spear",
+      "required": false
+    }
+  ]
+}

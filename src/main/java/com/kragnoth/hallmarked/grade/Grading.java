@@ -23,9 +23,6 @@ public final class Grading {
     public static final DataStore<Grade> GRADES = new DataStore<>("grades", Grade::parse, Grade::name, Grade::source);
     public static final DataStore<Fusion> FUSIONS = new DataStore<>("fusions", Fusion::parse, Fusion::name, Fusion::source);
 
-    /** Number of entries in each title word list (lang keys hallmarked.title.a.N / hallmarked.title.b.N). */
-    public static final int TITLE_A = 40, TITLE_B = 40;
-
     public static final String SOURCE_CRAFTED = "crafted";
     public static final String SOURCE_LOOT = "loot";
 
@@ -139,8 +136,8 @@ public final class Grading {
         Grade g = pickGrade(source, luck, random);
         if (g == null) return false;
         List<GradeData.Rolled> affixes = rollAffixes(stack, g, random);
-        int a = g.titled() ? random.nextInt(TITLE_A) : -1;
-        int b = g.titled() ? random.nextInt(TITLE_B) : -1;
+        String a = g.titled() ? TitleWords.randomFirst(random) : "";
+        String b = g.titled() ? TitleWords.randomSecond(random) : "";
         stack.set(HMRegistries.GRADE.get(), new GradeData(g.name(), affixes, a, b));
         refreshName(stack);
         return true;
@@ -201,9 +198,9 @@ public final class Grading {
 
         List<Fused> fused = fusions(d);
 
-        if (g.titled() && d.titleA() >= 0 && d.titleB() >= 0) {
+        if (g.titled() && d.titled()) {
             // A fusion's title noun replaces the second word, so the name says what the piece does.
-            Component second = Component.translatable("hallmarked.title.b." + d.titleB());
+            Component second = Component.literal(d.titleSecond());
             for (Fused f : fused) {
                 if (f.fusion().title() != null) {
                     second = Component.translatable(f.fusion().title());
@@ -211,7 +208,7 @@ public final class Grading {
                 }
             }
             return Component.translatable("hallmarked.name.title",
-                    Component.translatable("hallmarked.title.a." + d.titleA()), second).withStyle(g.color());
+                    Component.literal(d.titleFirst()), second).withStyle(g.color());
         }
 
         // Display units in roll order: a fusion stands in for both its parts.
