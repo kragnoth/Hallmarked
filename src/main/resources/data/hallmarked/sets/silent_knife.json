@@ -1,0 +1,248 @@
+{
+  "name": "hallmarked.set.silent_knife",
+  "color": "dark_gray",
+  "chance": {
+    "loot": 0.002,
+    "mob": 0.0005
+  },
+  "pieces": [
+    {
+      "key": "cowl",
+      "item": "minecraft:leather_helmet",
+      "base_stats": {
+        "armor": 3,
+        "toughness": 2
+      },
+      "durability": 363,
+      "dye": "#23202a",
+      "trim": {
+        "pattern": "minecraft:silence",
+        "material": "minecraft:quartz"
+      },
+      "modifiers": [
+        {
+          "name": "silent_knife_cowl_crit",
+          "attribute": "apothic_attributes:crit_chance",
+          "operation": "addition",
+          "value": 0.03
+        },
+        {
+          "name": "silent_knife_cowl_sneak",
+          "attribute": "minecraft:player.sneaking_speed",
+          "operation": "addition",
+          "value": 0.05
+        }
+      ]
+    },
+    {
+      "key": "jerkin",
+      "item": "minecraft:leather_chestplate",
+      "base_stats": {
+        "armor": 8,
+        "toughness": 2
+      },
+      "durability": 528,
+      "dye": "#23202a",
+      "trim": {
+        "pattern": "minecraft:silence",
+        "material": "minecraft:quartz"
+      },
+      "modifiers": [
+        {
+          "name": "silent_knife_jerkin_dodge",
+          "attribute": "apothic_attributes:dodge_chance",
+          "operation": "addition",
+          "value": 0.02
+        },
+        {
+          "name": "silent_knife_jerkin_speed",
+          "attribute": "minecraft:generic.attack_speed",
+          "operation": "multiply_total",
+          "value": 0.03
+        }
+      ]
+    },
+    {
+      "key": "mail_breeches",
+      "item": "minecraft:chainmail_leggings",
+      "base_stats": {
+        "armor": 6,
+        "toughness": 2
+      },
+      "durability": 495,
+      "trim": {
+        "pattern": "minecraft:silence",
+        "material": "minecraft:quartz"
+      },
+      "modifiers": [
+        {
+          "name": "silent_knife_breeches_speed",
+          "attribute": "minecraft:generic.movement_speed",
+          "operation": "multiply_total",
+          "value": 0.04
+        }
+      ]
+    },
+    {
+      "key": "soft_boots",
+      "item": "minecraft:leather_boots",
+      "base_stats": {
+        "armor": 3,
+        "toughness": 2
+      },
+      "durability": 429,
+      "dye": "#23202a",
+      "trim": {
+        "pattern": "minecraft:silence",
+        "material": "minecraft:quartz"
+      },
+      "modifiers": [
+        {
+          "name": "silent_knife_boots_sneak",
+          "attribute": "minecraft:player.sneaking_speed",
+          "operation": "addition",
+          "value": 0.1
+        },
+        {
+          "name": "silent_knife_boots_fall",
+          "attribute": "minecraft:generic.safe_fall_distance",
+          "operation": "addition",
+          "value": 1
+        }
+      ]
+    },
+    {
+      "key": "knife",
+      "item": "minecraft:iron_sword",
+      "base_stats": {
+        "attack_damage": 6,
+        "attack_speed": -2.0
+      },
+      "durability": 1561,
+      "modifiers": [
+        {
+          "name": "silent_knife_knife_crit_damage",
+          "attribute": "apothic_attributes:crit_damage",
+          "operation": "addition",
+          "value": 0.15
+        },
+        {
+          "name": "silent_knife_knife_speed",
+          "attribute": "minecraft:generic.attack_speed",
+          "operation": "multiply_total",
+          "value": 0.05
+        }
+      ]
+    }
+  ],
+  "bonuses": [
+    {
+      "pieces": 2,
+      "modifiers": [
+        {
+          "name": "silent_knife_2_speed",
+          "attribute": "minecraft:generic.movement_speed",
+          "operation": "multiply_total",
+          "value": 0.05
+        },
+        {
+          "name": "silent_knife_2_sneak",
+          "attribute": "minecraft:player.sneaking_speed",
+          "operation": "addition",
+          "value": 0.1
+        }
+      ]
+    },
+    {
+      "pieces": 3,
+      "modifiers": [
+        {
+          "name": "silent_knife_3_crit",
+          "attribute": "apothic_attributes:crit_chance",
+          "operation": "addition",
+          "value": 0.05
+        },
+        {
+          "name": "silent_knife_3_attack_speed",
+          "attribute": "minecraft:generic.attack_speed",
+          "operation": "multiply_total",
+          "value": 0.05
+        }
+      ],
+      "effects": [
+        {
+          "effect": "minecraft:night_vision",
+          "amplifier": 0
+        }
+      ]
+    },
+    {
+      "pieces": 4,
+      "modifiers": [
+        {
+          "name": "silent_knife_4_crit_damage",
+          "attribute": "apothic_attributes:crit_damage",
+          "operation": "addition",
+          "value": 0.2
+        },
+        {
+          "name": "silent_knife_4_damage",
+          "attribute": "minecraft:generic.attack_damage",
+          "operation": "multiply_total",
+          "value": 0.08
+        }
+      ]
+    },
+    {
+      "pieces": 5,
+      "modifiers": [
+        {
+          "name": "silent_knife_5_dodge",
+          "attribute": "apothic_attributes:dodge_chance",
+          "operation": "addition",
+          "value": 0.05
+        },
+        {
+          "name": "silent_knife_5_stealth",
+          "attribute": "caverns_and_chasms:stealth",
+          "operation": "addition",
+          "value": 0.1
+        }
+      ],
+      "procs": [
+        {
+          "type": "bleed",
+          "chance": 0.25,
+          "power": 1.5,
+          "duration": 80
+        }
+      ]
+    }
+  ],
+  "tables": [
+    {
+      "tables": [
+        "minecraft:chests/woodland_mansion"
+      ],
+      "chance": 0.05
+    },
+    {
+      "tables": [
+        "minecraft:chests/buried_treasure"
+      ],
+      "chance": 0.06
+    },
+    {
+      "tables": [
+        "minecraft:chests/end_city_treasure"
+      ],
+      "chance": 0.03
+    },
+    {
+      "tables": [
+        "minecraft:chests/desert_pyramid"
+      ],
+      "chance": 0.03
+    }
+  ]
+}

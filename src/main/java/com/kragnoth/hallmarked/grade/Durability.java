@@ -14,6 +14,8 @@ public final class Durability {
 
     public static void apply(ItemStack stack) {
         Integer base = stack.getItem().components().get(DataComponents.MAX_DAMAGE);
+        var piece = com.kragnoth.hallmarked.sets.Sets.defOf(stack);
+        if (piece != null && piece.durability() != null && base != null) base = piece.durability(); // a set's own durability
         if (base == null || base <= 0 || !stack.has(DataComponents.MAX_DAMAGE)) return;
         if (stack.getItem().getClass().getName().startsWith("se.mickelus.tetra")) return;
         Grade g = Grading.gradeOf(stack);

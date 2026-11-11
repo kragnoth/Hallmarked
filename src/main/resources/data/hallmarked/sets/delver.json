@@ -1,0 +1,204 @@
+{
+  "name": "hallmarked.set.delver",
+  "color": "yellow",
+  "chance": {
+    "loot": 0.002,
+    "mob": 0.0005
+  },
+  "pieces": [
+    {
+      "key": "lamp_cap",
+      "item": "minecraft:leather_helmet",
+      "base_stats": {
+        "armor": 3,
+        "toughness": 2
+      },
+      "durability": 363,
+      "dye": "#6b4a2b",
+      "trim": {
+        "pattern": "minecraft:bolt",
+        "material": "minecraft:copper"
+      },
+      "modifiers": [
+        {
+          "name": "delver_cap_reach",
+          "attribute": "minecraft:player.block_interaction_range",
+          "operation": "addition",
+          "value": 0.5
+        }
+      ]
+    },
+    {
+      "key": "pit_jerkin",
+      "item": "minecraft:iron_chestplate",
+      "base_stats": {
+        "armor": 8,
+        "toughness": 2
+      },
+      "durability": 528,
+      "trim": {
+        "pattern": "minecraft:bolt",
+        "material": "minecraft:copper"
+      },
+      "modifiers": [
+        {
+          "name": "delver_jerkin_health",
+          "attribute": "minecraft:generic.max_health",
+          "operation": "addition",
+          "value": 2
+        }
+      ]
+    },
+    {
+      "key": "knee_pads",
+      "item": "minecraft:leather_leggings",
+      "base_stats": {
+        "armor": 6,
+        "toughness": 2
+      },
+      "durability": 495,
+      "dye": "#6b4a2b",
+      "trim": {
+        "pattern": "minecraft:bolt",
+        "material": "minecraft:copper"
+      },
+      "modifiers": [
+        {
+          "name": "delver_pads_fall",
+          "attribute": "minecraft:generic.safe_fall_distance",
+          "operation": "addition",
+          "value": 2
+        }
+      ]
+    },
+    {
+      "key": "hobnails",
+      "item": "minecraft:iron_boots",
+      "base_stats": {
+        "armor": 3,
+        "toughness": 2
+      },
+      "durability": 429,
+      "trim": {
+        "pattern": "minecraft:bolt",
+        "material": "minecraft:copper"
+      },
+      "modifiers": [
+        {
+          "name": "delver_boots_step",
+          "attribute": "minecraft:generic.step_height",
+          "operation": "addition",
+          "value": 0.5
+        }
+      ]
+    },
+    {
+      "key": "pick",
+      "item": "minecraft:iron_pickaxe",
+      "durability": 1561,
+      "modifiers": [
+        {
+          "name": "delver_pick_efficiency",
+          "attribute": "minecraft:player.mining_efficiency",
+          "operation": "addition",
+          "value": 4
+        },
+        {
+          "name": "delver_pick_speed",
+          "attribute": "minecraft:player.block_break_speed",
+          "operation": "multiply_total",
+          "value": 0.15
+        }
+      ]
+    }
+  ],
+  "bonuses": [
+    {
+      "pieces": 2,
+      "modifiers": [],
+      "effects": [
+        {
+          "effect": "minecraft:night_vision",
+          "amplifier": 0
+        }
+      ]
+    },
+    {
+      "pieces": 3,
+      "modifiers": [
+        {
+          "name": "delver_3_speed",
+          "attribute": "minecraft:player.block_break_speed",
+          "operation": "multiply_total",
+          "value": 0.15
+        },
+        {
+          "name": "delver_3_ultimine",
+          "attribute": "ftbultimine:max_blocks_modifier",
+          "operation": "addition",
+          "value": 8
+        }
+      ]
+    },
+    {
+      "pieces": 4,
+      "modifiers": [
+        {
+          "name": "delver_4_luck",
+          "attribute": "minecraft:generic.luck",
+          "operation": "addition",
+          "value": 1
+        }
+      ],
+      "effects": [
+        {
+          "effect": "minecraft:haste",
+          "amplifier": 0
+        }
+      ]
+    },
+    {
+      "pieces": 5,
+      "modifiers": [
+        {
+          "name": "delver_5_efficiency",
+          "attribute": "minecraft:player.mining_efficiency",
+          "operation": "addition",
+          "value": 3
+        },
+        {
+          "name": "delver_5_fall",
+          "attribute": "minecraft:generic.safe_fall_distance",
+          "operation": "addition",
+          "value": 3
+        }
+      ],
+      "effects": [
+        {
+          "effect": "minecraft:haste",
+          "amplifier": 1
+        }
+      ]
+    }
+  ],
+  "tables": [
+    {
+      "tables": [
+        "minecraft:chests/abandoned_mineshaft"
+      ],
+      "chance": 0.05
+    },
+    {
+      "tables": [
+        "minecraft:chests/simple_dungeon"
+      ],
+      "chance": 0.03
+    },
+    {
+      "tables": [
+        "minecraft:chests/ancient_city"
+      ],
+      "chance": 0.03
+    }
+  ]
+}

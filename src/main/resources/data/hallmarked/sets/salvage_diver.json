@@ -1,0 +1,218 @@
+{
+  "name": "hallmarked.set.salvage_diver",
+  "color": "dark_aqua",
+  "chance": {
+    "loot": 0.002,
+    "mob": 0.0005
+  },
+  "pieces": [
+    {
+      "key": "bell_helm",
+      "item": "minecraft:turtle_helmet",
+      "base_stats": {
+        "armor": 3,
+        "toughness": 2
+      },
+      "durability": 363,
+      "trim": {
+        "pattern": "minecraft:tide",
+        "material": "minecraft:copper"
+      },
+      "modifiers": [
+        {
+          "name": "diver_helm_oxygen",
+          "attribute": "minecraft:generic.oxygen_bonus",
+          "operation": "addition",
+          "value": 3
+        },
+        {
+          "name": "diver_helm_mining",
+          "attribute": "minecraft:player.submerged_mining_speed",
+          "operation": "addition",
+          "value": 0.3
+        }
+      ]
+    },
+    {
+      "key": "oilskin",
+      "item": "minecraft:leather_chestplate",
+      "base_stats": {
+        "armor": 8,
+        "toughness": 2
+      },
+      "durability": 528,
+      "dye": "#2d5c5c",
+      "trim": {
+        "pattern": "minecraft:tide",
+        "material": "minecraft:copper"
+      },
+      "modifiers": [
+        {
+          "name": "diver_coat_swim",
+          "attribute": "minecraft:generic.water_movement_efficiency",
+          "operation": "addition",
+          "value": 0.2
+        }
+      ]
+    },
+    {
+      "key": "mail_leggings",
+      "item": "minecraft:chainmail_leggings",
+      "base_stats": {
+        "armor": 6,
+        "toughness": 2
+      },
+      "durability": 495,
+      "trim": {
+        "pattern": "minecraft:tide",
+        "material": "minecraft:copper"
+      },
+      "modifiers": [
+        {
+          "name": "diver_legs_swim",
+          "attribute": "minecraft:generic.water_movement_efficiency",
+          "operation": "addition",
+          "value": 0.2
+        }
+      ]
+    },
+    {
+      "key": "weighted_boots",
+      "item": "minecraft:iron_boots",
+      "base_stats": {
+        "armor": 3,
+        "toughness": 2
+      },
+      "durability": 429,
+      "trim": {
+        "pattern": "minecraft:tide",
+        "material": "minecraft:copper"
+      },
+      "modifiers": [
+        {
+          "name": "diver_boots_oxygen",
+          "attribute": "minecraft:generic.oxygen_bonus",
+          "operation": "addition",
+          "value": 1
+        },
+        {
+          "name": "diver_boots_fall",
+          "attribute": "minecraft:generic.safe_fall_distance",
+          "operation": "addition",
+          "value": 2
+        }
+      ]
+    },
+    {
+      "key": "salvage_pick",
+      "item": "minecraft:iron_pickaxe",
+      "durability": 1561,
+      "modifiers": [
+        {
+          "name": "diver_pick_efficiency",
+          "attribute": "minecraft:player.mining_efficiency",
+          "operation": "addition",
+          "value": 4
+        },
+        {
+          "name": "diver_pick_submerged",
+          "attribute": "minecraft:player.submerged_mining_speed",
+          "operation": "addition",
+          "value": 0.5
+        }
+      ]
+    }
+  ],
+  "bonuses": [
+    {
+      "pieces": 2,
+      "modifiers": [],
+      "effects": [
+        {
+          "effect": "minecraft:water_breathing",
+          "amplifier": 0
+        }
+      ]
+    },
+    {
+      "pieces": 3,
+      "modifiers": [
+        {
+          "name": "diver_3_submerged",
+          "attribute": "minecraft:player.submerged_mining_speed",
+          "operation": "addition",
+          "value": 0.8
+        },
+        {
+          "name": "diver_3_swim",
+          "attribute": "minecraft:generic.water_movement_efficiency",
+          "operation": "addition",
+          "value": 0.3
+        }
+      ]
+    },
+    {
+      "pieces": 4,
+      "modifiers": [],
+      "effects": [
+        {
+          "effect": "minecraft:night_vision",
+          "amplifier": 0
+        },
+        {
+          "effect": "minecraft:dolphins_grace",
+          "amplifier": 0
+        }
+      ]
+    },
+    {
+      "pieces": 5,
+      "modifiers": [
+        {
+          "name": "diver_5_mining",
+          "attribute": "minecraft:player.block_break_speed",
+          "operation": "multiply_total",
+          "value": 0.2
+        }
+      ],
+      "effects": [
+        {
+          "effect": "minecraft:conduit_power",
+          "amplifier": 0
+        }
+      ]
+    }
+  ],
+  "tables": [
+    {
+      "tables": [
+        "minecraft:chests/underwater_ruin_big"
+      ],
+      "chance": 0.05
+    },
+    {
+      "tables": [
+        "minecraft:chests/underwater_ruin_small"
+      ],
+      "chance": 0.04
+    },
+    {
+      "tables": [
+        "minecraft:chests/shipwreck_treasure"
+      ],
+      "chance": 0.05
+    },
+    {
+      "tables": [
+        "minecraft:chests/shipwreck_supply"
+      ],
+      "chance": 0.03
+    },
+    {
+      "tables": [
+        "minecraft:chests/buried_treasure"
+      ],
+      "chance": 0.04
+    }
+  ]
+}

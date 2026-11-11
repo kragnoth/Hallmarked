@@ -348,6 +348,13 @@ public final class ClientEvents {
                     var mod = new AttributeModifier(com.kragnoth.hallmarked.Hallmarked.id("preview"), m.min(), m.operation());
                     line.append(attr.get().value().toComponent(mod, TooltipFlag.NORMAL).copy().withStyle(c));
                 }
+                for (var eff : bonus.effects()) {
+                    if (!first) line.append(Component.literal(", ").withStyle(c));
+                    first = false;
+                    MutableComponent en = Component.translatable(eff.effect().value().getDescriptionId());
+                    if (eff.amplifier() > 0) en.append(" ").append(Component.translatable("enchantment.level." + (eff.amplifier() + 1)));
+                    line.append(en.withStyle(c));
+                }
                 for (var proc : bonus.procs()) {
                     if (!first) line.append(Component.literal(", ").withStyle(c));
                     first = false;

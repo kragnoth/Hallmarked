@@ -46,7 +46,7 @@
     },
     {
       "key": "greaves",
-      "item": "minecraft:iron_leggings",
+      "item": "minecraft:chainmail_leggings",
       "trim": {
         "pattern": "minecraft:ward",
         "material": "minecraft:gold"

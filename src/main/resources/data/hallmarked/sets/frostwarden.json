@@ -1,0 +1,212 @@
+{
+  "name": "hallmarked.set.frostwarden",
+  "color": "aqua",
+  "chance": {
+    "loot": 0.002,
+    "mob": 0.0005
+  },
+  "pieces": [
+    {
+      "key": "hood",
+      "item": "minecraft:leather_helmet",
+      "base_stats": {
+        "armor": 3,
+        "toughness": 2
+      },
+      "durability": 363,
+      "dye": "#e8ecef",
+      "trim": {
+        "pattern": "minecraft:coast",
+        "material": "minecraft:lapis"
+      },
+      "modifiers": [
+        {
+          "name": "frost_hood_health",
+          "attribute": "minecraft:generic.max_health",
+          "operation": "addition",
+          "value": 1
+        }
+      ]
+    },
+    {
+      "key": "hauberk",
+      "item": "minecraft:chainmail_chestplate",
+      "base_stats": {
+        "armor": 8,
+        "toughness": 2
+      },
+      "durability": 528,
+      "trim": {
+        "pattern": "minecraft:coast",
+        "material": "minecraft:lapis"
+      },
+      "modifiers": [
+        {
+          "name": "frost_hauberk_toughness",
+          "attribute": "minecraft:generic.armor_toughness",
+          "operation": "addition",
+          "value": 1
+        }
+      ]
+    },
+    {
+      "key": "leggings",
+      "item": "minecraft:leather_leggings",
+      "base_stats": {
+        "armor": 6,
+        "toughness": 2
+      },
+      "durability": 495,
+      "dye": "#e8ecef",
+      "trim": {
+        "pattern": "minecraft:coast",
+        "material": "minecraft:lapis"
+      },
+      "modifiers": [
+        {
+          "name": "frost_legs_kb",
+          "attribute": "minecraft:generic.knockback_resistance",
+          "operation": "addition",
+          "value": 0.05
+        }
+      ]
+    },
+    {
+      "key": "snowshoes",
+      "item": "minecraft:leather_boots",
+      "base_stats": {
+        "armor": 3,
+        "toughness": 2
+      },
+      "durability": 429,
+      "dye": "#e8ecef",
+      "trim": {
+        "pattern": "minecraft:coast",
+        "material": "minecraft:lapis"
+      },
+      "modifiers": [
+        {
+          "name": "frost_boots_speed",
+          "attribute": "minecraft:generic.movement_speed",
+          "operation": "multiply_total",
+          "value": 0.04
+        },
+        {
+          "name": "frost_boots_snow",
+          "attribute": "windswept:snow_speed",
+          "operation": "addition",
+          "value": 0.2
+        }
+      ]
+    },
+    {
+      "key": "icebrand",
+      "item": "minecraft:iron_sword",
+      "base_stats": {
+        "attack_damage": 6,
+        "attack_speed": -2.4
+      },
+      "durability": 1561,
+      "modifiers": [
+        {
+          "name": "frost_brand_cold",
+          "attribute": "apothic_attributes:cold_damage",
+          "operation": "addition",
+          "value": 2
+        }
+      ]
+    }
+  ],
+  "bonuses": [
+    {
+      "pieces": 2,
+      "modifiers": [
+        {
+          "name": "frost_2_speed",
+          "attribute": "minecraft:generic.movement_speed",
+          "operation": "multiply_total",
+          "value": 0.05
+        }
+      ]
+    },
+    {
+      "pieces": 3,
+      "modifiers": [
+        {
+          "name": "frost_3_cold",
+          "attribute": "apothic_attributes:cold_damage",
+          "operation": "addition",
+          "value": 2
+        },
+        {
+          "name": "frost_3_health",
+          "attribute": "minecraft:generic.max_health",
+          "operation": "addition",
+          "value": 2
+        }
+      ]
+    },
+    {
+      "pieces": 4,
+      "modifiers": [
+        {
+          "name": "frost_4_toughness",
+          "attribute": "minecraft:generic.armor_toughness",
+          "operation": "addition",
+          "value": 2
+        }
+      ],
+      "procs": [
+        {
+          "type": "stagger",
+          "chance": 0.2,
+          "duration": 60
+        }
+      ]
+    },
+    {
+      "pieces": 5,
+      "modifiers": [
+        {
+          "name": "frost_5_kb",
+          "attribute": "minecraft:generic.knockback_resistance",
+          "operation": "addition",
+          "value": 0.2
+        },
+        {
+          "name": "frost_5_health",
+          "attribute": "minecraft:generic.max_health",
+          "operation": "addition",
+          "value": 4
+        }
+      ],
+      "procs": [
+        {
+          "type": "stagger",
+          "chance": 0.3,
+          "duration": 80
+        }
+      ]
+    }
+  ],
+  "tables": [
+    {
+      "tables": [
+        "minecraft:chests/igloo_chest"
+      ],
+      "chance": 0.06
+    },
+    {
+      "tables": [
+        "minecraft:chests/ancient_city_ice_box"
+      ],
+      "chance": 0.06
+    },
+    {
+      "tables": [
+        "minecraft:chests/village/village_snowy_house"
+      ],
+      "chance": 0.04
+    }
+  ]
+}

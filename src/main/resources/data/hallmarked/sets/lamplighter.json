@@ -1,0 +1,200 @@
+{
+  "name": "hallmarked.set.lamplighter",
+  "color": "gold",
+  "chance": {
+    "loot": 0.002,
+    "mob": 0.0005
+  },
+  "pieces": [
+    {
+      "key": "hat",
+      "item": "minecraft:leather_helmet",
+      "base_stats": {
+        "armor": 3,
+        "toughness": 2
+      },
+      "durability": 363,
+      "dye": "#a8892c",
+      "trim": {
+        "pattern": "minecraft:host",
+        "material": "minecraft:gold"
+      },
+      "modifiers": [
+        {
+          "name": "lamp_hat_reach",
+          "attribute": "minecraft:player.entity_interaction_range",
+          "operation": "addition",
+          "value": 0.5
+        }
+      ]
+    },
+    {
+      "key": "coat",
+      "item": "minecraft:iron_chestplate",
+      "base_stats": {
+        "armor": 8,
+        "toughness": 2
+      },
+      "durability": 528,
+      "trim": {
+        "pattern": "minecraft:host",
+        "material": "minecraft:gold"
+      },
+      "modifiers": [
+        {
+          "name": "lamp_coat_health",
+          "attribute": "minecraft:generic.max_health",
+          "operation": "addition",
+          "value": 2
+        }
+      ]
+    },
+    {
+      "key": "trousers",
+      "item": "minecraft:leather_leggings",
+      "base_stats": {
+        "armor": 6,
+        "toughness": 2
+      },
+      "durability": 495,
+      "dye": "#1f1d22",
+      "trim": {
+        "pattern": "minecraft:host",
+        "material": "minecraft:gold"
+      },
+      "modifiers": [
+        {
+          "name": "lamp_trousers_speed",
+          "attribute": "minecraft:generic.movement_speed",
+          "operation": "multiply_total",
+          "value": 0.03
+        }
+      ]
+    },
+    {
+      "key": "boots",
+      "item": "minecraft:chainmail_boots",
+      "base_stats": {
+        "armor": 3,
+        "toughness": 2
+      },
+      "durability": 429,
+      "trim": {
+        "pattern": "minecraft:host",
+        "material": "minecraft:gold"
+      },
+      "modifiers": [
+        {
+          "name": "lamp_boots_fall",
+          "attribute": "minecraft:generic.safe_fall_distance",
+          "operation": "addition",
+          "value": 1
+        }
+      ]
+    },
+    {
+      "key": "signet",
+      "item": "hallmarked:emerald_ring",
+      "glint": true,
+      "modifiers": [
+        {
+          "name": "lamp_signet_luck",
+          "attribute": "minecraft:generic.luck",
+          "operation": "addition",
+          "value": 0.5
+        },
+        {
+          "name": "lamp_signet_damage",
+          "attribute": "minecraft:generic.attack_damage",
+          "operation": "multiply_total",
+          "value": 0.05
+        }
+      ]
+    }
+  ],
+  "bonuses": [
+    {
+      "pieces": 2,
+      "modifiers": [],
+      "effects": [
+        {
+          "effect": "minecraft:night_vision",
+          "amplifier": 0
+        }
+      ]
+    },
+    {
+      "pieces": 3,
+      "modifiers": [],
+      "procs": [
+        {
+          "type": "ignite",
+          "target": "#minecraft:undead",
+          "chance": 0.35,
+          "power": 5
+        }
+      ]
+    },
+    {
+      "pieces": 4,
+      "modifiers": [
+        {
+          "name": "lamp_4_health",
+          "attribute": "minecraft:generic.max_health",
+          "operation": "addition",
+          "value": 2
+        },
+        {
+          "name": "lamp_4_speed",
+          "attribute": "minecraft:generic.movement_speed",
+          "operation": "multiply_total",
+          "value": 0.05
+        }
+      ]
+    },
+    {
+      "pieces": 5,
+      "modifiers": [
+        {
+          "name": "lamp_5_fire",
+          "attribute": "apothic_attributes:fire_damage",
+          "operation": "addition",
+          "value": 2
+        }
+      ],
+      "procs": [
+        {
+          "type": "reaper",
+          "chance": 1.0,
+          "power": 3
+        }
+      ]
+    }
+  ],
+  "tables": [
+    {
+      "tables": [
+        "minecraft:chests/stronghold_corridor"
+      ],
+      "chance": 0.03
+    },
+    {
+      "tables": [
+        "minecraft:chests/simple_dungeon"
+      ],
+      "chance": 0.04
+    },
+    {
+      "tables": [
+        "minecraft:chests/village/village_temple"
+      ],
+      "chance": 0.03
+    },
+    {
+      "tables": [
+        "minecraft:chests/ancient_city"
+      ],
+      "chance": 0.02
+    }
+  ]
+}

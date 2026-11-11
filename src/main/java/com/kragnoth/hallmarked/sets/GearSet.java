@@ -40,9 +40,17 @@ import net.minecraft.world.item.DyeColor;
 public record GearSet(String name, ChatFormatting color, Map<String, Double> chance, List<Piece> pieces,
                       List<Bonus> bonuses, List<TableEntry> tables, JsonObject source) {
 
+    /**
+     * @param baseStats replaces the item's own base stats (keys: armor, toughness, knockback_resistance,
+     *                  attack_damage, attack_speed; values as vanilla stores them, e.g. a netherite sword is
+     *                  attack_damage 7, attack_speed -2.4), so chainmail can carry netherite protection
+     * @param durability replaces the item's own max durability (before the Set grade's multiplier)
+     * @param fireResistant survives fire and lava as an item, like netherite
+     */
     public record Piece(String key, String name, ResourceLocation item, @Nullable Integer dye,
                         @Nullable ResourceLocation trimPattern, @Nullable ResourceLocation trimMaterial,
-                        @Nullable DyeColor baseColor, boolean glint, List<Affix.Mod> modifiers) implements Sectioned {
+                        @Nullable DyeColor baseColor, boolean glint, List<Affix.Mod> modifiers,
+                        Map<String, Double> baseStats, @Nullable Integer durability, boolean fireResistant) implements Sectioned {
         @Override public boolean has(Category c) { return true; }
         public List<Affix.Mod> section(Category c) { return modifiers; }
     }
@@ -51,7 +59,10 @@ public record GearSet(String name, ChatFormatting color, Map<String, Double> cha
      * @param perPiece the modifiers are multiplied by the number of pieces worn (once at least {@code pieces} are worn);
      *                 procs on a per-piece bonus don't scale
      */
-    public record Bonus(int pieces, boolean perPiece, List<Affix.Mod> modifiers, List<Proc> procs) {}
+    public record Bonus(int pieces, boolean perPiece, List<Affix.Mod> modifiers, List<Proc> procs, List<Effect> effects) {}
+
+    /** A status effect kept on the wearer while the bonus is active (fire resistance for lava diving, and so on). */
+    public record Effect(net.minecraft.core.Holder<net.minecraft.world.effect.MobEffect> effect, int amplifier) {}
 
     /**
      * Extra chance for a piece to turn up in specific loot tables, on top of base items rolled there.
@@ -88,7 +99,14 @@ public record GearSet(String name, ChatFormatting color, Map<String, Double> cha
         List<Piece> pieces = new ArrayList<>();
         for (JsonElement e : GsonHelper.getAsJsonArray(json, "pieces")) {
             JsonObject p = e.getAsJsonObject();
-            Strict.warnUnknownKeys(id, p, Set.of("key", "name", "item", "dye", "trim", "base_color", "glint", "modifiers"), "Set piece in");
+            Strict.warnUnknownKeys(id, p, Set.of("key", "name", "item", "dye", "trim", "base_color", "glint", "modifiers",
+                    "base_stats", "durability", "fire_resistant"), "Set piece in");
+            Map<String, Double> baseStats = new java.util.LinkedHashMap<>();
+            for (var bs : GsonHelper.getAsJsonObject(p, "base_stats", new JsonObject()).entrySet()) {
+                if (!Set.of("armor", "toughness", "knockback_resistance", "attack_damage", "attack_speed").contains(bs.getKey()))
+                    throw new IllegalArgumentException("unknown base stat '" + bs.getKey() + "'");
+                baseStats.put(bs.getKey(), bs.getValue().getAsDouble());
+            }
             String key = GsonHelper.getAsString(p, "key");
             Integer dye = p.has("dye") ? Integer.parseInt(GsonHelper.getAsString(p, "dye").replace("#", ""), 16) : null;
             ResourceLocation pattern = null, material = null;
@@ -100,13 +118,15 @@ public record GearSet(String name, ChatFormatting color, Map<String, Double> cha
             DyeColor base = p.has("base_color") ? DyeColor.byName(GsonHelper.getAsString(p, "base_color").toLowerCase(Locale.ROOT), null) : null;
             pieces.add(new Piece(key, GsonHelper.getAsString(p, "name", name + "." + key),
                     ResourceLocation.parse(GsonHelper.getAsString(p, "item")), dye, pattern, material, base,
-                    GsonHelper.getAsBoolean(p, "glint", false), mods(id, p, name + "_" + key)));
+                    GsonHelper.getAsBoolean(p, "glint", false), mods(id, p, name + "_" + key), Map.copyOf(baseStats),
+                    p.has("durability") ? Math.max(1, GsonHelper.getAsInt(p, "durability")) : null,
+                    GsonHelper.getAsBoolean(p, "fire_resistant", false)));
         }
         if (pieces.isEmpty()) throw new IllegalArgumentException("a set needs at least one piece");
         List<Bonus> bonuses = new ArrayList<>();
         for (JsonElement e : GsonHelper.getAsJsonArray(json, "bonuses", new JsonArray())) {
             JsonObject b = e.getAsJsonObject();
-            Strict.warnUnknownKeys(id, b, Set.of("pieces", "per_piece", "modifiers", "procs"), "Set bonus in");
+            Strict.warnUnknownKeys(id, b, Set.of("pieces", "per_piece", "modifiers", "procs", "effects"), "Set bonus in");
             List<Proc> procs = new ArrayList<>();
             for (JsonElement pe : GsonHelper.getAsJsonArray(b, "procs", new JsonArray())) {
                 try {
@@ -115,8 +135,16 @@ public record GearSet(String name, ChatFormatting color, Map<String, Double> cha
                     // a proc whose mod is missing: the rest of the bonus still applies
                 }
             }
+            List<Effect> effects = new ArrayList<>();
+            for (JsonElement ee : GsonHelper.getAsJsonArray(b, "effects", new JsonArray())) {
+                JsonObject eo = ee.getAsJsonObject();
+                Strict.warnUnknownKeys(id, eo, Set.of("effect", "amplifier"), "Set effect in");
+                net.minecraft.core.registries.BuiltInRegistries.MOB_EFFECT
+                        .getHolder(ResourceLocation.parse(GsonHelper.getAsString(eo, "effect")))
+                        .ifPresent(h -> effects.add(new Effect(h, Math.max(0, Math.min(9, GsonHelper.getAsInt(eo, "amplifier", 0))))));
+            }
             bonuses.add(new Bonus(Math.max(1, GsonHelper.getAsInt(b, "pieces", 1)), GsonHelper.getAsBoolean(b, "per_piece", false),
-                    mods(id, b, name), List.copyOf(procs)));
+                    mods(id, b, name), List.copyOf(procs), List.copyOf(effects)));
         }
         List<TableEntry> tables = new ArrayList<>();
         for (JsonElement e : GsonHelper.getAsJsonArray(json, "tables", new JsonArray())) {

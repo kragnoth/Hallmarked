@@ -1,0 +1,215 @@
+{
+  "name": "hallmarked.set.reaver",
+  "color": "red",
+  "chance": {
+    "loot": 0.002,
+    "mob": 0.0005
+  },
+  "pieces": [
+    {
+      "key": "horned_helm",
+      "item": "minecraft:diamond_helmet",
+      "base_stats": {
+        "armor": 3,
+        "toughness": 3,
+        "knockback_resistance": 0.1
+      },
+      "durability": 407,
+      "trim": {
+        "pattern": "minecraft:raiser",
+        "material": "minecraft:redstone"
+      },
+      "modifiers": [
+        {
+          "name": "reaver_helm_damage",
+          "attribute": "minecraft:generic.attack_damage",
+          "operation": "multiply_total",
+          "value": 0.03
+        }
+      ]
+    },
+    {
+      "key": "hide",
+      "item": "minecraft:leather_chestplate",
+      "base_stats": {
+        "armor": 8,
+        "toughness": 3,
+        "knockback_resistance": 0.1
+      },
+      "durability": 592,
+      "dye": "#6e1414",
+      "trim": {
+        "pattern": "minecraft:raiser",
+        "material": "minecraft:redstone"
+      },
+      "modifiers": [
+        {
+          "name": "reaver_hide_health",
+          "attribute": "minecraft:generic.max_health",
+          "operation": "addition",
+          "value": 3
+        }
+      ]
+    },
+    {
+      "key": "leggings",
+      "item": "minecraft:leather_leggings",
+      "base_stats": {
+        "armor": 6,
+        "toughness": 3,
+        "knockback_resistance": 0.1
+      },
+      "durability": 555,
+      "dye": "#6e1414",
+      "trim": {
+        "pattern": "minecraft:raiser",
+        "material": "minecraft:redstone"
+      },
+      "modifiers": [
+        {
+          "name": "reaver_legs_speed",
+          "attribute": "minecraft:generic.movement_speed",
+          "operation": "multiply_total",
+          "value": 0.03
+        }
+      ]
+    },
+    {
+      "key": "greaves",
+      "item": "minecraft:diamond_boots",
+      "base_stats": {
+        "armor": 3,
+        "toughness": 3,
+        "knockback_resistance": 0.1
+      },
+      "durability": 481,
+      "trim": {
+        "pattern": "minecraft:raiser",
+        "material": "minecraft:redstone"
+      },
+      "modifiers": [
+        {
+          "name": "reaver_greaves_kb",
+          "attribute": "minecraft:generic.attack_knockback",
+          "operation": "addition",
+          "value": 0.5
+        }
+      ]
+    },
+    {
+      "key": "cleaver",
+      "item": "minecraft:diamond_axe",
+      "base_stats": {
+        "attack_damage": 9,
+        "attack_speed": -3.0
+      },
+      "durability": 2031,
+      "modifiers": [
+        {
+          "name": "reaver_cleaver_damage",
+          "attribute": "minecraft:generic.attack_damage",
+          "operation": "multiply_total",
+          "value": 0.08
+        }
+      ]
+    }
+  ],
+  "bonuses": [
+    {
+      "pieces": 2,
+      "modifiers": [
+        {
+          "name": "reaver_2_damage",
+          "attribute": "minecraft:generic.attack_damage",
+          "operation": "multiply_total",
+          "value": 0.1
+        },
+        {
+          "name": "reaver_2_armor",
+          "attribute": "minecraft:generic.armor",
+          "operation": "addition",
+          "value": -2
+        }
+      ]
+    },
+    {
+      "pieces": 3,
+      "modifiers": [],
+      "procs": [
+        {
+          "type": "leech",
+          "chance": 0.25,
+          "power": 0.15
+        }
+      ]
+    },
+    {
+      "pieces": 4,
+      "modifiers": [
+        {
+          "name": "reaver_4_speed",
+          "attribute": "minecraft:generic.attack_speed",
+          "operation": "multiply_total",
+          "value": 0.1
+        }
+      ],
+      "procs": [
+        {
+          "type": "cleave",
+          "chance": 0.2,
+          "power": 0.3
+        }
+      ]
+    },
+    {
+      "pieces": 5,
+      "modifiers": [
+        {
+          "name": "reaver_5_damage",
+          "attribute": "minecraft:generic.attack_damage",
+          "operation": "multiply_total",
+          "value": 0.15
+        }
+      ],
+      "procs": [
+        {
+          "type": "reaper",
+          "chance": 1.0,
+          "power": 6
+        },
+        {
+          "type": "bleed",
+          "chance": 0.25,
+          "power": 2,
+          "duration": 80
+        }
+      ]
+    }
+  ],
+  "tables": [
+    {
+      "tables": [
+        "minecraft:chests/pillager_outpost"
+      ],
+      "chance": 0.03
+    },
+    {
+      "tables": [
+        "minecraft:chests/woodland_mansion"
+      ],
+      "chance": 0.03
+    },
+    {
+      "tables": [
+        "minecraft:chests/end_city_treasure"
+      ],
+      "chance": 0.04
+    },
+    {
+      "tables": [
+        "minecraft:chests/bastion_treasure"
+      ],
+      "chance": 0.03
+    }
+  ]
+}

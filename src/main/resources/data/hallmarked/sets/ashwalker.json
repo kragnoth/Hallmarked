@@ -1,0 +1,213 @@
+{
+  "name": "hallmarked.set.ashwalker",
+  "color": "gold",
+  "chance": {
+    "loot": 0.002,
+    "mob": 0.0005
+  },
+  "pieces": [
+    {
+      "key": "hood",
+      "item": "minecraft:leather_helmet",
+      "base_stats": {
+        "armor": 3,
+        "toughness": 3,
+        "knockback_resistance": 0.1
+      },
+      "durability": 407,
+      "dye": "#5a2a14",
+      "trim": {
+        "pattern": "minecraft:rib",
+        "material": "minecraft:gold"
+      },
+      "fire_resistant": true,
+      "modifiers": [
+        {
+          "name": "ashwalker_hood_burn",
+          "attribute": "minecraft:generic.burning_time",
+          "operation": "multiply_total",
+          "value": -0.25
+        }
+      ]
+    },
+    {
+      "key": "mail",
+      "item": "minecraft:chainmail_chestplate",
+      "base_stats": {
+        "armor": 8,
+        "toughness": 3,
+        "knockback_resistance": 0.1
+      },
+      "durability": 592,
+      "trim": {
+        "pattern": "minecraft:rib",
+        "material": "minecraft:gold"
+      },
+      "fire_resistant": true,
+      "modifiers": [
+        {
+          "name": "ashwalker_mail_burn",
+          "attribute": "minecraft:generic.burning_time",
+          "operation": "multiply_total",
+          "value": -0.25
+        },
+        {
+          "name": "ashwalker_mail_health",
+          "attribute": "minecraft:generic.max_health",
+          "operation": "addition",
+          "value": 2
+        }
+      ]
+    },
+    {
+      "key": "tassets",
+      "item": "minecraft:iron_leggings",
+      "base_stats": {
+        "armor": 6,
+        "toughness": 3,
+        "knockback_resistance": 0.1
+      },
+      "durability": 555,
+      "trim": {
+        "pattern": "minecraft:rib",
+        "material": "minecraft:gold"
+      },
+      "fire_resistant": true,
+      "modifiers": [
+        {
+          "name": "ashwalker_tassets_burn",
+          "attribute": "minecraft:generic.burning_time",
+          "operation": "multiply_total",
+          "value": -0.25
+        }
+      ]
+    },
+    {
+      "key": "boots",
+      "item": "minecraft:leather_boots",
+      "base_stats": {
+        "armor": 3,
+        "toughness": 3,
+        "knockback_resistance": 0.1
+      },
+      "durability": 481,
+      "dye": "#5a2a14",
+      "trim": {
+        "pattern": "minecraft:rib",
+        "material": "minecraft:gold"
+      },
+      "fire_resistant": true,
+      "modifiers": [
+        {
+          "name": "ashwalker_boots_burn",
+          "attribute": "minecraft:generic.burning_time",
+          "operation": "multiply_total",
+          "value": -0.25
+        },
+        {
+          "name": "ashwalker_boots_speed",
+          "attribute": "minecraft:generic.movement_speed",
+          "operation": "multiply_total",
+          "value": 0.03
+        }
+      ]
+    },
+    {
+      "key": "brand",
+      "item": "minecraft:iron_sword",
+      "base_stats": {
+        "attack_damage": 7,
+        "attack_speed": -2.4
+      },
+      "durability": 2031,
+      "fire_resistant": true,
+      "modifiers": [
+        {
+          "name": "ashwalker_brand_fire",
+          "attribute": "apothic_attributes:fire_damage",
+          "operation": "addition",
+          "value": 2
+        }
+      ]
+    }
+  ],
+  "bonuses": [
+    {
+      "pieces": 2,
+      "modifiers": [
+        {
+          "name": "ashwalker_2_toughness",
+          "attribute": "minecraft:generic.armor_toughness",
+          "operation": "addition",
+          "value": 1
+        }
+      ]
+    },
+    {
+      "pieces": 3,
+      "modifiers": [],
+      "procs": [
+        {
+          "type": "ignite",
+          "chance": 0.3,
+          "power": 4
+        }
+      ]
+    },
+    {
+      "pieces": 4,
+      "modifiers": [],
+      "effects": [
+        {
+          "effect": "minecraft:fire_resistance",
+          "amplifier": 0
+        }
+      ]
+    },
+    {
+      "pieces": 5,
+      "modifiers": [
+        {
+          "name": "ashwalker_5_damage",
+          "attribute": "minecraft:generic.attack_damage",
+          "operation": "multiply_total",
+          "value": 0.1
+        },
+        {
+          "name": "ashwalker_5_fire",
+          "attribute": "apothic_attributes:fire_damage",
+          "operation": "addition",
+          "value": 3
+        }
+      ],
+      "procs": [
+        {
+          "type": "reprisal",
+          "chance": 0.2,
+          "power": 0.3
+        }
+      ]
+    }
+  ],
+  "tables": [
+    {
+      "tables": [
+        "minecraft:chests/nether_bridge"
+      ],
+      "chance": 0.05
+    },
+    {
+      "tables": [
+        "minecraft:chests/bastion_other",
+        "minecraft:chests/bastion_hoglin_stable"
+      ],
+      "chance": 0.03
+    },
+    {
+      "tables": [
+        "minecraft:chests/ruined_portal"
+      ],
+      "chance": 0.03
+    }
+  ]
+}

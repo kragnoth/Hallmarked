@@ -1,0 +1,227 @@
+{
+  "name": "hallmarked.set.gilded_duelist",
+  "color": "gold",
+  "chance": {
+    "loot": 0.002,
+    "mob": 0.0005
+  },
+  "pieces": [
+    {
+      "key": "bascinet",
+      "item": "minecraft:golden_helmet",
+      "base_stats": {
+        "armor": 3,
+        "toughness": 2
+      },
+      "durability": 363,
+      "trim": {
+        "pattern": "minecraft:flow",
+        "material": "minecraft:gold"
+      },
+      "modifiers": [
+        {
+          "name": "duelist_helm_crit",
+          "attribute": "apothic_attributes:crit_chance",
+          "operation": "addition",
+          "value": 0.02
+        }
+      ]
+    },
+    {
+      "key": "doublet",
+      "item": "minecraft:leather_chestplate",
+      "base_stats": {
+        "armor": 8,
+        "toughness": 2
+      },
+      "durability": 528,
+      "dye": "#7a1f2b",
+      "trim": {
+        "pattern": "minecraft:flow",
+        "material": "minecraft:gold"
+      },
+      "modifiers": [
+        {
+          "name": "duelist_doublet_dodge",
+          "attribute": "apothic_attributes:dodge_chance",
+          "operation": "addition",
+          "value": 0.02
+        },
+        {
+          "name": "duelist_doublet_speed",
+          "attribute": "minecraft:generic.attack_speed",
+          "operation": "multiply_total",
+          "value": 0.03
+        }
+      ]
+    },
+    {
+      "key": "hose",
+      "item": "minecraft:leather_leggings",
+      "base_stats": {
+        "armor": 6,
+        "toughness": 2
+      },
+      "durability": 495,
+      "dye": "#7a1f2b",
+      "trim": {
+        "pattern": "minecraft:flow",
+        "material": "minecraft:gold"
+      },
+      "modifiers": [
+        {
+          "name": "duelist_hose_speed",
+          "attribute": "minecraft:generic.movement_speed",
+          "operation": "multiply_total",
+          "value": 0.04
+        }
+      ]
+    },
+    {
+      "key": "sabatons",
+      "item": "minecraft:golden_boots",
+      "base_stats": {
+        "armor": 3,
+        "toughness": 2
+      },
+      "durability": 429,
+      "trim": {
+        "pattern": "minecraft:flow",
+        "material": "minecraft:gold"
+      },
+      "modifiers": [
+        {
+          "name": "duelist_boots_speed",
+          "attribute": "minecraft:generic.movement_speed",
+          "operation": "multiply_total",
+          "value": 0.03
+        }
+      ]
+    },
+    {
+      "key": "rapier",
+      "item": "minecraft:golden_sword",
+      "base_stats": {
+        "attack_damage": 6,
+        "attack_speed": -2.0
+      },
+      "durability": 1561,
+      "glint": true,
+      "modifiers": [
+        {
+          "name": "duelist_rapier_crit",
+          "attribute": "apothic_attributes:crit_damage",
+          "operation": "addition",
+          "value": 0.2
+        },
+        {
+          "name": "duelist_rapier_speed",
+          "attribute": "minecraft:generic.attack_speed",
+          "operation": "multiply_total",
+          "value": 0.08
+        }
+      ]
+    }
+  ],
+  "bonuses": [
+    {
+      "pieces": 2,
+      "modifiers": [
+        {
+          "name": "duelist_2_move",
+          "attribute": "minecraft:generic.movement_speed",
+          "operation": "multiply_total",
+          "value": 0.05
+        },
+        {
+          "name": "duelist_2_speed",
+          "attribute": "minecraft:generic.attack_speed",
+          "operation": "multiply_total",
+          "value": 0.05
+        }
+      ]
+    },
+    {
+      "pieces": 3,
+      "modifiers": [
+        {
+          "name": "duelist_3_crit",
+          "attribute": "apothic_attributes:crit_chance",
+          "operation": "addition",
+          "value": 0.05
+        },
+        {
+          "name": "duelist_3_dodge",
+          "attribute": "apothic_attributes:dodge_chance",
+          "operation": "addition",
+          "value": 0.03
+        }
+      ]
+    },
+    {
+      "pieces": 4,
+      "modifiers": [
+        {
+          "name": "duelist_4_crit_damage",
+          "attribute": "apothic_attributes:crit_damage",
+          "operation": "addition",
+          "value": 0.2
+        }
+      ],
+      "procs": [
+        {
+          "type": "leech",
+          "chance": 0.15,
+          "power": 0.1
+        }
+      ]
+    },
+    {
+      "pieces": 5,
+      "modifiers": [
+        {
+          "name": "duelist_5_speed",
+          "attribute": "minecraft:generic.attack_speed",
+          "operation": "multiply_total",
+          "value": 0.1
+        }
+      ],
+      "procs": [
+        {
+          "type": "reprisal",
+          "chance": 0.25,
+          "power": 0.3
+        }
+      ]
+    }
+  ],
+  "tables": [
+    {
+      "tables": [
+        "minecraft:chests/bastion_treasure"
+      ],
+      "chance": 0.04
+    },
+    {
+      "tables": [
+        "minecraft:chests/woodland_mansion"
+      ],
+      "chance": 0.03
+    },
+    {
+      "tables": [
+        "minecraft:chests/end_city_treasure"
+      ],
+      "chance": 0.03
+    },
+    {
+      "tables": [
+        "minecraft:chests/village/village_weaponsmith"
+      ],
+      "chance": 0.01,
+      "pieces": [
+        "rapier"
+      ]
+    }
+  ]
+}

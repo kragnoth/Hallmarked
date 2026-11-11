@@ -85,6 +85,8 @@ public final class Sets {
         if (piece.dye() != null) stack.set(DataComponents.DYED_COLOR, new DyedItemColor(piece.dye(), false));
         if (piece.baseColor() != null) stack.set(DataComponents.BASE_COLOR, piece.baseColor());
         if (piece.glint()) stack.set(DataComponents.ENCHANTMENT_GLINT_OVERRIDE, true);
+        if (piece.fireResistant()) stack.set(DataComponents.FIRE_RESISTANT, net.minecraft.util.Unit.INSTANCE);
+        if (!piece.baseStats().isEmpty()) stack.set(DataComponents.ATTRIBUTE_MODIFIERS, baseModifiers(stack, piece.baseStats()));
         if (piece.trimPattern() != null && piece.trimMaterial() != null) {
             if (access == null && ServerLifecycleHooks.getCurrentServer() != null) access = ServerLifecycleHooks.getCurrentServer().registryAccess();
             if (access != null) {
@@ -97,6 +99,41 @@ public final class Sets {
         }
         Grading.refreshName(stack);
         Durability.apply(stack);
+    }
+
+    /**
+     * The piece's own base stats, under the same modifier ids vanilla uses, so the vanilla tooltip shows them as the
+     * item's stats ("+8 Armor") and nothing doubles up.
+     */
+    private static net.minecraft.world.item.component.ItemAttributeModifiers baseModifiers(ItemStack stack, Map<String, Double> stats) {
+        var b = net.minecraft.world.item.component.ItemAttributeModifiers.builder();
+        var ADD = AttributeModifier.Operation.ADD_VALUE;
+        if (stack.getItem() instanceof net.minecraft.world.item.ArmorItem armor) {
+            var group = net.minecraft.world.entity.EquipmentSlotGroup.bySlot(armor.getEquipmentSlot());
+            ResourceLocation id = ResourceLocation.withDefaultNamespace("armor." + armor.getType().getName());
+            stats.forEach((k, v) -> {
+                switch (k) {
+                    case "armor" -> b.add(net.minecraft.world.entity.ai.attributes.Attributes.ARMOR, new AttributeModifier(id, v, ADD), group);
+                    case "toughness" -> b.add(net.minecraft.world.entity.ai.attributes.Attributes.ARMOR_TOUGHNESS, new AttributeModifier(id, v, ADD), group);
+                    case "knockback_resistance" -> b.add(net.minecraft.world.entity.ai.attributes.Attributes.KNOCKBACK_RESISTANCE, new AttributeModifier(id, v, ADD), group);
+                    default -> {}
+                }
+            });
+        } else {
+            var group = net.minecraft.world.entity.EquipmentSlotGroup.MAINHAND;
+            stats.forEach((k, v) -> {
+                switch (k) {
+                    case "attack_damage" -> b.add(net.minecraft.world.entity.ai.attributes.Attributes.ATTACK_DAMAGE,
+                            new AttributeModifier(net.minecraft.world.item.Item.BASE_ATTACK_DAMAGE_ID, v, ADD), group);
+                    case "attack_speed" -> b.add(net.minecraft.world.entity.ai.attributes.Attributes.ATTACK_SPEED,
+                            new AttributeModifier(net.minecraft.world.item.Item.BASE_ATTACK_SPEED_ID, v, ADD), group);
+                    case "armor" -> b.add(net.minecraft.world.entity.ai.attributes.Attributes.ARMOR,
+                            new AttributeModifier(Hallmarked.id("set_base_armor"), v, ADD), net.minecraft.world.entity.EquipmentSlotGroup.HAND);
+                    default -> {}
+                }
+            });
+        }
+        return b.build();
     }
 
     /** When gear is graded from a source, it may turn out to be a set piece whose base item it already is. */
@@ -239,5 +276,25 @@ public final class Sets {
             if (inst != null && inst.getModifier(d.getKey()) == null) inst.addTransientModifier(d.getValue().mod());
         }
         if (player.getHealth() > player.getMaxHealth()) player.setHealth(player.getMaxHealth());
+        applyEffects(player);
+    }
+
+    /**
+     * Keeps set effects topped up (called every half second). Short durations so they fade within moments of taking
+     * a piece off; night vision gets longer so it never hits its end-of-effect flicker. A stronger or longer effect
+     * from elsewhere (a potion) is left alone.
+     */
+    private static void applyEffects(Player player) {
+        for (Worn w : active(player).values()) {
+            for (GearSet.Bonus b : w.bonuses()) {
+                for (GearSet.Effect e : b.effects()) {
+                    int duration = e.effect().equals(net.minecraft.world.effect.MobEffects.NIGHT_VISION) ? 260 : 60;
+                    var current = player.getEffect(e.effect());
+                    if (current != null && (current.getAmplifier() > e.amplifier()
+                            || (current.getAmplifier() == e.amplifier() && current.getDuration() > duration))) continue;
+                    player.addEffect(new net.minecraft.world.effect.MobEffectInstance(e.effect(), duration, e.amplifier(), true, false, true));
+                }
+            }
+        }
     }
 }

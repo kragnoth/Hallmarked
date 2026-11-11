@@ -8,8 +8,7 @@
   "pieces": [
     {
       "key": "cowl",
-      "item": "minecraft:leather_helmet",
-      "dye": "#3a2458",
+      "item": "minecraft:golden_helmet",
       "trim": {
         "pattern": "minecraft:eye",
         "material": "minecraft:amethyst"

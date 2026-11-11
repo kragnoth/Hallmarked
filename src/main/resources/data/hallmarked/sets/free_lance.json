@@ -46,7 +46,7 @@
     },
     {
       "key": "chausses",
-      "item": "minecraft:chainmail_leggings",
+      "item": "minecraft:leather_leggings",
       "trim": {
         "pattern": "minecraft:rib",
         "material": "minecraft:copper"
@@ -58,7 +58,8 @@
           "operation": "multiply_total",
           "value": 0.03
         }
-      ]
+      ],
+      "dye": "#8a6a44"
     },
     {
       "key": "sabatons",

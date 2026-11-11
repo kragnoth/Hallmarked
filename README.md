@@ -35,8 +35,10 @@ It was built for the **Gearwright's Hollow** modpack.
   Lodestone, FTB Ultimine) only exist when those mods are installed. See [docs/PROCS.md](docs/PROCS.md).
 - **The Mountebank:** a shady villager who sells sealed parcels. Open one to find out what you paid for: cursed junk,
   ordinary gear, or exceptional work that rolls past its normal limits. See [docs/GAMBLING.md](docs/GAMBLING.md).
-- **Named sets:** the Free Lance (melee), the Oathsworn (defense), the Thaumaturge (magic) and the Wayfarer (ranged),
-  with 2, 4 and 5-piece bonuses. Data-driven; any item can be a piece. See [docs/SETS.md](docs/SETS.md).
+- **Named sets:** fourteen of them, from the Free Lance and the Oathsworn to the Ashwalker (swim in lava), the Salvage
+  Diver (mine underwater), the Silent Knife and the Reaver. Pieces mix looks (leather hood, chainmail body, plate boots)
+  and many carry diamond or netherite stats under them. 2 to 5-piece bonuses, effects and procs; data-driven, any item
+  can be a piece. See [docs/SETS.md](docs/SETS.md).
 - **Grade affects durability:** Shoddy x0.75, Journeyman x1.1, Masterwork x1.25, Gearwrought, Unique and Set x1.5
   (the grade's `durability` key).
 - **53 qualities** across tools, bows, shields, armor (per piece) and baubles, ranging from *Worthless* to *Ascended*.

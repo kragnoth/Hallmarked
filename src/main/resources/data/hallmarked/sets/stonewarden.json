@@ -1,0 +1,202 @@
+{
+  "name": "hallmarked.set.stonewarden",
+  "color": "dark_aqua",
+  "chance": {
+    "loot": 0.002,
+    "mob": 0.0005
+  },
+  "pieces": [
+    {
+      "key": "greathelm",
+      "item": "minecraft:iron_helmet",
+      "base_stats": {
+        "armor": 3,
+        "toughness": 2
+      },
+      "durability": 363,
+      "trim": {
+        "pattern": "minecraft:shaper",
+        "material": "minecraft:diamond"
+      },
+      "modifiers": [
+        {
+          "name": "stonewarden_helm_kb",
+          "attribute": "minecraft:generic.knockback_resistance",
+          "operation": "addition",
+          "value": 0.05
+        }
+      ]
+    },
+    {
+      "key": "breastplate",
+      "item": "minecraft:iron_chestplate",
+      "base_stats": {
+        "armor": 8,
+        "toughness": 2
+      },
+      "durability": 528,
+      "trim": {
+        "pattern": "minecraft:shaper",
+        "material": "minecraft:diamond"
+      },
+      "modifiers": [
+        {
+          "name": "stonewarden_breastplate_health",
+          "attribute": "minecraft:generic.max_health",
+          "operation": "addition",
+          "value": 2
+        }
+      ]
+    },
+    {
+      "key": "mail_skirt",
+      "item": "minecraft:chainmail_leggings",
+      "base_stats": {
+        "armor": 6,
+        "toughness": 2
+      },
+      "durability": 495,
+      "trim": {
+        "pattern": "minecraft:shaper",
+        "material": "minecraft:diamond"
+      },
+      "modifiers": [
+        {
+          "name": "stonewarden_skirt_toughness",
+          "attribute": "minecraft:generic.armor_toughness",
+          "operation": "addition",
+          "value": 1
+        }
+      ]
+    },
+    {
+      "key": "boots",
+      "item": "minecraft:iron_boots",
+      "base_stats": {
+        "armor": 3,
+        "toughness": 2
+      },
+      "durability": 429,
+      "trim": {
+        "pattern": "minecraft:shaper",
+        "material": "minecraft:diamond"
+      },
+      "modifiers": [
+        {
+          "name": "stonewarden_boots_step",
+          "attribute": "minecraft:generic.step_height",
+          "operation": "addition",
+          "value": 0.5
+        }
+      ]
+    },
+    {
+      "key": "bearded_axe",
+      "item": "minecraft:iron_axe",
+      "base_stats": {
+        "attack_damage": 8,
+        "attack_speed": -3.0
+      },
+      "durability": 1561,
+      "modifiers": [
+        {
+          "name": "stonewarden_axe_knockback",
+          "attribute": "minecraft:generic.attack_knockback",
+          "operation": "addition",
+          "value": 0.5
+        }
+      ]
+    }
+  ],
+  "bonuses": [
+    {
+      "pieces": 2,
+      "modifiers": [
+        {
+          "name": "stonewarden_2_toughness",
+          "attribute": "minecraft:generic.armor_toughness",
+          "operation": "addition",
+          "value": 1
+        }
+      ]
+    },
+    {
+      "pieces": 3,
+      "modifiers": [
+        {
+          "name": "stonewarden_3_kb",
+          "attribute": "minecraft:generic.knockback_resistance",
+          "operation": "addition",
+          "value": 0.1
+        }
+      ]
+    },
+    {
+      "pieces": 4,
+      "modifiers": [
+        {
+          "name": "stonewarden_4_health",
+          "attribute": "minecraft:generic.max_health",
+          "operation": "addition",
+          "value": 4
+        },
+        {
+          "name": "stonewarden_4_damage",
+          "attribute": "minecraft:generic.attack_damage",
+          "operation": "multiply_total",
+          "value": 0.05
+        }
+      ]
+    },
+    {
+      "pieces": 5,
+      "modifiers": [
+        {
+          "name": "stonewarden_5_resist",
+          "attribute": "hallmarked:damage_resistance",
+          "operation": "multiply_total",
+          "value": 0.05
+        }
+      ],
+      "procs": [
+        {
+          "type": "stagger",
+          "chance": 0.2,
+          "duration": 60
+        },
+        {
+          "type": "reprisal",
+          "chance": 0.15,
+          "power": 0.25
+        }
+      ]
+    }
+  ],
+  "tables": [
+    {
+      "tables": [
+        "minecraft:chests/abandoned_mineshaft"
+      ],
+      "chance": 0.03
+    },
+    {
+      "tables": [
+        "minecraft:chests/stronghold_corridor",
+        "minecraft:chests/stronghold_crossing"
+      ],
+      "chance": 0.03
+    },
+    {
+      "tables": [
+        "minecraft:chests/ancient_city"
+      ],
+      "chance": 0.05
+    },
+    {
+      "tables": [
+        "minecraft:chests/trial_chambers/reward*"
+      ],
+      "chance": 0.03
+    }
+  ]
+}

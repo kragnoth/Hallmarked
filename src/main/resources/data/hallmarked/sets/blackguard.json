@@ -1,0 +1,213 @@
+{
+  "name": "hallmarked.set.blackguard",
+  "color": "dark_red",
+  "chance": {
+    "loot": 0.002,
+    "mob": 0.0005
+  },
+  "pieces": [
+    {
+      "key": "hood",
+      "item": "minecraft:leather_helmet",
+      "base_stats": {
+        "armor": 3,
+        "toughness": 3,
+        "knockback_resistance": 0.1
+      },
+      "durability": 407,
+      "dye": "#1b1a1f",
+      "trim": {
+        "pattern": "minecraft:snout",
+        "material": "minecraft:netherite"
+      },
+      "fire_resistant": true,
+      "modifiers": [
+        {
+          "name": "blackguard_hood_pierce",
+          "attribute": "apothic_attributes:armor_pierce",
+          "operation": "addition",
+          "value": 1
+        }
+      ]
+    },
+    {
+      "key": "hauberk",
+      "item": "minecraft:chainmail_chestplate",
+      "base_stats": {
+        "armor": 8,
+        "toughness": 3,
+        "knockback_resistance": 0.1
+      },
+      "durability": 592,
+      "trim": {
+        "pattern": "minecraft:snout",
+        "material": "minecraft:netherite"
+      },
+      "fire_resistant": true,
+      "modifiers": [
+        {
+          "name": "blackguard_hauberk_health",
+          "attribute": "minecraft:generic.max_health",
+          "operation": "addition",
+          "value": 2
+        }
+      ]
+    },
+    {
+      "key": "chausses",
+      "item": "minecraft:chainmail_leggings",
+      "base_stats": {
+        "armor": 6,
+        "toughness": 3,
+        "knockback_resistance": 0.1
+      },
+      "durability": 555,
+      "trim": {
+        "pattern": "minecraft:snout",
+        "material": "minecraft:netherite"
+      },
+      "fire_resistant": true,
+      "modifiers": [
+        {
+          "name": "blackguard_chausses_speed",
+          "attribute": "minecraft:generic.movement_speed",
+          "operation": "multiply_total",
+          "value": 0.03
+        }
+      ]
+    },
+    {
+      "key": "sabatons",
+      "item": "minecraft:iron_boots",
+      "base_stats": {
+        "armor": 3,
+        "toughness": 3,
+        "knockback_resistance": 0.1
+      },
+      "durability": 481,
+      "trim": {
+        "pattern": "minecraft:snout",
+        "material": "minecraft:netherite"
+      },
+      "fire_resistant": true,
+      "modifiers": [
+        {
+          "name": "blackguard_sabatons_damage",
+          "attribute": "minecraft:generic.attack_damage",
+          "operation": "addition",
+          "value": 0.5
+        }
+      ]
+    },
+    {
+      "key": "headsman_axe",
+      "item": "minecraft:iron_axe",
+      "base_stats": {
+        "attack_damage": 9,
+        "attack_speed": -3.0
+      },
+      "durability": 2031,
+      "fire_resistant": true,
+      "modifiers": [
+        {
+          "name": "blackguard_axe_shred",
+          "attribute": "apothic_attributes:armor_shred",
+          "operation": "addition",
+          "value": 0.05
+        },
+        {
+          "name": "blackguard_axe_damage",
+          "attribute": "minecraft:generic.attack_damage",
+          "operation": "multiply_total",
+          "value": 0.05
+        }
+      ]
+    }
+  ],
+  "bonuses": [
+    {
+      "pieces": 2,
+      "modifiers": [
+        {
+          "name": "blackguard_2_damage",
+          "attribute": "minecraft:generic.attack_damage",
+          "operation": "multiply_total",
+          "value": 0.05
+        }
+      ]
+    },
+    {
+      "pieces": 3,
+      "modifiers": [],
+      "procs": [
+        {
+          "type": "leech",
+          "chance": 0.2,
+          "power": 0.15
+        }
+      ]
+    },
+    {
+      "pieces": 4,
+      "modifiers": [
+        {
+          "name": "blackguard_4_speed",
+          "attribute": "minecraft:generic.attack_speed",
+          "operation": "multiply_total",
+          "value": 0.1
+        },
+        {
+          "name": "blackguard_4_health",
+          "attribute": "minecraft:generic.max_health",
+          "operation": "addition",
+          "value": 4
+        }
+      ]
+    },
+    {
+      "pieces": 5,
+      "modifiers": [
+        {
+          "name": "blackguard_5_pierce",
+          "attribute": "apothic_attributes:armor_pierce",
+          "operation": "addition",
+          "value": 2
+        }
+      ],
+      "procs": [
+        {
+          "type": "reaper",
+          "chance": 1.0,
+          "power": 4
+        },
+        {
+          "type": "bleed",
+          "chance": 0.2,
+          "power": 1.5,
+          "duration": 80
+        }
+      ]
+    }
+  ],
+  "tables": [
+    {
+      "tables": [
+        "minecraft:chests/nether_bridge"
+      ],
+      "chance": 0.04
+    },
+    {
+      "tables": [
+        "minecraft:chests/bastion_treasure"
+      ],
+      "chance": 0.06
+    },
+    {
+      "tables": [
+        "minecraft:chests/bastion_other",
+        "minecraft:chests/bastion_bridge"
+      ],
+      "chance": 0.03
+    }
+  ]
+}

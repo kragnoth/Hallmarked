@@ -76,8 +76,7 @@
     },
     {
       "key": "boots",
-      "item": "minecraft:leather_boots",
-      "dye": "#3f5a2b",
+      "item": "minecraft:chainmail_boots",
       "trim": {
         "pattern": "minecraft:wayfinder",
         "material": "minecraft:emerald"
