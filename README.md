@@ -89,7 +89,9 @@ marked *(suited to this tool)* in the tooltip. Axes, bows, armor and baubles are
 Grades live in `data/<namespace>/grades/*.json`, affixes in `data/<namespace>/affixes/*.json` and fusions in `data/<namespace>/fusions/*.json`.
 See [docs/GRADES.md](docs/GRADES.md) for their formats.
 
-Item tags (`hallmarked:equipment/*`) decide what counts as equipment. To dump every default into editable files,
+Item tags (`hallmarked:equipment/*`) decide what counts as equipment. Baubles are opt-in through `hallmarked:equipment/bauble`
+(by default the ring, necklace, charm, bracelet, belt and hands Curios slots), so backpacks, terminals and other gear worn in
+Curios slots stay unmarked. Horse and wolf armor is never marked. To dump every default into editable files,
 run `/hallmarked defaults rebuild world` (or `kubejs`); it backs up your existing files first.
 
 ## Config

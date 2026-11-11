@@ -12,12 +12,6 @@ import top.theillusivec4.curios.api.CuriosApi;
 public final class CuriosCompat {
     private CuriosCompat() {}
 
-    /** True if the item sits in any {@code curios:*} item tag. */
-    public static boolean isCurio(ItemStack stack) {
-        if (!Hallmarked.curiosLoaded()) return false;
-        return stack.getTags().anyMatch(t -> t.location().getNamespace().equals("curios"));
-    }
-
     /** Stacks currently worn in Curios slots, in slot order (index = position in the list). */
     public static List<ItemStack> equipped(LivingEntity entity) {
         if (!Hallmarked.curiosLoaded()) return List.of();

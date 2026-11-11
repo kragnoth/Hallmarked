@@ -1,0 +1,13 @@
+{
+  "replace": false,
+  "values": [
+    "hallmarked:emerald_ring",
+    "hallmarked:emerald_amulet",
+    { "id": "#curios:ring", "required": false },
+    { "id": "#curios:necklace", "required": false },
+    { "id": "#curios:charm", "required": false },
+    { "id": "#curios:bracelet", "required": false },
+    { "id": "#curios:belt", "required": false },
+    { "id": "#curios:hands", "required": false }
+  ]
+}

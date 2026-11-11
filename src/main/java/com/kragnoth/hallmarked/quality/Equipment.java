@@ -36,6 +36,12 @@ public final class Equipment {
     public static final TagKey<Item> LEGGINGS = tag("leggings");
     public static final TagKey<Item> BOOTS = tag("boots");
     public static final TagKey<Item> EXCLUDED = tag("excluded");
+    /**
+     * Curios that count as baubles. Opt-in by tag: Curios puts backpacks, terminals, jetpacks and crafting tables in
+     * slots too, and those shouldn't roll jewellery stats. Defaults: our own items plus the ring, necklace, charm,
+     * bracelet, belt and hands slot tags.
+     */
+    public static final TagKey<Item> BAUBLE = tag("bauble");
     /** Tool roles, used by an affix's "for" key. Tags first; untagged items fall back to their class. */
     public static final TagKey<Item> WEAPON = tag("weapon");
     public static final TagKey<Item> DIGGER = tag("digger");
@@ -73,13 +79,15 @@ public final class Equipment {
     @Nullable
     private static Category compute(ItemStack stack) {
         if (stack.is(EXCLUDED)) return null;
-        if (CuriosCompat.isCurio(stack)) return Category.BAUBLE;
+        // Horse and wolf armor: worn by animals in the body slot, where a player's marks can't apply.
+        if (stack.getItem() instanceof net.minecraft.world.item.AnimalArmorItem) return null;
 
         // 1. Tags
         if (stack.is(TOOL)) return Category.TOOL;
         if (stack.is(BOW)) return Category.BOW;
         if (stack.is(SHIELD)) return Category.SHIELD;
         if (stack.is(HELMET) || stack.is(CHESTPLATE) || stack.is(LEGGINGS) || stack.is(BOOTS)) return Category.ARMOR;
+        if (stack.is(BAUBLE)) return Category.BAUBLE;
 
         // 2. Fallback for untagged items
         Item item = stack.getItem();
@@ -116,7 +124,8 @@ public final class Equipment {
                 case HELMET -> Category.HELMET;
                 case CHESTPLATE -> Category.CHESTPLATE;
                 case LEGGINGS -> Category.LEGGINGS;
-                default -> Category.BOOTS;
+                case BOOTS -> Category.BOOTS;
+                default -> null; // BODY (animal armor)
             };
         }
         if (stack.getItem() instanceof Equipable eq) {

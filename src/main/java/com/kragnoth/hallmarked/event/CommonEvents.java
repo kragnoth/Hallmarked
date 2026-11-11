@@ -7,6 +7,7 @@ import com.kragnoth.hallmarked.grade.Grading;
 import com.kragnoth.hallmarked.grade.Marks;
 import com.kragnoth.hallmarked.network.SyncQualitiesPayload;
 import com.kragnoth.hallmarked.quality.Qualities;
+import com.kragnoth.hallmarked.quality.Equipment;
 import com.kragnoth.hallmarked.quality.Reforging;
 import com.kragnoth.hallmarked.registry.HMRegistries;
 import java.util.HashMap;
@@ -189,6 +190,16 @@ public final class CommonEvents {
      */
     private static void processFirstSeen(ServerPlayer player, ItemStack stack, boolean autoQuality, double chance, boolean grading) {
         Reforging.migrateLegacy(stack);
+        // No longer equipment (now excluded, or a curio that isn't a bauble): drop the marks so a stale name and
+        // dead stats don't linger. Inlays and seals are kept, since they cost the player something.
+        if ((stack.has(HMRegistries.GRADE.get()) || stack.has(HMRegistries.QUALITY.get())) && Equipment.categoryOf(stack) == null) {
+            stack.remove(HMRegistries.GRADE.get());
+            stack.remove(HMRegistries.QUALITY.get());
+            stack.remove(HMRegistries.UNAPPRAISED.get());
+            stack.remove(HMRegistries.UNIQUE.get());
+            Grading.refreshName(stack);
+            return;
+        }
         // Appraisal switched off in the config: reveal anything still sealed from before.
         if (Grading.isUnappraised(stack) && !HallmarkedConfig.APPRAISAL.get()) Grading.appraise(stack, player);
 
