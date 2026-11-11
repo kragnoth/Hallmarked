@@ -17,6 +17,10 @@ It was built for the **Gearwright's Hollow** modpack.
   +1 Sharpness, Lapis gives +1 Fortune and Looting, Copper gives +1 Unbreaking, and so on. The number of slots
   depends on the grade, with Common gear as the canvas. A rare **Gearwright's Seal** (made with a Nether Star or a
   Dragon Egg) adds one permanent extra inlay that can repeat one already present. See [docs/INLAYS.md](docs/INLAYS.md).
+- **Found gear feels found:** Masterwork rolls play a sound and show an action-bar line, and Gearwrought finds are
+  announced to the whole server. Mobs spawn with graded gear and fight with it. Masterwork and Gearwrought drops, and the mobs carrying
+  them, show Diablo-style loot beams, and those mobs get a title like *"Zombie, Bearer of Grim Ledger"*. Tooltips stay compact, with Shift
+  for the full stats. Stamps and Seals also turn up in structure chests.
 - **53 qualities** across tools, bows, shields, armor (per piece) and baubles, ranging from *Worthless* to *Ascended*.
 - **Auto-marking:** the first time a piece of equipment enters your inventory, it has a chance (50 % by default) to roll a quality.
 - **Assay Anvil:** place equipment and a material in it, then strike the hammer to re-roll the mark. Valid materials are the
@@ -64,7 +68,8 @@ run `/hallmarked defaults rebuild world` (or `kubejs`); it backs up your existin
 `config/hallmarked-common.toml` has these options. Exclusions use the `hallmarked:equipment/excluded` item tag, and reforge
 materials are recipes; both sync to clients, unlike the config.
 - `AutoReforge`, `AutoReforgeChance`
-- `Grading.Enabled`, `Grading.LuckFactor`
+- `Grading.Enabled`, `Grading.LuckFactor`, `Grading.MobEquipment`
+- `hallmarked-client.toml`: `ItemBeams`, `MobBeams`, `MobTitles`, `Range`
 - `MaxDamageResistance`
 
 ## Building

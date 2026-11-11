@@ -13,6 +13,7 @@ public final class HallmarkedConfig {
     public static final ModConfigSpec.DoubleValue MAX_DAMAGE_RESISTANCE;
     public static final ModConfigSpec.BooleanValue GRADING;
     public static final ModConfigSpec.DoubleValue LUCK_FACTOR;
+    public static final ModConfigSpec.BooleanValue MOB_EQUIPMENT;
 
     static {
         ModConfigSpec.Builder b = new ModConfigSpec.Builder();
@@ -39,6 +40,10 @@ public final class HallmarkedConfig {
                 .comment("How strongly the Luck attribute shifts grade odds. Each grade's weight is multiplied by",
                         "(1 + luck * LuckFactor * luck_scaling); luck_scaling is set per grade (negative for Shoddy).")
                 .defineInRange("LuckFactor", 0.15, 0.0, 10.0);
+        MOB_EQUIPMENT = b
+                .comment("If true, equipment mobs spawn with is graded (and may get a quality) when they enter the world,",
+                        "using the grades' \"mob\" weights. Mobs fight with those stats, and drop graded gear.")
+                .define("MobEquipment", true);
         b.pop();
 
         b.push("Balance");

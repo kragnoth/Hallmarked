@@ -32,6 +32,12 @@ A grade's `inlay_slots` sets how many regular inlays an item of that grade can t
 
   Any item in the `hallmarked:seal_templates` tag works as a Seal.
 
+## Finding them
+Both templates are also added to loot through NeoForge `add_table` modifiers in `data/hallmarked/loot_modifiers/`:
+* **Smith's Stamps** (1–3, about a 40 % chance): village weaponsmith, toolsmith and armorer chests, dungeons, mineshafts
+  and pillager outposts.
+* **Gearwright's Seal** (about a 7 % chance): ancient city, end city treasure, bastion treasure and woodland mansion chests.
+
 ## Default inlays (16)
 | Material | Inlay | Applies to | Effect |
 |---|---|---|---|

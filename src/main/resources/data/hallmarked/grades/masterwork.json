@@ -18,7 +18,15 @@
   "luck_scaling": 2.0,
   "weights": {
     "crafted": 7,
-    "loot": 19
+    "loot": 19,
+    "mob": 13
   },
-  "inlay_slots": 1
+  "inlay_slots": 1,
+  "announce": {
+    "sound": "minecraft:entity.player.levelup",
+    "pitch": 1.4,
+    "scope": "player"
+  },
+  "beam": true,
+  "champion": true
 }

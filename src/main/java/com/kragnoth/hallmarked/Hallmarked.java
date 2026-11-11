@@ -23,6 +23,7 @@ public final class Hallmarked {
         HMRegistries.register(modBus);
         modBus.addListener(HallmarkedNetwork::register);
         container.registerConfig(ModConfig.Type.COMMON, HallmarkedConfig.SPEC);
+        container.registerConfig(ModConfig.Type.CLIENT, com.kragnoth.hallmarked.config.HallmarkedClientConfig.SPEC);
 
         if (ModList.get().isLoaded("bettercombat")) {
             modBus.addListener((FMLClientSetupEvent e) -> e.enqueueWork(BetterCombatCompat::init));

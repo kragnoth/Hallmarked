@@ -18,7 +18,8 @@
   "luck_scaling": 1.0,
   "weights": {
     "crafted": 23,
-    "loot": 36
+    "loot": 36,
+    "mob": 30
   },
   "inlay_slots": 1
 }

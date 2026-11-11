@@ -186,5 +186,9 @@
   "tooltip.hallmarked.seal": "Smithing template: adds one permanent inlay beyond the normal limit. May repeat an inlay already present.",
   "jei.hallmarked.inlay": "Inlays",
   "jei.hallmarked.inlay.slots": "Slots: Common 2, Journeyman 1, Masterwork 1",
-  "jei.hallmarked.seal.info": "A Gearwright's Seal in the smithing template slot applies any inlay as a permanent bonus, regardless of free slots and even if the item already has that inlay. One per item; the grindstone won't remove it."
+  "jei.hallmarked.seal.info": "A Gearwright's Seal in the smithing template slot applies any inlay as a permanent bonus, regardless of free slots and even if the item already has that inlay. One per item; the grindstone won't remove it.",
+  "tooltip.hallmarked.shift": "Hold Shift for details",
+  "hallmarked.announce.found": "%s: %s",
+  "hallmarked.announce.server": "%s found a %s piece: %s",
+  "hallmarked.mob.bearer": "%s, Bearer of %s"
 }

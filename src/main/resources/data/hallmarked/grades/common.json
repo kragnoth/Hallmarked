@@ -18,7 +18,8 @@
   "luck_scaling": 0.0,
   "weights": {
     "crafted": 55.5,
-    "loot": 36
+    "loot": 36,
+    "mob": 45
   },
   "inlay_slots": 2,
   "inlay_tint": "#C87533"

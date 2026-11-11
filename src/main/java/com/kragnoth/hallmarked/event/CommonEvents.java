@@ -141,6 +141,26 @@ public final class CommonEvents {
         }
     }
 
+    /**
+     * Mob gear: graded when the mob first enters the world (after its spawn equipment is in place, which
+     * FinalizeSpawnEvent is too early for). Only ungraded stacks are touched, so reloading a chunk changes nothing.
+     */
+    @SubscribeEvent
+    public static void onEntityJoin(net.neoforged.neoforge.event.entity.EntityJoinLevelEvent event) {
+        if (event.getLevel().isClientSide() || !(event.getEntity() instanceof net.minecraft.world.entity.Mob mob)) return;
+        if (!HallmarkedConfig.GRADING.get() || !HallmarkedConfig.MOB_EQUIPMENT.get()) return;
+        var ctx = new Grading.Context(null, event.getLevel(), mob.position());
+        for (net.minecraft.world.entity.EquipmentSlot slot : net.minecraft.world.entity.EquipmentSlot.values()) {
+            ItemStack stack = mob.getItemBySlot(slot);
+            if (stack.isEmpty() || stack.has(HMRegistries.GRADE.get()) || !Grading.canGrade(stack)) continue;
+            Grading.grade(stack, Grading.SOURCE_MOB, 0.0, mob.getRandom(), ctx);
+            if (HallmarkedConfig.AUTO_REFORGE.get() && !stack.has(HMRegistries.QUALITY.get()) && Reforging.isEligible(stack)) {
+                stack.set(HMRegistries.ROLLED.get(), true);
+                if (mob.getRandom().nextDouble() < HallmarkedConfig.AUTO_REFORGE_CHANCE.get()) Reforging.reforge(stack, mob.getRandom());
+            }
+        }
+    }
+
     /** Tags can change on /reload; equipment categories are cached per item. */
     @SubscribeEvent
     public static void onTagsUpdated(TagsUpdatedEvent event) {

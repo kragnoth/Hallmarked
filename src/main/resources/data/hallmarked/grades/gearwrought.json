@@ -18,7 +18,15 @@
   "luck_scaling": 3.0,
   "weights": {
     "crafted": 0.5,
-    "loot": 3
+    "loot": 3,
+    "mob": 2
   },
-  "inlay_slots": 0
+  "inlay_slots": 0,
+  "announce": {
+    "sound": "minecraft:ui.toast.challenge_complete",
+    "pitch": 1.0,
+    "scope": "server"
+  },
+  "beam": true,
+  "champion": true
 }

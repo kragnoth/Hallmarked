@@ -33,6 +33,7 @@ public final class Grading {
 
     public static final String SOURCE_CRAFTED = "crafted";
     public static final String SOURCE_LOOT = "loot";
+    public static final String SOURCE_MOB = "mob";
 
     @Nullable
     public static GradeData dataOf(ItemStack stack) {
@@ -165,7 +166,24 @@ public final class Grading {
         GradeData result = event.getResult() != null ? event.getResult() : rolled; // never leave an item ungraded (would re-roll forever)
         stack.set(HMRegistries.GRADE.get(), result);
         refreshName(stack);
+        Grade finalGrade = GRADES.get(result.grade());
+        if (finalGrade != null && finalGrade.announce() != null && ctx.player() instanceof net.minecraft.server.level.ServerPlayer sp) {
+            announce(sp, stack, finalGrade);
+        }
         return true;
+    }
+
+    /** Sound + action bar for the finder; server-wide grades also get a chat line for everyone. */
+    private static void announce(net.minecraft.server.level.ServerPlayer player, ItemStack stack, Grade g) {
+        Grade.Announce a = g.announce();
+        net.minecraft.core.registries.BuiltInRegistries.SOUND_EVENT.getHolder(a.sound()).ifPresent(sound ->
+                player.playNotifySound(sound.value(), net.minecraft.sounds.SoundSource.PLAYERS, 1.0F, a.pitch()));
+        Component gradeName = Component.translatable(g.name()).withStyle(g.color());
+        player.displayClientMessage(Component.translatable("hallmarked.announce.found", gradeName, stack.getHoverName()), true);
+        if (a.serverWide() && player.getServer() != null) {
+            player.getServer().getPlayerList().broadcastSystemMessage(
+                    Component.translatable("hallmarked.announce.server", player.getDisplayName(), gradeName, stack.getHoverName()), false);
+        }
     }
 
     /** Rolls affixes and title words for a given grade without stamping anything. */

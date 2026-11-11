@@ -77,6 +77,12 @@ public final class ClientEvents {
             List<Marks.Entry> entries = Marks.of(stack);
             List<Component> block = new ArrayList<>();
             boolean advanced = e.getFlags().isAdvanced();
+            // Compact by default (names only); hold Shift for the full stat blocks.
+            if (!net.minecraft.client.gui.screens.Screen.hasShiftDown()) {
+                compact(block, stack, qualityName, grade, inlays, sealed);
+                insert(e, stack, grade, block);
+                return;
+            }
 
             // Quality block
             if (qualityName != null) {
@@ -103,6 +109,11 @@ public final class ClientEvents {
                 if (sealed != null) addInlay(block, entries, sealed, Marks.SEALED_INDEX, true);
             }
 
+            insert(e, stack, grade, block);
+        }
+
+        private static void insert(ItemTooltipEvent e, ItemStack stack, Grade grade, List<Component> block) {
+            boolean advanced = e.getFlags().isAdvanced();
             List<Component> tip = e.getToolTip();
             // Titled items show their base item under the title, Diablo-style.
             if (grade != null && grade.titled() && !tip.isEmpty()) {
@@ -117,6 +128,64 @@ public final class ClientEvents {
                 insertAt = Math.max(1, insertAt);
             }
             tip.addAll(insertAt, block);
+        }
+
+        /** One line per layer: quality, grade with affix/fusion names, inlays. */
+        private static void compact(List<Component> block, ItemStack stack, String qualityName, Grade grade,
+                                    List<Inlay> inlays, Inlay sealed) {
+            block.add(Component.empty());
+            if (qualityName != null) {
+                Quality q = Reforging.qualityOf(stack);
+                block.add(Component.translatable("tooltip.hallmarked.quality").withStyle(ChatFormatting.GRAY)
+                        .append(Component.translatable(qualityName).withStyle(q != null ? q.color() : ChatFormatting.GRAY)));
+            }
+            if (grade != null && !grade.hidden()) {
+                MutableComponent line = Component.translatable(grade.name()).withStyle(grade.color());
+                List<Component> names = affixNames(stack);
+                if (!names.isEmpty()) {
+                    line.append(Component.literal(": ").withStyle(ChatFormatting.DARK_GRAY));
+                    for (int i = 0; i < names.size(); i++) {
+                        if (i > 0) line.append(Component.literal(", ").withStyle(ChatFormatting.DARK_GRAY));
+                        line.append(names.get(i));
+                    }
+                }
+                block.add(line);
+            }
+            if (!inlays.isEmpty() || sealed != null) {
+                MutableComponent line = Component.translatable("tooltip.hallmarked.inlays", Inlays.used(stack), Inlays.slots(stack))
+                        .withStyle(s -> s.withColor(Inlay.COLOR));
+                line.append(Component.literal(": ").withStyle(ChatFormatting.DARK_GRAY));
+                for (int i = 0; i < inlays.size(); i++) {
+                    if (i > 0) line.append(Component.literal(", ").withStyle(ChatFormatting.DARK_GRAY));
+                    line.append(Component.translatable(inlays.get(i).name()).withStyle(s -> s.withColor(Inlay.COLOR)));
+                }
+                if (sealed != null) {
+                    if (!inlays.isEmpty()) line.append(Component.literal(", ").withStyle(ChatFormatting.DARK_GRAY));
+                    line.append(Component.translatable(sealed.name()).withStyle(ChatFormatting.GOLD));
+                }
+                block.add(line);
+            }
+            block.add(Component.translatable("tooltip.hallmarked.shift").withStyle(ChatFormatting.DARK_GRAY));
+        }
+
+        /** Fusion names stand in for their two parts; flaws in red, the rest gray. */
+        private static List<Component> affixNames(ItemStack stack) {
+            List<Component> out = new ArrayList<>();
+            var d = Grading.dataOf(stack);
+            if (d == null) return out;
+            var fused = Grading.fusions(d);
+            for (int i = 0; i < d.affixes().size(); i++) {
+                var f = Grading.fusedAt(fused, i);
+                if (f != null) {
+                    if (f.first() == i) out.add(Component.translatable(f.fusion().name()).withStyle(ChatFormatting.DARK_AQUA));
+                    continue;
+                }
+                var a = Grading.AFFIXES.get(d.affixes().get(i).affix());
+                if (a == null) continue;
+                out.add(Component.translatable(a.name()).withStyle(a.type() == com.kragnoth.hallmarked.grade.Affix.Type.FLAW
+                        ? ChatFormatting.RED : ChatFormatting.GRAY));
+            }
+            return out;
         }
 
         private static void addLines(List<Component> block, List<Marks.Entry> all, Marks.Origin origin, boolean advanced,
