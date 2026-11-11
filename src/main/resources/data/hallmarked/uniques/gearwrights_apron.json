@@ -6,7 +6,8 @@
   },
   "chance": {
     "loot": 0.01,
-    "mob": 0.002
+    "mob": 0.002,
+    "gamble": 0.02
   },
   "chestplate": {
     "modifiers": [

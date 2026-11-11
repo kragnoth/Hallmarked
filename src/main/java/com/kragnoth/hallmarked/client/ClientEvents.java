@@ -114,11 +114,17 @@ public final class ClientEvents {
                         block.add(Component.literal(" ").append(Component.translatable("tooltip.hallmarked.inlay_enchant", ench.getValue(), enchantmentName(ench.getKey())))
                                 .withStyle(ChatFormatting.BLUE));
                     }
+                } else if (com.kragnoth.hallmarked.sets.Sets.defOf(stack) != null) {
+                    addLines(block, entries, Marks.Origin.SET, advanced, List.of());
                 } else {
+                    if (com.kragnoth.hallmarked.gamble.Gamble.isExceptional(stack)) {
+                        block.add(Component.translatable("tooltip.hallmarked.exceptional").withStyle(ChatFormatting.GOLD));
+                    }
                     addLines(block, entries, Marks.Origin.AFFIX, advanced, Grading.fusions(Grading.dataOf(stack)));
                     addProcLines(block, stack);
                 }
             }
+            setBlock(block, stack, true);
 
             // Inlay block
             if (!inlays.isEmpty() || sealed != null) {
@@ -136,7 +142,8 @@ public final class ClientEvents {
             boolean advanced = e.getFlags().isAdvanced();
             List<Component> tip = e.getToolTip();
             // Titled items show their base item under the title, Diablo-style.
-            if (grade != null && (grade.titled() || Grading.uniqueOf(stack) != null) && !Grading.isUnappraised(stack) && !tip.isEmpty()) {
+            if (grade != null && (grade.titled() || Grading.uniqueOf(stack) != null || com.kragnoth.hallmarked.sets.Sets.defOf(stack) != null)
+                    && !Grading.isUnappraised(stack) && !tip.isEmpty()) {
                 tip.add(1, Grading.baseName(stack).copy().withStyle(ChatFormatting.GRAY));
             }
 
@@ -175,7 +182,11 @@ public final class ClientEvents {
                     }
                 }
                 block.add(line);
+                if (com.kragnoth.hallmarked.gamble.Gamble.isExceptional(stack)) {
+                    block.add(Component.translatable("tooltip.hallmarked.exceptional").withStyle(ChatFormatting.GOLD));
+                }
             }
+            setBlock(block, stack, false);
             if (!inlays.isEmpty() || sealed != null) {
                 MutableComponent line = Component.translatable("tooltip.hallmarked.inlays", Inlays.used(stack), Inlays.slots(stack))
                         .withStyle(s -> s.withColor(Inlay.COLOR));
@@ -209,6 +220,7 @@ public final class ClientEvents {
                 if (a == null) continue;
                 out.add(Component.translatable(a.name()).withStyle(switch (a.type()) {
                     case FLAW -> ChatFormatting.RED;
+                    case CURSE -> ChatFormatting.DARK_RED;
                     case FORBIDDEN -> ChatFormatting.DARK_PURPLE;
                     default -> ChatFormatting.GRAY;
                 }));
@@ -287,12 +299,65 @@ public final class ClientEvents {
                 if (a == null) continue;
                 for (var proc : a.procs()) {
                     double power = proc.power(r.roll());
-                    boolean pct = switch (proc.type()) { case LEECH, CLEAVE, REPRISAL -> true; default -> false; };
+                    boolean pct = switch (proc.type()) { case LEECH, CLEAVE, REPRISAL, BACKLASH, FESTER -> true; default -> false; };
                     String powerText = pct ? FMT.format(power * 100) : FMT.format(power);
+                    Component target = proc.target() == null
+                            ? Component.translatable("hallmarked.target.any")
+                            : Component.translatableWithFallback("hallmarked.target." + proc.target().location().getPath().replace('/', '.'),
+                                    proc.target().location().getPath());
                     block.add(Component.literal(" ").append(Component.translatable("hallmarked.proc." + proc.type().id(),
-                            FMT.format(proc.chance(r.roll()) * 100), powerText, FMT.format(proc.duration() / 20.0)))
-                            .withStyle(ChatFormatting.DARK_AQUA));
+                            FMT.format(proc.chance(r.roll()) * 100), powerText, FMT.format(proc.duration() / 20.0), target))
+                            .withStyle(a.type() == com.kragnoth.hallmarked.grade.Affix.Type.CURSE ? ChatFormatting.DARK_RED : ChatFormatting.DARK_AQUA));
                 }
+            }
+        }
+
+        /**
+         * The set a piece belongs to: "Regalia of the Oathsworn (3/5)", then (full view) each piece, worn or not,
+         * then every bonus, lit when the worn count reaches it.
+         */
+        private static void setBlock(List<Component> block, ItemStack stack, boolean full) {
+            var set = com.kragnoth.hallmarked.sets.Sets.setOf(stack);
+            if (set == null) return;
+            var player = net.minecraft.client.Minecraft.getInstance().player;
+            java.util.Set<String> worn = player == null ? java.util.Set.of()
+                    : com.kragnoth.hallmarked.sets.Sets.worn(player).getOrDefault(set.name(), java.util.Set.of());
+            int n = worn.size();
+            block.add(Component.empty());
+            block.add(Component.translatable(set.name()).withStyle(set.color())
+                    .append(Component.literal(" (" + n + "/" + set.pieces().size() + ")").withStyle(ChatFormatting.DARK_GRAY)));
+            if (full) {
+                for (var piece : set.pieces()) {
+                    boolean on = worn.contains(piece.key());
+                    block.add(Component.literal(on ? " \u2714 " : "   ").append(Component.translatable(piece.name()))
+                            .withStyle(on ? set.color() : ChatFormatting.DARK_GRAY));
+                }
+            }
+            for (var bonus : set.bonuses()) {
+                boolean on = n >= bonus.pieces();
+                ChatFormatting c = on ? ChatFormatting.GREEN : ChatFormatting.DARK_GRAY;
+                MutableComponent line = Component.literal(" (" + bonus.pieces() + ") ").withStyle(c);
+                boolean first = true;
+                for (var m : bonus.modifiers()) {
+                    var attr = m.attribute();
+                    if (attr.isEmpty()) continue;
+                    if (!first) line.append(Component.literal(", ").withStyle(c));
+                    first = false;
+                    var mod = new AttributeModifier(com.kragnoth.hallmarked.Hallmarked.id("preview"), m.min(), m.operation());
+                    line.append(attr.get().value().toComponent(mod, TooltipFlag.NORMAL).copy().withStyle(c));
+                }
+                for (var proc : bonus.procs()) {
+                    if (!first) line.append(Component.literal(", ").withStyle(c));
+                    first = false;
+                    double power = proc.power(1f);
+                    boolean pct = switch (proc.type()) { case LEECH, CLEAVE, REPRISAL, BACKLASH, FESTER -> true; default -> false; };
+                    Component target = proc.target() == null ? Component.translatable("hallmarked.target.any")
+                            : Component.translatableWithFallback("hallmarked.target." + proc.target().location().getPath().replace('/', '.'),
+                                    proc.target().location().getPath());
+                    line.append(Component.translatable("hallmarked.proc." + proc.type().id(), FMT.format(proc.chance(1f) * 100),
+                            pct ? FMT.format(power * 100) : FMT.format(power), FMT.format(proc.duration() / 20.0), target).withStyle(c));
+                }
+                block.add(line);
             }
         }
 

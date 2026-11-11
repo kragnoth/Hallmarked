@@ -83,3 +83,12 @@ Fusion: *of the Diver* (of the Deep + of Sure Footing).
 
 A piece-specific section (`helmet`, `chestplate`, `leggings`, `boots`) now wins over a generic `armor` section in the same file.
 
+## Targets and curses
+A proc can take `"target": "#minecraft:undead"` (any entity type tag) to trigger only against those entities.
+Three proc types exist for curses, which only come from Mountebank parcels (see [GAMBLING.md](GAMBLING.md)):
+`backlash` (hitting the target wounds the wielder for power x damage), `fester` (when struck, take power x damage more)
+and `famish` (each hit drains power hunger). Set bonuses can carry procs too ([SETS.md](SETS.md)).
+
+Fixed in 1.15.0: Cleaving and of Reprisal never fired before, because the re-entrancy guard wrapped the whole proc run
+and their own damage then saw the guard as set.
+

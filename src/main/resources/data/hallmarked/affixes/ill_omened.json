@@ -1,0 +1,61 @@
+{
+  "name": "hallmarked.affix.ill_omened",
+  "type": "curse",
+  "weight": 10,
+  "group": "curse_luck",
+  "tool": {
+    "modifiers": [
+      {
+        "name": "ill_omened_luck_tool",
+        "attribute": "minecraft:generic.luck",
+        "operation": "addition",
+        "min": -0.5,
+        "max": -1.5
+      }
+    ]
+  },
+  "bow": {
+    "modifiers": [
+      {
+        "name": "ill_omened_luck_bow",
+        "attribute": "minecraft:generic.luck",
+        "operation": "addition",
+        "min": -0.5,
+        "max": -1.5
+      }
+    ]
+  },
+  "shield": {
+    "modifiers": [
+      {
+        "name": "ill_omened_luck_shield",
+        "attribute": "minecraft:generic.luck",
+        "operation": "addition",
+        "min": -0.5,
+        "max": -1.5
+      }
+    ]
+  },
+  "armor": {
+    "modifiers": [
+      {
+        "name": "ill_omened_luck_armor",
+        "attribute": "minecraft:generic.luck",
+        "operation": "addition",
+        "min": -0.5,
+        "max": -1.5
+      }
+    ]
+  },
+  "bauble": {
+    "modifiers": [
+      {
+        "name": "ill_omened_luck_bauble",
+        "attribute": "minecraft:generic.luck",
+        "operation": "addition",
+        "min": -0.5,
+        "max": -1.5
+      }
+    ]
+  }
+}

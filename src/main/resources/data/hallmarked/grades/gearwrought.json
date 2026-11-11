@@ -19,7 +19,8 @@
   "weights": {
     "crafted": 0.5,
     "loot": 3,
-    "mob": 2
+    "mob": 2,
+    "gamble": 6
   },
   "inlay_slots": 0,
   "announce": {
@@ -30,5 +31,6 @@
   "beam": true,
   "champion": true,
   "salvage": 8,
-  "appraise": true
+  "appraise": true,
+  "durability": 1.5
 }

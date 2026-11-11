@@ -5,7 +5,8 @@
     "item": "hallmarked:emerald_amulet"
   },
   "chance": {
-    "loot": 0.02
+    "loot": 0.02,
+    "gamble": 0.02
   },
   "bauble": {
     "modifiers": [

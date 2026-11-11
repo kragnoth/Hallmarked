@@ -29,13 +29,14 @@ import net.minecraft.util.GsonHelper;
  * @param salvage     Smith's Scrap a grindstone gives for an unenchanted, un-inlaid piece of this grade
  * @param appraise    found (non-crafted) items of this grade arrive Unappraised: affixes hidden and inactive until
  *                    struck at an Assay Anvil
+ * @param durability  max-durability multiplier for items of this grade (Shoddy wears out sooner, fine work lasts)
  */
 public record Grade(String name, ChatFormatting color, int rank, int minAffixes, int maxAffixes,
                     int maxPrefixes, int maxSuffixes, int flaws, float rollMin, float rollMax,
                     boolean titled, boolean hidden, double luckScaling, Map<String, Double> weights,
                     int inlaySlots, @org.jetbrains.annotations.Nullable net.minecraft.network.chat.TextColor inlayTint,
                     @org.jetbrains.annotations.Nullable Announce announce, boolean beam, boolean champion,
-                    int salvage, boolean appraise, JsonObject source) {
+                    int salvage, boolean appraise, double durability, JsonObject source) {
 
     /**
      * Fanfare when a player's roll lands on this grade: {@code {"sound": "...", "pitch": 1.4, "scope": "player"|"server"}}.
@@ -54,7 +55,7 @@ public record Grade(String name, ChatFormatting color, int rank, int minAffixes,
     public static Grade parse(ResourceLocation id, JsonObject json) {
         String name = GsonHelper.getAsString(json, "name", id.getNamespace() + ".grade." + id.getPath());
         Strict.warnUnknownKeys(id, json, java.util.Set.of("name", "color", "rank", "affixes", "max_prefixes", "max_suffixes",
-                "flaws", "roll", "titled", "hidden", "luck_scaling", "weights", "inlay_slots", "inlay_tint", "announce", "beam", "champion", "salvage", "appraise", "enabled"), "Grade");
+                "flaws", "roll", "titled", "hidden", "luck_scaling", "weights", "inlay_slots", "inlay_tint", "announce", "beam", "champion", "salvage", "appraise", "durability", "enabled"), "Grade");
         ChatFormatting color = Strict.color(GsonHelper.getAsString(json, "color", "white"));
         JsonObject affixes = GsonHelper.getAsJsonObject(json, "affixes", new JsonObject());
         JsonObject roll = GsonHelper.getAsJsonObject(json, "roll", new JsonObject());
@@ -77,7 +78,7 @@ public record Grade(String name, ChatFormatting color, int rank, int minAffixes,
                         .getOrThrow(msg -> new IllegalArgumentException("bad inlay_tint: " + msg)) : null,
                 parseAnnounce(json), GsonHelper.getAsBoolean(json, "beam", false), GsonHelper.getAsBoolean(json, "champion", false),
                 Math.max(0, GsonHelper.getAsInt(json, "salvage", 0)), GsonHelper.getAsBoolean(json, "appraise", false),
-                source);
+                Math.max(0.05, Math.min(20.0, GsonHelper.getAsDouble(json, "durability", 1.0))), source);
     }
 
     @org.jetbrains.annotations.Nullable

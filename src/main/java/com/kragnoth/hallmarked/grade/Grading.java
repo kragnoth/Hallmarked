@@ -147,7 +147,7 @@ public final class Grading {
 
     // ---- Affix rolling ---------------------------------------------------------------------
 
-    private static List<Affix> pool(ItemStack stack, Affix.Type type) {
+    public static List<Affix> pool(ItemStack stack, Affix.Type type) {
         List<Affix> out = new ArrayList<>();
         for (Affix a : AFFIXES.all()) {
             if (a.type() == type && a.weight() > 0 && Equipment.applied(a, stack) != null && a.fits(stack)) out.add(a);
@@ -214,6 +214,9 @@ public final class Grading {
     /** Rolls and stamps a grade (plus affixes and title) onto the stack. */
     public static boolean grade(ItemStack stack, String source, double luck, RandomSource random, Context ctx) {
         Unique unique = rollUnique(stack, source, random);
+        if (unique == null && com.kragnoth.hallmarked.sets.Sets.tryRoll(stack, source, random)) {
+            return true; // a set piece: fixed by its set, so nothing to roll or report
+        }
         Grade g = unique != null ? GRADES.get(UNIQUE_GRADE) : pickGrade(stack, source, luck, random, ctx);
         if (g == null) return false;
         if (unique != null) stack.set(HMRegistries.UNIQUE.get(), unique.name());
@@ -241,6 +244,7 @@ public final class Grading {
                 && com.kragnoth.hallmarked.config.HallmarkedConfig.APPRAISAL.get() && !SOURCE_CRAFTED.equals(source);
         if (sealedAway) stack.set(HMRegistries.UNAPPRAISED.get(), true);
         refreshName(stack);
+        Durability.apply(stack);
         if (!sealedAway && finalGrade != null && finalGrade.announce() != null
                 && ctx.player() instanceof net.minecraft.server.level.ServerPlayer sp) {
             announce(sp, stack, finalGrade);
@@ -261,7 +265,7 @@ public final class Grading {
         int allowed = top.rank() + shift;
         Grade best = null;
         for (Grade x : GRADES.all()) {
-            if (x.name().equals(UNIQUE_GRADE) || x.rank() > allowed) continue;
+            if (x.name().equals(UNIQUE_GRADE) || x.rank() > allowed || x.weights().values().stream().allMatch(w -> w <= 0)) continue;
             if (best == null || x.rank() > best.rank()) best = x;
         }
         if (best == null) return null;
@@ -277,7 +281,7 @@ public final class Grading {
         List<GradeData.Rolled> out = new ArrayList<>();
         for (GradeData.Rolled r : d.affixes()) {
             Affix a = AFFIXES.get(r.affix());
-            boolean flaw = a != null && a.type() == Affix.Type.FLAW;
+            boolean flaw = a != null && a.type().drawback();
             out.add(flaw ? r : new GradeData.Rolled(r.affix(), r.roll() + (1f - r.roll()) * bonus));
         }
         return new GradeData(d.grade(), out, d.titleFirst(), d.titleSecond());
@@ -289,7 +293,7 @@ public final class Grading {
         List<GradeData.Rolled> out = new ArrayList<>();
         for (GradeData.Rolled r : d.affixes()) {
             Affix a = AFFIXES.get(r.affix());
-            boolean flaw = a != null && a.type() == Affix.Type.FLAW;
+            boolean flaw = a != null && a.type().drawback();
             out.add(flaw || r.roll() <= max ? r : new GradeData.Rolled(r.affix(), max));
         }
         return new GradeData(d.grade(), out, d.titleFirst(), d.titleSecond());
@@ -396,6 +400,8 @@ public final class Grading {
         }
         Unique unique = uniqueOf(stack);
         if (unique != null) return Component.translatable(unique.name()).withStyle(g.color());
+        var setPiece = com.kragnoth.hallmarked.sets.Sets.defOf(stack);
+        if (setPiece != null) return Component.translatable(setPiece.name()).withStyle(g.color());
         List<Fused> fused = fusions(d);
 
         if (g.titled() && d.titled()) {
@@ -428,7 +434,7 @@ public final class Grading {
                 key = a.name();
                 type = a.type();
             }
-            if (prefix == null && (type == Affix.Type.PREFIX || type == Affix.Type.FLAW)) prefix = key;
+            if (prefix == null && (type == Affix.Type.PREFIX || type.drawback())) prefix = key;
             else if (suffix == null && type == Affix.Type.SUFFIX) suffix = key;
         }
         if (prefix == null && suffix == null) return tintedName(stack, g);

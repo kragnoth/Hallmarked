@@ -1,0 +1,24 @@
+{
+  "name": "hallmarked.affix.rotten",
+  "type": "curse",
+  "weight": 10,
+  "group": "curse_backlash",
+  "for": "weapon",
+  "tool": {
+    "modifiers": []
+  },
+  "bow": {
+    "modifiers": []
+  },
+  "procs": [
+    {
+      "type": "backlash",
+      "target": "#minecraft:undead",
+      "chance": 1.0,
+      "power": {
+        "min": 0.15,
+        "max": 0.4
+      }
+    }
+  ]
+}

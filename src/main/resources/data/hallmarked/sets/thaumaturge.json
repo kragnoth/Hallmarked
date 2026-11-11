@@ -1,0 +1,252 @@
+{
+  "name": "hallmarked.set.thaumaturge",
+  "color": "dark_purple",
+  "chance": {
+    "loot": 0.004,
+    "mob": 0.001
+  },
+  "pieces": [
+    {
+      "key": "cowl",
+      "item": "minecraft:leather_helmet",
+      "dye": "#3a2458",
+      "trim": {
+        "pattern": "minecraft:eye",
+        "material": "minecraft:amethyst"
+      },
+      "modifiers": [
+        {
+          "name": "thaumaturge_cowl_armor",
+          "attribute": "minecraft:generic.armor",
+          "operation": "addition",
+          "value": 1
+        },
+        {
+          "name": "thaumaturge_cowl_power",
+          "attribute": "irons_spellbooks:spell_power",
+          "operation": "addition",
+          "value": 0.03
+        },
+        {
+          "name": "thaumaturge_cowl_xp",
+          "attribute": "apothic_attributes:experience_gained",
+          "operation": "addition",
+          "value": 0.05
+        }
+      ]
+    },
+    {
+      "key": "robe",
+      "item": "minecraft:leather_chestplate",
+      "dye": "#3a2458",
+      "trim": {
+        "pattern": "minecraft:eye",
+        "material": "minecraft:amethyst"
+      },
+      "modifiers": [
+        {
+          "name": "thaumaturge_robe_armor",
+          "attribute": "minecraft:generic.armor",
+          "operation": "addition",
+          "value": 1
+        },
+        {
+          "name": "thaumaturge_robe_mana",
+          "attribute": "irons_spellbooks:max_mana",
+          "operation": "addition",
+          "value": 25
+        },
+        {
+          "name": "thaumaturge_robe_resist",
+          "attribute": "lodestone:magic_resistance",
+          "operation": "multiply_total",
+          "value": 0.05
+        },
+        {
+          "name": "thaumaturge_robe_protection",
+          "attribute": "caverns_and_chasms:magic_protection",
+          "operation": "addition",
+          "value": 0.03
+        }
+      ]
+    },
+    {
+      "key": "breeches",
+      "item": "minecraft:leather_leggings",
+      "dye": "#3a2458",
+      "trim": {
+        "pattern": "minecraft:eye",
+        "material": "minecraft:amethyst"
+      },
+      "modifiers": [
+        {
+          "name": "thaumaturge_breeches_armor",
+          "attribute": "minecraft:generic.armor",
+          "operation": "addition",
+          "value": 1
+        },
+        {
+          "name": "thaumaturge_breeches_cooldown",
+          "attribute": "irons_spellbooks:cooldown_reduction",
+          "operation": "addition",
+          "value": 0.03
+        },
+        {
+          "name": "thaumaturge_breeches_cooldown_apoth",
+          "attribute": "apothic_attributes:cooldown_reduction",
+          "operation": "addition",
+          "value": 0.03
+        }
+      ]
+    },
+    {
+      "key": "slippers",
+      "item": "minecraft:leather_boots",
+      "dye": "#3a2458",
+      "trim": {
+        "pattern": "minecraft:eye",
+        "material": "minecraft:amethyst"
+      },
+      "modifiers": [
+        {
+          "name": "thaumaturge_slippers_speed",
+          "attribute": "minecraft:generic.movement_speed",
+          "operation": "multiply_total",
+          "value": 0.04
+        },
+        {
+          "name": "thaumaturge_slippers_casting",
+          "attribute": "irons_spellbooks:casting_movespeed",
+          "operation": "addition",
+          "value": 0.1
+        }
+      ]
+    },
+    {
+      "key": "phylactery",
+      "item": "hallmarked:emerald_amulet",
+      "glint": true,
+      "modifiers": [
+        {
+          "name": "thaumaturge_phylactery_power",
+          "attribute": "irons_spellbooks:spell_power",
+          "operation": "addition",
+          "value": 0.05
+        },
+        {
+          "name": "thaumaturge_phylactery_magic",
+          "attribute": "lodestone:magic_damage",
+          "operation": "addition",
+          "value": 1
+        },
+        {
+          "name": "thaumaturge_phylactery_luck",
+          "attribute": "minecraft:generic.luck",
+          "operation": "addition",
+          "value": 0.5
+        },
+        {
+          "name": "thaumaturge_phylactery_xp",
+          "attribute": "apothic_attributes:experience_gained",
+          "operation": "addition",
+          "value": 0.1
+        }
+      ]
+    }
+  ],
+  "bonuses": [
+    {
+      "pieces": 2,
+      "modifiers": [
+        {
+          "name": "thaumaturge_2_power",
+          "attribute": "irons_spellbooks:spell_power",
+          "operation": "addition",
+          "value": 0.05
+        },
+        {
+          "name": "thaumaturge_2_magic",
+          "attribute": "lodestone:magic_damage",
+          "operation": "addition",
+          "value": 1
+        },
+        {
+          "name": "thaumaturge_2_xp",
+          "attribute": "apothic_attributes:experience_gained",
+          "operation": "addition",
+          "value": 0.1
+        },
+        {
+          "name": "thaumaturge_2_luck",
+          "attribute": "minecraft:generic.luck",
+          "operation": "addition",
+          "value": 0.5
+        }
+      ]
+    },
+    {
+      "pieces": 4,
+      "modifiers": [
+        {
+          "name": "thaumaturge_4_mana",
+          "attribute": "irons_spellbooks:max_mana",
+          "operation": "addition",
+          "value": 50
+        },
+        {
+          "name": "thaumaturge_4_regen",
+          "attribute": "irons_spellbooks:mana_regen",
+          "operation": "addition",
+          "value": 0.1
+        },
+        {
+          "name": "thaumaturge_4_cooldown",
+          "attribute": "irons_spellbooks:cooldown_reduction",
+          "operation": "addition",
+          "value": 0.05
+        },
+        {
+          "name": "thaumaturge_4_resist",
+          "attribute": "lodestone:magic_resistance",
+          "operation": "multiply_total",
+          "value": 0.1
+        },
+        {
+          "name": "thaumaturge_4_health",
+          "attribute": "minecraft:generic.max_health",
+          "operation": "addition",
+          "value": 2
+        }
+      ]
+    },
+    {
+      "pieces": 5,
+      "modifiers": [
+        {
+          "name": "thaumaturge_5_power",
+          "attribute": "irons_spellbooks:spell_power",
+          "operation": "addition",
+          "value": 0.1
+        },
+        {
+          "name": "thaumaturge_5_cast",
+          "attribute": "irons_spellbooks:cast_time_reduction",
+          "operation": "addition",
+          "value": 0.1
+        },
+        {
+          "name": "thaumaturge_5_magic",
+          "attribute": "lodestone:magic_damage",
+          "operation": "addition",
+          "value": 2
+        },
+        {
+          "name": "thaumaturge_5_luck",
+          "attribute": "minecraft:generic.luck",
+          "operation": "addition",
+          "value": 1
+        }
+      ]
+    }
+  ]
+}

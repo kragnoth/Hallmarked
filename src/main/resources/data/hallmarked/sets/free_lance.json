@@ -1,0 +1,145 @@
+{
+  "name": "hallmarked.set.free_lance",
+  "color": "red",
+  "chance": {
+    "loot": 0.004,
+    "mob": 0.001
+  },
+  "pieces": [
+    {
+      "key": "sallet",
+      "item": "minecraft:iron_helmet",
+      "trim": {
+        "pattern": "minecraft:sentry",
+        "material": "minecraft:copper"
+      },
+      "modifiers": [
+        {
+          "name": "free_lance_sallet_damage",
+          "attribute": "minecraft:generic.attack_damage",
+          "operation": "addition",
+          "value": 0.5
+        }
+      ]
+    },
+    {
+      "key": "hauberk",
+      "item": "minecraft:chainmail_chestplate",
+      "trim": {
+        "pattern": "minecraft:rib",
+        "material": "minecraft:copper"
+      },
+      "modifiers": [
+        {
+          "name": "free_lance_hauberk_armor",
+          "attribute": "minecraft:generic.armor",
+          "operation": "addition",
+          "value": 1
+        },
+        {
+          "name": "free_lance_hauberk_health",
+          "attribute": "minecraft:generic.max_health",
+          "operation": "addition",
+          "value": 2
+        }
+      ]
+    },
+    {
+      "key": "chausses",
+      "item": "minecraft:chainmail_leggings",
+      "trim": {
+        "pattern": "minecraft:rib",
+        "material": "minecraft:copper"
+      },
+      "modifiers": [
+        {
+          "name": "free_lance_chausses_speed",
+          "attribute": "minecraft:generic.movement_speed",
+          "operation": "multiply_total",
+          "value": 0.03
+        }
+      ]
+    },
+    {
+      "key": "sabatons",
+      "item": "minecraft:iron_boots",
+      "trim": {
+        "pattern": "minecraft:sentry",
+        "material": "minecraft:copper"
+      },
+      "modifiers": [
+        {
+          "name": "free_lance_sabatons_kb",
+          "attribute": "minecraft:generic.knockback_resistance",
+          "operation": "addition",
+          "value": 0.05
+        }
+      ]
+    },
+    {
+      "key": "arming_sword",
+      "item": "minecraft:iron_sword",
+      "modifiers": [
+        {
+          "name": "free_lance_sword_damage",
+          "attribute": "minecraft:generic.attack_damage",
+          "operation": "addition",
+          "value": 1
+        },
+        {
+          "name": "free_lance_sword_speed",
+          "attribute": "minecraft:generic.attack_speed",
+          "operation": "multiply_total",
+          "value": 0.05
+        }
+      ]
+    }
+  ],
+  "bonuses": [
+    {
+      "pieces": 2,
+      "modifiers": [
+        {
+          "name": "free_lance_2_damage",
+          "attribute": "minecraft:generic.attack_damage",
+          "operation": "multiply_total",
+          "value": 0.05
+        }
+      ]
+    },
+    {
+      "pieces": 4,
+      "modifiers": [
+        {
+          "name": "free_lance_4_speed",
+          "attribute": "minecraft:generic.attack_speed",
+          "operation": "multiply_total",
+          "value": 0.08
+        },
+        {
+          "name": "free_lance_4_health",
+          "attribute": "minecraft:generic.max_health",
+          "operation": "addition",
+          "value": 2
+        }
+      ]
+    },
+    {
+      "pieces": 5,
+      "modifiers": [],
+      "procs": [
+        {
+          "type": "cleave",
+          "chance": 0.25,
+          "power": 0.4
+        },
+        {
+          "type": "bleed",
+          "chance": 0.15,
+          "power": 1.0,
+          "duration": 60
+        }
+      ]
+    }
+  ]
+}

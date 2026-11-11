@@ -1,0 +1,31 @@
+{
+  "name": "hallmarked.affix.chanting",
+  "type": "prefix",
+  "weight": 5,
+  "group": "cast_time",
+  "requires_mods": [
+    "irons_spellbooks"
+  ],
+  "bauble": {
+    "modifiers": [
+      {
+        "name": "chanting_cast_time",
+        "attribute": "irons_spellbooks:cast_time_reduction",
+        "operation": "addition",
+        "min": 0.03,
+        "max": 0.08
+      }
+    ]
+  },
+  "helmet": {
+    "modifiers": [
+      {
+        "name": "chanting_helmet_cast_time",
+        "attribute": "irons_spellbooks:cast_time_reduction",
+        "operation": "addition",
+        "min": 0.02,
+        "max": 0.06
+      }
+    ]
+  }
+}

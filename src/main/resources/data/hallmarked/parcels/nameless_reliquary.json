@@ -1,0 +1,21 @@
+{
+  "name": "hallmarked.parcel.nameless_reliquary",
+  "level": 5,
+  "weight": 10,
+  "color": "light_purple",
+  "price": {
+    "min": 32,
+    "max": 48
+  },
+  "second_cost": {
+    "item": "minecraft:diamond",
+    "count": 1
+  },
+  "luck": 3.0,
+  "quality_chance": 0.7,
+  "curse_chance": 0.3,
+  "exceptional_chance": 0.2,
+  "set_chance": 0.12,
+  "max_uses": 2,
+  "xp": 25
+}

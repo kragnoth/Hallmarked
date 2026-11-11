@@ -1,0 +1,28 @@
+{
+  "name": "hallmarked.affix.leaden",
+  "type": "curse",
+  "weight": 10,
+  "group": "curse_slow",
+  "tool": {
+    "modifiers": [
+      {
+        "name": "leaden_attack_speed",
+        "attribute": "minecraft:generic.attack_speed",
+        "operation": "multiply_total",
+        "min": -0.08,
+        "max": -0.18
+      }
+    ]
+  },
+  "armor": {
+    "modifiers": [
+      {
+        "name": "leaden_move",
+        "attribute": "minecraft:generic.movement_speed",
+        "operation": "multiply_total",
+        "min": -0.03,
+        "max": -0.07
+      }
+    ]
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "name": "hallmarked.affix.hungering",
+  "type": "curse",
+  "weight": 8,
+  "group": "curse_famish",
+  "tool": {
+    "modifiers": []
+  },
+  "bow": {
+    "modifiers": []
+  },
+  "procs": [
+    {
+      "type": "famish",
+      "chance": 1.0,
+      "power": {
+        "min": 0.4,
+        "max": 1.2
+      }
+    }
+  ]
+}

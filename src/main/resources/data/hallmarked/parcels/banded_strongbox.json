@@ -1,0 +1,21 @@
+{
+  "name": "hallmarked.parcel.banded_strongbox",
+  "level": 4,
+  "weight": 10,
+  "color": "yellow",
+  "price": {
+    "min": 18,
+    "max": 28
+  },
+  "second_cost": {
+    "item": "minecraft:gold_ingot",
+    "count": 2
+  },
+  "luck": 1.5,
+  "quality_chance": 0.6,
+  "curse_chance": 0.2,
+  "exceptional_chance": 0.12,
+  "set_chance": 0.05,
+  "max_uses": 3,
+  "xp": 15
+}

@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "hallmarked:block/mountebank_coffer"
+    },
+    "facing=east": {
+      "model": "hallmarked:block/mountebank_coffer",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "hallmarked:block/mountebank_coffer",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "hallmarked:block/mountebank_coffer",
+      "y": 270
+    }
+  }
+}

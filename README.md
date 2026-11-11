@@ -33,6 +33,12 @@ It was built for the **Gearwright's Hollow** modpack.
 - **Procs:** Bleeding, Staggering, Leeching, of Embers, Cleaving, of Reprisal and of the Reaper put combat effects
   on affixes, for players and for mobs carrying the gear. Affixes from other mods (Apothic Attributes, Caverns & Chasms, NeoVitae, Iron's Spellbooks,
   Lodestone, FTB Ultimine) only exist when those mods are installed. See [docs/PROCS.md](docs/PROCS.md).
+- **The Mountebank:** a shady villager who sells sealed parcels. Open one to find out what you paid for: cursed junk,
+  ordinary gear, or exceptional work that rolls past its normal limits. See [docs/GAMBLING.md](docs/GAMBLING.md).
+- **Named sets:** the Free Lance (melee), the Oathsworn (defense), the Thaumaturge (magic) and the Wayfarer (ranged),
+  with 2, 4 and 5-piece bonuses. Data-driven; any item can be a piece. See [docs/SETS.md](docs/SETS.md).
+- **Grade affects durability:** Shoddy x0.75, Journeyman x1.1, Masterwork x1.25, Gearwrought, Unique and Set x1.5
+  (the grade's `durability` key).
 - **53 qualities** across tools, bows, shields, armor (per piece) and baubles, ranging from *Worthless* to *Ascended*.
 - **Auto-marking:** the first time a piece of equipment enters your inventory, it has a chance (50 % by default) to roll a quality.
 - **Assay Anvil:** place equipment and a material in it, then strike the hammer to re-roll the mark. Valid materials are the

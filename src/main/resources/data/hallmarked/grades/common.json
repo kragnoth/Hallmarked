@@ -19,9 +19,11 @@
   "weights": {
     "crafted": 55.5,
     "loot": 36,
-    "mob": 45
+    "mob": 45,
+    "gamble": 30
   },
   "inlay_slots": 2,
   "inlay_tint": "#C87533",
-  "salvage": 1
+  "salvage": 1,
+  "durability": 1.0
 }

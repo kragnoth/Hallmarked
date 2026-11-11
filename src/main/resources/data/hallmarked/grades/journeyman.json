@@ -19,8 +19,10 @@
   "weights": {
     "crafted": 23,
     "loot": 36,
-    "mob": 30
+    "mob": 30,
+    "gamble": 30
   },
   "inlay_slots": 1,
-  "salvage": 2
+  "salvage": 2,
+  "durability": 1.1
 }

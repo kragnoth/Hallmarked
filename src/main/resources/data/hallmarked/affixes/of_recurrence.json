@@ -1,0 +1,31 @@
+{
+  "name": "hallmarked.affix.of_recurrence",
+  "type": "suffix",
+  "weight": 5,
+  "group": "spell_cooldown",
+  "requires_mods": [
+    "irons_spellbooks"
+  ],
+  "bauble": {
+    "modifiers": [
+      {
+        "name": "recurrence_cooldown",
+        "attribute": "irons_spellbooks:cooldown_reduction",
+        "operation": "addition",
+        "min": 0.03,
+        "max": 0.08
+      }
+    ]
+  },
+  "leggings": {
+    "modifiers": [
+      {
+        "name": "recurrence_legs_cooldown",
+        "attribute": "irons_spellbooks:cooldown_reduction",
+        "operation": "addition",
+        "min": 0.02,
+        "max": 0.06
+      }
+    ]
+  }
+}

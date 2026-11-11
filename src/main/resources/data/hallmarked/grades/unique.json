@@ -19,7 +19,8 @@
   "weights": {
     "crafted": 0,
     "loot": 0,
-    "mob": 0
+    "mob": 0,
+    "gamble": 0
   },
   "inlay_slots": 1,
   "salvage": 6,
@@ -30,5 +31,6 @@
     "sound": "minecraft:ui.toast.challenge_complete",
     "pitch": 0.8,
     "scope": "server"
-  }
+  },
+  "durability": 1.5
 }

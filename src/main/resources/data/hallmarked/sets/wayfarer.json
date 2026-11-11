@@ -1,0 +1,184 @@
+{
+  "name": "hallmarked.set.wayfarer",
+  "color": "dark_green",
+  "chance": {
+    "loot": 0.004,
+    "mob": 0.001
+  },
+  "pieces": [
+    {
+      "key": "hood",
+      "item": "minecraft:leather_helmet",
+      "dye": "#3f5a2b",
+      "trim": {
+        "pattern": "minecraft:wayfinder",
+        "material": "minecraft:emerald"
+      },
+      "modifiers": [
+        {
+          "name": "wayfarer_hood_projectile",
+          "attribute": "hallmarked:projectile_damage",
+          "operation": "multiply_total",
+          "value": 0.03
+        },
+        {
+          "name": "wayfarer_hood_armor",
+          "attribute": "minecraft:generic.armor",
+          "operation": "addition",
+          "value": 1
+        }
+      ]
+    },
+    {
+      "key": "brigandine",
+      "item": "minecraft:chainmail_chestplate",
+      "trim": {
+        "pattern": "minecraft:wayfinder",
+        "material": "minecraft:emerald"
+      },
+      "modifiers": [
+        {
+          "name": "wayfarer_brigandine_armor",
+          "attribute": "minecraft:generic.armor",
+          "operation": "addition",
+          "value": 1
+        },
+        {
+          "name": "wayfarer_brigandine_projectile",
+          "attribute": "hallmarked:projectile_damage",
+          "operation": "multiply_total",
+          "value": 0.03
+        }
+      ]
+    },
+    {
+      "key": "leggings",
+      "item": "minecraft:leather_leggings",
+      "dye": "#3f5a2b",
+      "trim": {
+        "pattern": "minecraft:wayfinder",
+        "material": "minecraft:emerald"
+      },
+      "modifiers": [
+        {
+          "name": "wayfarer_leggings_speed",
+          "attribute": "minecraft:generic.movement_speed",
+          "operation": "multiply_total",
+          "value": 0.03
+        },
+        {
+          "name": "wayfarer_leggings_armor",
+          "attribute": "minecraft:generic.armor",
+          "operation": "addition",
+          "value": 1
+        }
+      ]
+    },
+    {
+      "key": "boots",
+      "item": "minecraft:leather_boots",
+      "dye": "#3f5a2b",
+      "trim": {
+        "pattern": "minecraft:wayfinder",
+        "material": "minecraft:emerald"
+      },
+      "modifiers": [
+        {
+          "name": "wayfarer_boots_speed",
+          "attribute": "minecraft:generic.movement_speed",
+          "operation": "multiply_total",
+          "value": 0.04
+        },
+        {
+          "name": "wayfarer_boots_fall",
+          "attribute": "minecraft:generic.safe_fall_distance",
+          "operation": "addition",
+          "value": 1
+        }
+      ]
+    },
+    {
+      "key": "longbow",
+      "item": "minecraft:bow",
+      "modifiers": [
+        {
+          "name": "wayfarer_longbow_projectile",
+          "attribute": "hallmarked:projectile_damage",
+          "operation": "multiply_total",
+          "value": 0.08
+        },
+        {
+          "name": "wayfarer_longbow_draw",
+          "attribute": "apothic_attributes:draw_speed",
+          "operation": "addition",
+          "value": 0.1
+        }
+      ]
+    }
+  ],
+  "bonuses": [
+    {
+      "pieces": 2,
+      "modifiers": [
+        {
+          "name": "wayfarer_2_speed",
+          "attribute": "minecraft:generic.movement_speed",
+          "operation": "multiply_total",
+          "value": 0.05
+        },
+        {
+          "name": "wayfarer_2_sneak",
+          "attribute": "minecraft:player.sneaking_speed",
+          "operation": "addition",
+          "value": 0.05
+        }
+      ]
+    },
+    {
+      "pieces": 4,
+      "modifiers": [
+        {
+          "name": "wayfarer_4_projectile",
+          "attribute": "hallmarked:projectile_damage",
+          "operation": "multiply_total",
+          "value": 0.1
+        },
+        {
+          "name": "wayfarer_4_velocity",
+          "attribute": "apothic_attributes:arrow_velocity",
+          "operation": "addition",
+          "value": 0.15
+        },
+        {
+          "name": "wayfarer_4_crit",
+          "attribute": "apothic_attributes:crit_chance",
+          "operation": "addition",
+          "value": 0.05
+        }
+      ]
+    },
+    {
+      "pieces": 5,
+      "modifiers": [
+        {
+          "name": "wayfarer_5_projectile",
+          "attribute": "hallmarked:projectile_damage",
+          "operation": "multiply_total",
+          "value": 0.15
+        },
+        {
+          "name": "wayfarer_5_draw",
+          "attribute": "apothic_attributes:draw_speed",
+          "operation": "addition",
+          "value": 0.15
+        },
+        {
+          "name": "wayfarer_5_luck",
+          "attribute": "minecraft:generic.luck",
+          "operation": "addition",
+          "value": 0.5
+        }
+      ]
+    }
+  ]
+}

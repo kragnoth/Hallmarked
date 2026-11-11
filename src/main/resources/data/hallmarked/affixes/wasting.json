@@ -1,0 +1,28 @@
+{
+  "name": "hallmarked.affix.wasting",
+  "type": "curse",
+  "weight": 8,
+  "group": "curse_health",
+  "armor": {
+    "modifiers": [
+      {
+        "name": "wasting_health",
+        "attribute": "minecraft:generic.max_health",
+        "operation": "addition",
+        "min": -1.0,
+        "max": -3.0
+      }
+    ]
+  },
+  "bauble": {
+    "modifiers": [
+      {
+        "name": "wasting_health_bauble",
+        "attribute": "minecraft:generic.max_health",
+        "operation": "addition",
+        "min": -2.0,
+        "max": -4.0
+      }
+    ]
+  }
+}

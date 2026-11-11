@@ -21,7 +21,7 @@ import org.jetbrains.annotations.Nullable;
 public final class Marks {
     private Marks() {}
 
-    public enum Origin { QUALITY, AFFIX, INLAY, UNIQUE }
+    public enum Origin { QUALITY, AFFIX, INLAY, UNIQUE, SET }
 
     /**
      * @param slot        slot group the modifier is applied in; null means a bauble (applied to the player while worn)
@@ -86,6 +86,17 @@ public final class Marks {
                 for (Affix.Mod m : unique.section(ap.section())) {
                     m.attribute().ifPresent(attr -> emit(out, attr, "unique/" + m.name() + ap.idSuffix(),
                             m.min(), m.operation(), ap.slot(), Origin.UNIQUE, unique.name(), m.min(), m.max(), -1, false));
+                }
+            }
+        }
+
+        var setPiece = com.kragnoth.hallmarked.sets.Sets.defOf(stack);
+        if (setPiece != null) {
+            Equipment.Applied ap = Equipment.applied(setPiece, stack);
+            if (ap != null) {
+                for (Affix.Mod m : setPiece.modifiers()) {
+                    m.attribute().ifPresent(attr -> emit(out, attr, "setpiece/" + m.name() + ap.idSuffix(),
+                            m.min(), m.operation(), ap.slot(), Origin.SET, setPiece.name(), m.min(), m.max(), -1, false));
                 }
             }
         }

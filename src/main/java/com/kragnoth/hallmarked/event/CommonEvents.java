@@ -53,6 +53,8 @@ public final class CommonEvents {
         event.addListener(com.kragnoth.hallmarked.quality.Conversion.STORE.loader());
         event.addListener(com.kragnoth.hallmarked.tier.ItemTier.STORE.loader());
         event.addListener(com.kragnoth.hallmarked.tier.LootOdds.STORE.loader());
+        event.addListener(com.kragnoth.hallmarked.gamble.Parcel.STORE.loader());
+        event.addListener(com.kragnoth.hallmarked.sets.Sets.STORE.loader());
         event.addListener(Grading.REGIONS.loader());
         event.addListener(com.kragnoth.hallmarked.tempering.Tempering.OUTCOMES.loader());
         event.addListener(new com.kragnoth.hallmarked.grade.TitleWords.Loader());
@@ -120,6 +122,7 @@ public final class CommonEvents {
 
         scanInventory(player);
         if (Hallmarked.curiosLoaded()) syncBaubles(player);
+        com.kragnoth.hallmarked.sets.Sets.syncBonuses(player);
         if (player.isAlive()) player.getPersistentData().putFloat(HEALTH_KEY, player.getHealth());
     }
 
@@ -133,6 +136,7 @@ public final class CommonEvents {
         float capBefore = player.getMaxHealth();
         boolean clamped = player.getHealth() >= capBefore - 0.01F; // loaded health was cut down to the bauble-less max
         if (Hallmarked.curiosLoaded()) syncBaubles(player);
+        com.kragnoth.hallmarked.sets.Sets.syncBonuses(player);
         var data = player.getPersistentData();
         if (clamped && data.contains(HEALTH_KEY) && player.isAlive()) {
             float saved = data.getFloat(HEALTH_KEY);
@@ -216,6 +220,7 @@ public final class CommonEvents {
             stack.set(HMRegistries.ROLLED.get(), true);
             if (player.getRandom().nextDouble() < chance) Reforging.reforge(stack, player.getRandom());
         }
+        if (stack.has(HMRegistries.GRADE.get())) com.kragnoth.hallmarked.grade.Durability.apply(stack);
     }
 
     private static final String BAUBLE_PREFIX = "bauble/";

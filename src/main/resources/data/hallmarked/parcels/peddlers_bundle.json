@@ -1,0 +1,16 @@
+{
+  "name": "hallmarked.parcel.peddlers_bundle",
+  "level": 1,
+  "weight": 10,
+  "color": "gray",
+  "price": {
+    "min": 3,
+    "max": 6
+  },
+  "luck": -1.0,
+  "quality_chance": 0.4,
+  "curse_chance": 0.25,
+  "exceptional_chance": 0.03,
+  "max_uses": 6,
+  "xp": 2
+}

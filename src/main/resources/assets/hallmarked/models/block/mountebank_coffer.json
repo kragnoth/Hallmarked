@@ -1,0 +1,9 @@
+{
+  "parent": "minecraft:block/orientable",
+  "textures": {
+    "top": "hallmarked:block/mountebank_coffer_top",
+    "front": "hallmarked:block/mountebank_coffer_front",
+    "side": "hallmarked:block/mountebank_coffer_side",
+    "bottom": "hallmarked:block/mountebank_coffer_top"
+  }
+}

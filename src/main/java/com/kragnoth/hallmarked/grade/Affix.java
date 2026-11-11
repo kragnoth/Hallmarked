@@ -32,8 +32,15 @@ public record Affix(String name, Type type, int weight, String group, Map<Catego
                     List<com.kragnoth.hallmarked.proc.Proc> procs, List<String> forTools, JsonObject source)
         implements Sectioned {
 
-    /** FORBIDDEN affixes never roll normally; only the Ashen Altar grants them. */
-    public enum Type { PREFIX, SUFFIX, FLAW, FORBIDDEN }
+    /**
+     * FORBIDDEN affixes never roll normally; only the Ashen Altar grants them. CURSE affixes only come from a
+     * Mountebank's parcels. FLAW and CURSE are drawbacks: never boosted, capped or counted as the item's strength.
+     */
+    public enum Type {
+        PREFIX, SUFFIX, FLAW, FORBIDDEN, CURSE;
+
+        public boolean drawback() { return this == FLAW || this == CURSE; }
+    }
 
     public record Mod(String name, ResourceLocation attributeId, AttributeModifier.Operation operation, double min, double max) {
         public double value(float roll) {

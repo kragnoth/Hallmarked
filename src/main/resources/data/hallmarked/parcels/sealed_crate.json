@@ -1,0 +1,17 @@
+{
+  "name": "hallmarked.parcel.sealed_crate",
+  "level": 3,
+  "weight": 10,
+  "color": "aqua",
+  "price": {
+    "min": 10,
+    "max": 16
+  },
+  "luck": 0.5,
+  "quality_chance": 0.5,
+  "curse_chance": 0.2,
+  "exceptional_chance": 0.08,
+  "set_chance": 0.02,
+  "max_uses": 3,
+  "xp": 10
+}

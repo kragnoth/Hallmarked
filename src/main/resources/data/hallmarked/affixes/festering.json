@@ -1,0 +1,25 @@
+{
+  "name": "hallmarked.affix.festering",
+  "type": "curse",
+  "weight": 8,
+  "group": "curse_fester",
+  "armor": {
+    "modifiers": []
+  },
+  "shield": {
+    "modifiers": []
+  },
+  "procs": [
+    {
+      "type": "fester",
+      "chance": {
+        "min": 0.15,
+        "max": 0.3
+      },
+      "power": {
+        "min": 0.25,
+        "max": 0.5
+      }
+    }
+  ]
+}

@@ -60,6 +60,10 @@ public final class HMRegistries {
             DeferredRegister.create(Registries.MOB_EFFECT, Hallmarked.MODID);
     public static final DeferredHolder<net.minecraft.world.effect.MobEffect, net.minecraft.world.effect.MobEffect> BLEEDING =
             EFFECTS.register("bleeding", com.kragnoth.hallmarked.proc.BleedingEffect::new);
+    public static final DeferredRegister<net.minecraft.world.entity.ai.village.poi.PoiType> POI_TYPES =
+            DeferredRegister.create(Registries.POINT_OF_INTEREST_TYPE, Hallmarked.MODID);
+    public static final DeferredRegister<net.minecraft.world.entity.npc.VillagerProfession> PROFESSIONS =
+            DeferredRegister.create(Registries.VILLAGER_PROFESSION, Hallmarked.MODID);
     public static final DeferredRegister<CreativeModeTab> TABS =
             DeferredRegister.create(Registries.CREATIVE_MODE_TAB, Hallmarked.MODID);
 
@@ -120,6 +124,18 @@ public final class HMRegistries {
                     .persistent(Codec.STRING)
                     .networkSynchronized(ByteBufCodecs.STRING_UTF8));
 
+    /** Marks an item as a piece of a named set. */
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<com.kragnoth.hallmarked.sets.SetPiece>> SET_PIECE =
+            COMPONENTS.registerComponentType("set_piece", b -> b
+                    .persistent(com.kragnoth.hallmarked.sets.SetPiece.CODEC)
+                    .networkSynchronized(com.kragnoth.hallmarked.sets.SetPiece.STREAM_CODEC));
+
+    /** A Mountebank's parcel: the parcel definition's name. */
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<String>> PARCEL =
+            COMPONENTS.registerComponentType("parcel", b -> b
+                    .persistent(Codec.STRING)
+                    .networkSynchronized(ByteBufCodecs.STRING_UTF8));
+
     public static final DeferredHolder<MapCodec<? extends IGlobalLootModifier>, MapCodec<GradeLootModifier>> GRADE_LOOT =
             LOOT_MODIFIERS.register("grade_loot", () -> GradeLootModifier.CODEC);
 
@@ -155,6 +171,21 @@ public final class HMRegistries {
             new Item.Properties().rarity(net.minecraft.world.item.Rarity.EPIC)
                     .component(net.minecraft.core.component.DataComponents.ENCHANTMENT_GLINT_OVERRIDE, true));
 
+    public static final DeferredBlock<com.kragnoth.hallmarked.gamble.MountebankCofferBlock> MOUNTEBANK_COFFER =
+            BLOCKS.register("mountebank_coffer", com.kragnoth.hallmarked.gamble.MountebankCofferBlock::new);
+    public static final DeferredItem<BlockItem> MOUNTEBANK_COFFER_ITEM = ITEMS.registerSimpleBlockItem(MOUNTEBANK_COFFER);
+    public static final DeferredItem<com.kragnoth.hallmarked.gamble.ParcelItem> PARCEL_ITEM =
+            ITEMS.register("parcel", com.kragnoth.hallmarked.gamble.ParcelItem::new);
+
+    public static final DeferredHolder<net.minecraft.world.entity.ai.village.poi.PoiType, net.minecraft.world.entity.ai.village.poi.PoiType> MOUNTEBANK_POI =
+            POI_TYPES.register("mountebank_coffer", () -> new net.minecraft.world.entity.ai.village.poi.PoiType(
+                    com.google.common.collect.ImmutableSet.copyOf(MOUNTEBANK_COFFER.get().getStateDefinition().getPossibleStates()), 1, 1));
+    public static final DeferredHolder<net.minecraft.world.entity.npc.VillagerProfession, net.minecraft.world.entity.npc.VillagerProfession> MOUNTEBANK =
+            PROFESSIONS.register("mountebank", () -> new net.minecraft.world.entity.npc.VillagerProfession("mountebank",
+                    h -> h.is(MOUNTEBANK_POI.getKey()), h -> h.is(MOUNTEBANK_POI.getKey()),
+                    com.google.common.collect.ImmutableSet.of(), com.google.common.collect.ImmutableSet.of(),
+                    net.minecraft.sounds.SoundEvents.VILLAGER_WORK_CARTOGRAPHER));
+
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<AssayAnvilBlockEntity>> ASSAY_ANVIL_BE =
             BLOCK_ENTITIES.register("assay_anvil",
                     () -> BlockEntityType.Builder.of(AssayAnvilBlockEntity::new, ASSAY_ANVIL.get()).build(null));
@@ -168,6 +199,7 @@ public final class HMRegistries {
             .displayItems((params, out) -> {
                 out.accept(ASSAY_ANVIL_ITEM.get());
                 out.accept(ASHEN_ALTAR_ITEM.get());
+                out.accept(MOUNTEBANK_COFFER_ITEM.get());
                 out.accept(EMERALD_RING.get());
                 out.accept(EMERALD_AMULET.get());
                 out.accept(SMITHS_SCRAP.get());
@@ -184,6 +216,8 @@ public final class HMRegistries {
         ATTRIBUTES.register(modBus);
         COMPONENTS.register(modBus);
         TABS.register(modBus);
+        POI_TYPES.register(modBus);
+        PROFESSIONS.register(modBus);
         LOOT_MODIFIERS.register(modBus);
         EFFECTS.register(modBus);
         RECIPE_TYPES.register(modBus);

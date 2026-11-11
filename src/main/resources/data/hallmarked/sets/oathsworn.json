@@ -1,0 +1,153 @@
+{
+  "name": "hallmarked.set.oathsworn",
+  "color": "aqua",
+  "chance": {
+    "loot": 0.004,
+    "mob": 0.001
+  },
+  "pieces": [
+    {
+      "key": "helm",
+      "item": "minecraft:iron_helmet",
+      "trim": {
+        "pattern": "minecraft:ward",
+        "material": "minecraft:gold"
+      },
+      "modifiers": [
+        {
+          "name": "oathsworn_helm_toughness",
+          "attribute": "minecraft:generic.armor_toughness",
+          "operation": "addition",
+          "value": 1
+        }
+      ]
+    },
+    {
+      "key": "cuirass",
+      "item": "minecraft:iron_chestplate",
+      "trim": {
+        "pattern": "minecraft:ward",
+        "material": "minecraft:gold"
+      },
+      "modifiers": [
+        {
+          "name": "oathsworn_cuirass_armor",
+          "attribute": "minecraft:generic.armor",
+          "operation": "addition",
+          "value": 1
+        },
+        {
+          "name": "oathsworn_cuirass_health",
+          "attribute": "minecraft:generic.max_health",
+          "operation": "addition",
+          "value": 2
+        }
+      ]
+    },
+    {
+      "key": "greaves",
+      "item": "minecraft:iron_leggings",
+      "trim": {
+        "pattern": "minecraft:ward",
+        "material": "minecraft:gold"
+      },
+      "modifiers": [
+        {
+          "name": "oathsworn_greaves_armor",
+          "attribute": "minecraft:generic.armor",
+          "operation": "addition",
+          "value": 1
+        }
+      ]
+    },
+    {
+      "key": "sabatons",
+      "item": "minecraft:iron_boots",
+      "trim": {
+        "pattern": "minecraft:ward",
+        "material": "minecraft:gold"
+      },
+      "modifiers": [
+        {
+          "name": "oathsworn_sabatons_kb",
+          "attribute": "minecraft:generic.knockback_resistance",
+          "operation": "addition",
+          "value": 0.05
+        }
+      ]
+    },
+    {
+      "key": "bulwark",
+      "item": "minecraft:shield",
+      "base_color": "blue",
+      "modifiers": [
+        {
+          "name": "oathsworn_bulwark_armor",
+          "attribute": "minecraft:generic.armor",
+          "operation": "addition",
+          "value": 1
+        },
+        {
+          "name": "oathsworn_bulwark_kb",
+          "attribute": "minecraft:generic.knockback_resistance",
+          "operation": "addition",
+          "value": 0.05
+        }
+      ]
+    }
+  ],
+  "bonuses": [
+    {
+      "pieces": 2,
+      "modifiers": [
+        {
+          "name": "oathsworn_2_armor",
+          "attribute": "minecraft:generic.armor",
+          "operation": "addition",
+          "value": 2
+        }
+      ]
+    },
+    {
+      "pieces": 4,
+      "modifiers": [
+        {
+          "name": "oathsworn_4_toughness",
+          "attribute": "minecraft:generic.armor_toughness",
+          "operation": "addition",
+          "value": 2
+        },
+        {
+          "name": "oathsworn_4_kb",
+          "attribute": "minecraft:generic.knockback_resistance",
+          "operation": "addition",
+          "value": 0.1
+        },
+        {
+          "name": "oathsworn_4_health",
+          "attribute": "minecraft:generic.max_health",
+          "operation": "addition",
+          "value": 4
+        }
+      ]
+    },
+    {
+      "pieces": 5,
+      "modifiers": [
+        {
+          "name": "oathsworn_5_resist",
+          "attribute": "hallmarked:damage_resistance",
+          "operation": "multiply_total",
+          "value": 0.05
+        }
+      ],
+      "procs": [
+        {
+          "type": "reprisal",
+          "chance": 0.25,
+          "power": 0.3
+        }
+      ]
+    }
+  ]
+}

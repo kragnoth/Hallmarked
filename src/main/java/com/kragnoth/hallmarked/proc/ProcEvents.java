@@ -23,7 +23,11 @@ import net.neoforged.neoforge.event.entity.living.LivingDeathEvent;
 public final class ProcEvents {
     private ProcEvents() {}
 
-    /** Re-entrancy guard: proc damage (cleave, reprisal) must not trigger further procs. */
+    /**
+     * Re-entrancy guard: proc damage (cleave, reprisal, backlash, fester) runs inside {@link #guarded}, and the damage
+     * event returns early while it's set, so proc damage never triggers further procs. Only the damage itself is
+     * guarded: wrapping whole proc runs would make every damaging proc see the guard set and do nothing.
+     */
     private static boolean firing = false;
 
     static void guarded(Runnable r) {
@@ -44,6 +48,9 @@ public final class ProcEvents {
         for (EquipmentSlot slot : EquipmentSlot.values()) collect(out, entity.getItemBySlot(slot), slot, trigger);
         if (entity instanceof Player && Hallmarked.curiosLoaded()) {
             for (ItemStack s : CuriosCompat.equipped(entity)) collect(out, s, null, trigger);
+        }
+        for (Proc p : com.kragnoth.hallmarked.sets.Sets.activeProcs(entity)) {
+            if (p.type().trigger() == trigger) out.add(new Active(p, 1f));
         }
         return out;
     }
@@ -70,6 +77,7 @@ public final class ProcEvents {
 
     private static void run(List<Active> procs, LivingEntity owner, LivingEntity other, float damage, boolean melee) {
         for (Active a : procs) {
+            if (!a.proc().targets(other)) continue;
             if (owner.getRandom().nextDouble() >= a.proc().chance(a.roll())) continue;
             a.proc().type().fire(new ProcType.Ctx(owner, other, damage, melee, a.proc().power(a.roll()), a.proc().duration()));
         }
@@ -85,11 +93,11 @@ public final class ProcEvents {
         // HIT: the attacker's gear
         if (src.getEntity() instanceof LivingEntity attacker && attacker != target && enabledFor(attacker) && target.isAlive()) {
             boolean melee = src.getDirectEntity() == attacker;
-            guarded(() -> run(procsOf(attacker, ProcType.Trigger.HIT), attacker, target, event.getNewDamage(), melee));
+            run(procsOf(attacker, ProcType.Trigger.HIT), attacker, target, event.getNewDamage(), melee);
         }
         // HURT: the victim's gear
         if (src.getEntity() instanceof LivingEntity attacker && attacker != target && enabledFor(target)) {
-            guarded(() -> run(procsOf(target, ProcType.Trigger.HURT), target, attacker, event.getNewDamage(), false));
+            run(procsOf(target, ProcType.Trigger.HURT), target, attacker, event.getNewDamage(), false);
         }
     }
 
@@ -98,6 +106,6 @@ public final class ProcEvents {
         LivingEntity dying = event.getEntity();
         if (dying.level().isClientSide() || !(event.getSource().getEntity() instanceof LivingEntity killer) || killer == dying) return;
         if (!enabledFor(killer)) return;
-        guarded(() -> run(procsOf(killer, ProcType.Trigger.KILL), killer, dying, dying.getMaxHealth(), false));
+        run(procsOf(killer, ProcType.Trigger.KILL), killer, dying, dying.getMaxHealth(), false);
     }
 }

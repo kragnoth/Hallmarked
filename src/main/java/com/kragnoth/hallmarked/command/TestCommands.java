@@ -255,7 +255,8 @@ final class TestCommands {
         } else if (s.grade != null || s.pure) {
             Grade g;
             if (s.pure) {
-                List<Grade> grades = Grading.GRADES.all().stream().filter(x -> !x.name().equals(Grading.UNIQUE_GRADE)).toList();
+                List<Grade> grades = Grading.GRADES.all().stream()
+                        .filter(x -> !x.weights().values().stream().allMatch(w -> w <= 0)).toList(); // not unique or set
                 if (grades.isEmpty()) throw new IllegalArgumentException("no grades are loaded");
                 g = grades.get(random.nextInt(grades.size()));
             } else {

@@ -71,6 +71,26 @@ public enum ProcType {
             c.owner().heal((float) c.power());
         }
     },
+    /** Curse: hitting a matching target wounds the wielder for power × damage dealt (pair with a "target" tag). */
+    BACKLASH("backlash", Trigger.HIT, null) {
+        @Override void fire(Ctx c) {
+            float back = (float) (c.damage() * c.power());
+            if (back > 0) ProcEvents.guarded(() -> c.owner().hurt(c.owner().damageSources().magic(), back));
+        }
+    },
+    /** Curse: when the wearer is hurt, they take power × damage more. */
+    FESTER("fester", Trigger.HURT, null) {
+        @Override void fire(Ctx c) {
+            float more = (float) (c.damage() * c.power());
+            if (more > 0) ProcEvents.guarded(() -> c.owner().hurt(c.owner().damageSources().magic(), more));
+        }
+    },
+    /** Curse: each hit drains power points of hunger exhaustion from a player wielder. */
+    FAMISH("famish", Trigger.HIT, null) {
+        @Override void fire(Ctx c) {
+            if (c.owner() instanceof Player p) p.causeFoodExhaustion((float) c.power());
+        }
+    },
     /** On a kill (player): feed power LP to the killer's NeoVitae soul network. Needs NeoVitae. */
     ANIMA("anima", Trigger.KILL, "neovitae") {
         @Override void fire(Ctx c) {

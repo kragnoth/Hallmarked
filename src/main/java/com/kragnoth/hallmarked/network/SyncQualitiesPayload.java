@@ -11,7 +11,7 @@ import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 /** Server -> client: qualities, grades and affixes (as JSON) so tooltips and item modifiers match the server. */
-public record SyncQualitiesPayload(List<String> qualities, List<String> grades, List<String> affixes, List<String> fusions, List<String> inlays, List<String> uniques, List<String> conversions) implements CustomPacketPayload {
+public record SyncQualitiesPayload(List<String> qualities, List<String> grades, List<String> affixes, List<String> fusions, List<String> inlays, List<String> uniques, List<String> conversions, List<String> sets) implements CustomPacketPayload {
     public static final Type<SyncQualitiesPayload> TYPE = new Type<>(Hallmarked.id("sync_data"));
     private static final StreamCodec<io.netty.buffer.ByteBuf, List<String>> STRINGS = ByteBufCodecs.stringUtf8(1 << 20).apply(ByteBufCodecs.list()); // NeoForge splits oversized packets
     // Seven lists: past StreamCodec.composite's six-field limit, so encode/decode by hand.
@@ -19,15 +19,15 @@ public record SyncQualitiesPayload(List<String> qualities, List<String> grades, 
             (buf, p) -> {
                 STRINGS.encode(buf, p.qualities()); STRINGS.encode(buf, p.grades()); STRINGS.encode(buf, p.affixes());
                 STRINGS.encode(buf, p.fusions()); STRINGS.encode(buf, p.inlays()); STRINGS.encode(buf, p.uniques());
-                STRINGS.encode(buf, p.conversions());
+                STRINGS.encode(buf, p.conversions()); STRINGS.encode(buf, p.sets());
             },
             buf -> new SyncQualitiesPayload(STRINGS.decode(buf), STRINGS.decode(buf), STRINGS.decode(buf),
-                    STRINGS.decode(buf), STRINGS.decode(buf), STRINGS.decode(buf), STRINGS.decode(buf)));
+                    STRINGS.decode(buf), STRINGS.decode(buf), STRINGS.decode(buf), STRINGS.decode(buf), STRINGS.decode(buf)));
 
     public static SyncQualitiesPayload snapshot() {
         return new SyncQualitiesPayload(Qualities.toWire(), Grading.GRADES.toWire(), Grading.AFFIXES.toWire(), Grading.FUSIONS.toWire(),
                 com.kragnoth.hallmarked.inlay.Inlays.STORE.toWire(), Grading.UNIQUES.toWire(),
-                com.kragnoth.hallmarked.quality.Conversion.STORE.toWire());
+                com.kragnoth.hallmarked.quality.Conversion.STORE.toWire(), com.kragnoth.hallmarked.sets.Sets.STORE.toWire());
     }
 
     @Override
@@ -47,6 +47,7 @@ public record SyncQualitiesPayload(List<String> qualities, List<String> grades, 
             com.kragnoth.hallmarked.inlay.Inlays.STORE.fromWire(msg.inlays());
             Grading.UNIQUES.fromWire(msg.uniques());
             com.kragnoth.hallmarked.quality.Conversion.STORE.fromWire(msg.conversions());
+            com.kragnoth.hallmarked.sets.Sets.STORE.fromWire(msg.sets());
         });
     }
 }
