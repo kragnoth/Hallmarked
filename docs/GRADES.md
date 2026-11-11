@@ -57,6 +57,15 @@ The two stack freely. A *Rusted*, Masterwork "Grim Ledger" sword is possible.
 | **Flaws** (Shoddy only) | Warped, Dulled, Frayed, Pitted, Brittle, Tarnished | |
 
 An item can't roll two affixes from the same `group` (for example, Honed and Weighted share `melee_damage`).
+
+An optional `"for"` key narrows which **tools** an affix rolls on, so a sword never rolls a mining bonus and a pickaxe never
+rolls a bleed:
+* `"weapon"`: the `hallmarked:equipment/weapon` tag (swords, axes, maces, spears), or a `SwordItem`, `AxeItem`, `MaceItem` or `TridentItem`.
+* `"digger"`: the `hallmarked:equipment/digger` tag (pickaxes, shovels, hoes, axes), or any `DiggerItem`.
+* `"#namespace:tag"` or an item id; a list such as `["digger", "#c:tools/mace"]` matches any entry.
+
+Axes count as both. Bows, shields, armor and baubles ignore `for`. A tool that is neither a weapon nor a digger (an unreadable
+modular tool, say) is never filtered. Gear that already rolled a now-filtered affix keeps it.
 Turn on advanced tooltips (F3+H) to see each affix's name and min–max range next to its rolled value.
 
 ## Fusions (24)

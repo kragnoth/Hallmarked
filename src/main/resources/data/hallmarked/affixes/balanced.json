@@ -3,6 +3,7 @@
   "type": "prefix",
   "weight": 10,
   "group": "melee_speed",
+  "for": "weapon",
   "tool": {
     "modifiers": [
       {

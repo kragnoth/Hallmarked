@@ -3,6 +3,7 @@
   "type": "prefix",
   "weight": 6,
   "group": "melee_damage",
+  "for": "weapon",
   "tool": {
     "modifiers": [
       {

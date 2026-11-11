@@ -1,0 +1,13 @@
+{
+  "replace": false,
+  "values": [
+    "#minecraft:pickaxes",
+    "#minecraft:shovels",
+    "#minecraft:hoes",
+    "#minecraft:axes",
+    {
+      "id": "#c:tools/mining_tool",
+      "required": false
+    }
+  ]
+}

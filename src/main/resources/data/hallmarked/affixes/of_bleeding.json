@@ -3,6 +3,7 @@
   "type": "suffix",
   "weight": 6,
   "group": "bleed",
+  "for": "weapon",
   "tool": {
     "modifiers": []
   },

@@ -3,6 +3,7 @@
   "type": "suffix",
   "weight": 4,
   "group": "current_hp",
+  "for": "weapon",
   "requires_mods": [
     "apothic_attributes"
   ],

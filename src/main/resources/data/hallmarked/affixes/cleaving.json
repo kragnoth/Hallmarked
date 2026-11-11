@@ -3,6 +3,7 @@
   "type": "prefix",
   "weight": 5,
   "group": "cleave",
+  "for": "weapon",
   "tool": {
     "modifiers": []
   },

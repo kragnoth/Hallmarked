@@ -3,6 +3,7 @@
   "type": "suffix",
   "weight": 5,
   "group": "reaper",
+  "for": "weapon",
   "tool": {
     "modifiers": []
   },

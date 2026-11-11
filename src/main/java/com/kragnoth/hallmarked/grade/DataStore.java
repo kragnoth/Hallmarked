@@ -55,7 +55,7 @@ public final class DataStore<T> {
             map.remove(nameOf.apply(t));
             map.put(nameOf.apply(t), t);
         }
-        byName = Map.copyOf(map);
+        byName = java.util.Collections.unmodifiableMap(map); // keep load order (Map.copyOf scrambles it per JVM)
     }
 
     public SimpleJsonResourceReloadListener loader() {

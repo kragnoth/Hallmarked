@@ -3,6 +3,7 @@
   "type": "suffix",
   "weight": 8,
   "group": "knockback",
+  "for": "weapon",
   "tool": {
     "modifiers": [
       {

@@ -3,6 +3,7 @@
   "type": "prefix",
   "weight": 5,
   "group": "magic_damage",
+  "for": "weapon",
   "requires_mods": [
     "lodestone"
   ],

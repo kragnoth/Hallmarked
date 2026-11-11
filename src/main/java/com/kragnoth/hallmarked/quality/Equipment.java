@@ -36,6 +36,9 @@ public final class Equipment {
     public static final TagKey<Item> LEGGINGS = tag("leggings");
     public static final TagKey<Item> BOOTS = tag("boots");
     public static final TagKey<Item> EXCLUDED = tag("excluded");
+    /** Tool roles, used by an affix's "for" key. Tags first; untagged items fall back to their class. */
+    public static final TagKey<Item> WEAPON = tag("weapon");
+    public static final TagKey<Item> DIGGER = tag("digger");
 
     private static TagKey<Item> tag(String name) {
         return TagKey.create(Registries.ITEM, Hallmarked.id("equipment/" + name));
@@ -86,6 +89,19 @@ public final class Equipment {
         if (item instanceof ShieldItem || TETRA_SHIELD.equals(cls)) return Category.SHIELD;
         if (item instanceof ArmorItem) return Category.ARMOR;
         return null;
+    }
+
+    /** Swords, axes, tridents, maces and anything in hallmarked:equipment/weapon. */
+    public static boolean isWeapon(ItemStack stack) {
+        if (stack.is(WEAPON)) return true;
+        Item item = stack.getItem();
+        return item instanceof net.minecraft.world.item.SwordItem || item instanceof net.minecraft.world.item.AxeItem
+                || item instanceof net.minecraft.world.item.TridentItem || item instanceof net.minecraft.world.item.MaceItem;
+    }
+
+    /** Pickaxes, shovels, hoes, axes and anything in hallmarked:equipment/digger. */
+    public static boolean isDigger(ItemStack stack) {
+        return stack.is(DIGGER) || stack.getItem() instanceof net.minecraft.world.item.DiggerItem;
     }
 
     /** For armor, the piece (HELMET..BOOTS): tag first, then ArmorItem type, then the item's equip slot. */

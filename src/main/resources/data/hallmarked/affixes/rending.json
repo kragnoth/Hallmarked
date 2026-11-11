@@ -3,6 +3,7 @@
   "type": "prefix",
   "weight": 6,
   "group": "armor_break",
+  "for": "weapon",
   "requires_mods": [
     "apothic_attributes"
   ],

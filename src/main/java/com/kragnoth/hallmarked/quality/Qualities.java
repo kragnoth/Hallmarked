@@ -43,7 +43,7 @@ public final class Qualities {
             map.remove(q.name()); // keep "last wins" but re-insert at the end
             map.put(q.name(), q);
         }
-        byName = Map.copyOf(map);
+        byName = java.util.Collections.unmodifiableMap(map); // keep load order (Map.copyOf scrambles it per JVM)
     }
 
     /** Server-side reload listener. */

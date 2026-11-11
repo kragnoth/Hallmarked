@@ -3,6 +3,7 @@
   "type": "prefix",
   "weight": 6,
   "group": "reach",
+  "for": "weapon",
   "tool": {
     "modifiers": [
       {

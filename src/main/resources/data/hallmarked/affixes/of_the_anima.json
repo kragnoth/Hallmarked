@@ -3,6 +3,7 @@
   "type": "suffix",
   "weight": 5,
   "group": "anima",
+  "for": "weapon",
   "requires_mods": [
     "neovitae"
   ],

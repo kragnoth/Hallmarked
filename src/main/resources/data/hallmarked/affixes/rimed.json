@@ -3,6 +3,7 @@
   "type": "prefix",
   "weight": 6,
   "group": "elemental",
+  "for": "weapon",
   "requires_mods": [
     "apothic_attributes"
   ],

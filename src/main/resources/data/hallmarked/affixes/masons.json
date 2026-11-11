@@ -3,6 +3,7 @@
   "type": "prefix",
   "weight": 8,
   "group": "mining_efficiency",
+  "for": "digger",
   "tool": {
     "modifiers": [
       {

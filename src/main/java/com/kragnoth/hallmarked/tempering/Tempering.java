@@ -97,7 +97,7 @@ public final class Tempering {
         List<Affix> pool = new ArrayList<>();
         long total = 0;
         for (Affix a : Grading.AFFIXES.all()) {
-            if (a.type() == type && a.weight() > 0 && Equipment.applied(a, stack) != null) {
+            if (a.type() == type && a.weight() > 0 && Equipment.applied(a, stack) != null && a.fits(stack)) {
                 pool.add(a);
                 total += a.weight();
             }

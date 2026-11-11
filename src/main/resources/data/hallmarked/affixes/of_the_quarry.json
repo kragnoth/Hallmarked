@@ -3,6 +3,7 @@
   "type": "suffix",
   "weight": 8,
   "group": "dig_s",
+  "for": "digger",
   "tool": {
     "modifiers": [
       {

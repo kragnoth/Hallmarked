@@ -141,7 +141,7 @@ public final class Grading {
     private static List<Affix> pool(ItemStack stack, Affix.Type type) {
         List<Affix> out = new ArrayList<>();
         for (Affix a : AFFIXES.all()) {
-            if (a.type() == type && a.weight() > 0 && Equipment.applied(a, stack) != null) out.add(a);
+            if (a.type() == type && a.weight() > 0 && Equipment.applied(a, stack) != null && a.fits(stack)) out.add(a);
         }
         return out;
     }
