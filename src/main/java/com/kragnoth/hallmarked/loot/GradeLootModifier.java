@@ -7,7 +7,9 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.neoforged.neoforge.common.loot.IGlobalLootModifier;
@@ -41,9 +43,16 @@ public class GradeLootModifier extends LootModifier {
         if (!HallmarkedConfig.GRADING.get()) return loot;
         for (ItemStack stack : loot) {
             if (stack.has(HMRegistries.GRADE.get()) || !Grading.canGrade(stack)) continue;
-            Grading.grade(stack, source, ctx.getLuck(), ctx.getRandom());
+            Grading.grade(stack, source, ctx.getLuck(), ctx.getRandom(), context(ctx));
         }
         return loot;
+    }
+
+    private static Grading.Context context(LootContext ctx) {
+        Player player = ctx.getParamOrNull(LootContextParams.LAST_DAMAGE_PLAYER);
+        if (player == null && ctx.getParamOrNull(LootContextParams.THIS_ENTITY) instanceof Player p) player = p;
+        if (player == null && ctx.getParamOrNull(LootContextParams.ATTACKING_ENTITY) instanceof Player p) player = p;
+        return new Grading.Context(player, ctx.getLevel(), ctx.getParamOrNull(LootContextParams.ORIGIN));
     }
 
     @Override

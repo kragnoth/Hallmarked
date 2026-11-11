@@ -1,0 +1,14 @@
+{
+  "type": "hallmarked:reforge_material",
+  "equipment": [
+    {
+      "item": "hallmarked:emerald_ring"
+    },
+    {
+      "item": "hallmarked:emerald_amulet"
+    }
+  ],
+  "material": {
+    "item": "minecraft:emerald"
+  }
+}

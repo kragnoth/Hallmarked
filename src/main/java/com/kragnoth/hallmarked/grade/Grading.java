@@ -1,18 +1,26 @@
 package com.kragnoth.hallmarked.grade;
 
+import com.kragnoth.hallmarked.api.event.GradeRollEvent;
+import com.kragnoth.hallmarked.api.event.ItemGradedEvent;
 import com.kragnoth.hallmarked.config.HallmarkedConfig;
 import com.kragnoth.hallmarked.quality.Equipment;
 import com.kragnoth.hallmarked.quality.Reforging;
 import com.kragnoth.hallmarked.registry.HMRegistries;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.util.RandomSource;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.phys.Vec3;
+import net.neoforged.neoforge.common.NeoForge;
 import org.jetbrains.annotations.Nullable;
 
 /** Rolls grades and affixes, and keeps the item's display name in step with them. */
@@ -43,17 +51,34 @@ public final class Grading {
 
     // ---- Grade selection -------------------------------------------------------------------
 
-    /** Weighted pick. Luck multiplies each grade's weight by (1 + luck * LuckFactor * luck_scaling), floored at 10%. */
+    /** Where and for whom a roll happens; any field may be null. */
+    public record Context(@Nullable Player player, @Nullable Level level, @Nullable Vec3 pos) {
+        public static final Context NONE = new Context(null, null, null);
+
+        public static Context of(Player player) {
+            return new Context(player, player.level(), player.position());
+        }
+    }
+
+    /**
+     * Weighted pick. Luck multiplies each grade's weight by (1 + luck * LuckFactor * luck_scaling), floored at 10%,
+     * then {@link GradeRollEvent} listeners may adjust the weights.
+     */
     @Nullable
-    public static Grade pickGrade(String source, double luck, RandomSource random) {
+    public static Grade pickGrade(ItemStack stack, String source, double luck, RandomSource random, Context ctx) {
         double factor = HallmarkedConfig.LUCK_FACTOR.get();
         List<Grade> grades = new ArrayList<>(GRADES.all());
+        Map<Grade, Double> base = new LinkedHashMap<>();
+        for (Grade g : grades) {
+            double mult = Math.max(0.1, 1.0 + luck * factor * g.luckScaling());
+            base.put(g, g.weight(source) * mult);
+        }
+        GradeRollEvent event = NeoForge.EVENT_BUS.post(
+                new GradeRollEvent(stack, source, luck, ctx.player(), ctx.level(), ctx.pos(), base));
         double[] w = new double[grades.size()];
         double total = 0;
         for (int i = 0; i < grades.size(); i++) {
-            Grade g = grades.get(i);
-            double mult = Math.max(0.1, 1.0 + luck * factor * g.luckScaling());
-            w[i] = g.weight(source) * mult;
+            w[i] = event.getWeight(grades.get(i).name());
             total += w[i];
         }
         if (total <= 0) return null;
@@ -132,15 +157,33 @@ public final class Grading {
     }
 
     /** Rolls and stamps a grade (plus affixes and title) onto the stack. */
-    public static boolean grade(ItemStack stack, String source, double luck, RandomSource random) {
-        Grade g = pickGrade(source, luck, random);
+    public static boolean grade(ItemStack stack, String source, double luck, RandomSource random, Context ctx) {
+        Grade g = pickGrade(stack, source, luck, random, ctx);
         if (g == null) return false;
+        GradeData rolled = rollData(stack, g, random);
+        ItemGradedEvent event = NeoForge.EVENT_BUS.post(new ItemGradedEvent(stack, source, ctx.player(), ctx.level(), rolled));
+        stack.set(HMRegistries.GRADE.get(), event.getResult());
+        refreshName(stack);
+        return true;
+    }
+
+    /** Rolls affixes and title words for a given grade without stamping anything. */
+    public static GradeData rollData(ItemStack stack, Grade g, RandomSource random) {
         List<GradeData.Rolled> affixes = rollAffixes(stack, g, random);
         String a = g.titled() ? TitleWords.randomFirst(random) : "";
         String b = g.titled() ? TitleWords.randomSecond(random) : "";
-        stack.set(HMRegistries.GRADE.get(), new GradeData(g.name(), affixes, a, b));
-        refreshName(stack);
-        return true;
+        return new GradeData(g.name(), affixes, a, b);
+    }
+
+    /** Looks up a grade by full name or short id ("masterwork" -> "hallmarked.grade.masterwork"). */
+    @Nullable
+    public static Grade findGrade(String nameOrId) {
+        Grade g = GRADES.get(nameOrId);
+        if (g != null) return g;
+        g = GRADES.get("hallmarked.grade." + nameOrId);
+        if (g != null) return g;
+        for (Grade x : GRADES.all()) if (x.name().endsWith("." + nameOrId)) return x;
+        return null;
     }
 
     // ---- Fusion ----------------------------------------------------------------------------

@@ -1,15 +1,17 @@
 package com.kragnoth.hallmarked.quality;
 
 import com.kragnoth.hallmarked.config.HallmarkedConfig;
+import com.kragnoth.hallmarked.recipe.ReforgeMaterialRecipe;
 import com.kragnoth.hallmarked.registry.HMRegistries;
 import java.util.ArrayList;
 import java.util.List;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.RecipeHolder;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.item.component.CustomData;
 import org.jetbrains.annotations.Nullable;
 
@@ -71,22 +73,28 @@ public final class Reforging {
         return true;
     }
 
-    /** Material check: config override pair, the item's own repair material, or the global fallback. */
-    public static boolean isValidMaterial(ItemStack equipment, ItemStack material) {
-        if (equipment.isEmpty() || material.isEmpty()) return false;
-        String eq = BuiltInRegistries.ITEM.getKey(equipment.getItem()).toString();
-        String mat = BuiltInRegistries.ITEM.getKey(material.getItem()).toString();
-        for (String pair : HallmarkedConfig.MATERIAL_OVERRIDES.get()) {
-            String[] kv = pair.split(",");
-            if (kv.length == 2 && kv[0].trim().equals(eq) && kv[1].trim().equals(mat)) return true;
+    /**
+     * Materials consumed to reforge {@code equipment} with {@code material}, or 0 if it isn't a valid pairing.
+     * The item's own repair material always works (cost 1); otherwise {@code hallmarked:reforge_material}
+     * recipes decide, preferring recipes that name the equipment over catch-all ones.
+     */
+    public static int materialCost(Level level, ItemStack equipment, ItemStack material) {
+        if (equipment.isEmpty() || material.isEmpty() || !isEligible(equipment)) return 0;
+        if (equipment.getItem().isValidRepairItem(equipment, material)) return 1;
+        ReforgeMaterialRecipe.Input in = new ReforgeMaterialRecipe.Input(equipment, material);
+        ReforgeMaterialRecipe best = null;
+        for (RecipeHolder<ReforgeMaterialRecipe> h : level.getRecipeManager().getAllRecipesFor(HMRegistries.REFORGE_MATERIAL_TYPE.get())) {
+            ReforgeMaterialRecipe r = h.value();
+            if (!r.matches(in, level)) continue;
+            if (best == null || (best.isCatchAll() && !r.isCatchAll())) best = r;
         }
-        if (equipment.getItem().isValidRepairItem(equipment, material)) return true;
-        ResourceLocation fallback = ResourceLocation.tryParse(HallmarkedConfig.FALLBACK_MATERIAL.get().trim());
-        return fallback != null && fallback.toString().equals(mat);
+        return best == null ? 0 : best.cost();
     }
 
-    public static boolean canReforge(ItemStack equipment, ItemStack material) {
-        return isEligible(equipment) && isValidMaterial(equipment, material);
+    /** True if the anvil can act now: valid pairing and enough material in the slot. */
+    public static boolean canReforge(Level level, ItemStack equipment, ItemStack material) {
+        int cost = materialCost(level, equipment, material);
+        return cost > 0 && material.getCount() >= cost;
     }
 
     /**

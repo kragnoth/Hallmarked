@@ -1,6 +1,8 @@
 package com.kragnoth.hallmarked.menu;
 
 import com.kragnoth.hallmarked.block.AssayAnvilBlockEntity;
+import com.kragnoth.hallmarked.api.event.ReforgeEvent;
+import com.kragnoth.hallmarked.quality.Quality;
 import com.kragnoth.hallmarked.quality.Reforging;
 import com.kragnoth.hallmarked.registry.HMRegistries;
 import net.minecraft.core.BlockPos;
@@ -16,6 +18,7 @@ import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
+import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.items.IItemHandler;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import net.neoforged.neoforge.items.SlotItemHandler;
@@ -73,7 +76,7 @@ public class AssayAnvilMenu extends AbstractContainerMenu {
     public void broadcastChanges() {
         // Recompute availability on the server before syncing it to the client.
         if (!level.isClientSide) {
-            data.set(0, Reforging.canReforge(items.getStackInSlot(0), items.getStackInSlot(1)) ? 1 : 0);
+            data.set(0, Reforging.canReforge(level, items.getStackInSlot(0), items.getStackInSlot(1)) ? 1 : 0);
         }
         super.broadcastChanges();
     }
@@ -83,12 +86,17 @@ public class AssayAnvilMenu extends AbstractContainerMenu {
         access.execute((level, p) -> {
             ItemStack equip = items.getStackInSlot(0);
             ItemStack mat = items.getStackInSlot(1);
-            if (!Reforging.canReforge(equip, mat)) return;
+            int cost = Reforging.materialCost(level, equip, mat);
+            if (cost <= 0 || mat.getCount() < cost) return;
+
+            Quality rolled = Reforging.roll(equip, level.getRandom());
+            if (rolled == null) return;
+            ReforgeEvent event = NeoForge.EVENT_BUS.post(new ReforgeEvent(player, equip.copy(), mat.copy(), cost, rolled));
+            if (event.isCanceled() || event.getQuality() == null) return;
 
             ItemStack result = equip.copy();
-            if (!Reforging.reforge(result, level.getRandom())) return;
-
-            items.extractItem(1, 1, false);
+            result.set(HMRegistries.QUALITY.get(), event.getQuality().name());
+            if (event.getCost() > 0) items.extractItem(1, Math.min(event.getCost(), mat.getCount()), false);
             setEquipment(result);
             level.playSound(null, p, SoundEvents.ANVIL_USE, SoundSource.BLOCKS, 1.0F, 1.0F);
             broadcastChanges();

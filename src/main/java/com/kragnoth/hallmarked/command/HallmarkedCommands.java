@@ -35,7 +35,7 @@ public final class HallmarkedCommands {
 
     /** Folders under data/hallmarked/ that make up the editable defaults. */
     private static final List<String> FOLDERS = List.of(
-            "qualities", "grades", "affixes", "fusions", "titles", "loot_modifiers", "tags/item/equipment");
+            "qualities", "grades", "affixes", "fusions", "titles", "loot_modifiers", "recipe/reforge", "tags/item/equipment");
 
     private enum Target { WORLD, KUBEJS }
 
@@ -45,7 +45,11 @@ public final class HallmarkedCommands {
                 .then(Commands.literal("defaults")
                         .then(Commands.literal("rebuild")
                                 .then(Commands.literal("world").executes(c -> rebuild(c, Target.WORLD)))
-                                .then(Commands.literal("kubejs").executes(c -> rebuild(c, Target.KUBEJS))))));
+                                .then(Commands.literal("kubejs").executes(c -> rebuild(c, Target.KUBEJS)))))
+                .then(ItemCommands.inspect())
+                .then(ItemCommands.grade())
+                .then(ItemCommands.quality())
+                .then(ItemCommands.affix()));
     }
 
     private static int rebuild(CommandContext<CommandSourceStack> ctx, Target target) {

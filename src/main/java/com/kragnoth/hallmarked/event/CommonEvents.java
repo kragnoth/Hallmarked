@@ -132,7 +132,7 @@ public final class CommonEvents {
         Reforging.migrateLegacy(stack);
 
         if (grading && !stack.has(HMRegistries.GRADE.get()) && Grading.canGrade(stack)) {
-            Grading.grade(stack, Grading.SOURCE_CRAFTED, player.getLuck(), player.getRandom());
+            Grading.grade(stack, Grading.SOURCE_CRAFTED, player.getLuck(), player.getRandom(), Grading.Context.of(player));
         } else if (stack.has(HMRegistries.GRADE.get())) {
             Grading.refreshName(stack);
         }

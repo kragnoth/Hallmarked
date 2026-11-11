@@ -5,6 +5,11 @@ import com.kragnoth.hallmarked.block.AssayAnvilBlock;
 import com.kragnoth.hallmarked.block.AssayAnvilBlockEntity;
 import com.kragnoth.hallmarked.grade.GradeData;
 import com.kragnoth.hallmarked.loot.GradeLootModifier;
+import com.kragnoth.hallmarked.recipe.GradedIngredient;
+import com.kragnoth.hallmarked.recipe.ReforgeMaterialRecipe;
+import net.minecraft.world.item.crafting.RecipeSerializer;
+import net.minecraft.world.item.crafting.RecipeType;
+import net.neoforged.neoforge.common.crafting.IngredientType;
 import com.kragnoth.hallmarked.menu.AssayAnvilMenu;
 import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
@@ -48,6 +53,9 @@ public final class HMRegistries {
             DeferredRegister.createDataComponents(Registries.DATA_COMPONENT_TYPE, Hallmarked.MODID);
     public static final DeferredRegister<MapCodec<? extends IGlobalLootModifier>> LOOT_MODIFIERS =
             DeferredRegister.create(NeoForgeRegistries.Keys.GLOBAL_LOOT_MODIFIER_SERIALIZERS, Hallmarked.MODID);
+    public static final DeferredRegister<RecipeType<?>> RECIPE_TYPES = DeferredRegister.create(Registries.RECIPE_TYPE, Hallmarked.MODID);
+    public static final DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZERS = DeferredRegister.create(Registries.RECIPE_SERIALIZER, Hallmarked.MODID);
+    public static final DeferredRegister<IngredientType<?>> INGREDIENT_TYPES = DeferredRegister.create(NeoForgeRegistries.Keys.INGREDIENT_TYPES, Hallmarked.MODID);
     public static final DeferredRegister<CreativeModeTab> TABS =
             DeferredRegister.create(Registries.CREATIVE_MODE_TAB, Hallmarked.MODID);
 
@@ -71,6 +79,13 @@ public final class HMRegistries {
 
     public static final DeferredHolder<MapCodec<? extends IGlobalLootModifier>, MapCodec<GradeLootModifier>> GRADE_LOOT =
             LOOT_MODIFIERS.register("grade_loot", () -> GradeLootModifier.CODEC);
+
+    public static final DeferredHolder<RecipeType<?>, RecipeType<ReforgeMaterialRecipe>> REFORGE_MATERIAL_TYPE =
+            RECIPE_TYPES.register("reforge_material", () -> RecipeType.simple(Hallmarked.id("reforge_material")));
+    public static final DeferredHolder<RecipeSerializer<?>, ReforgeMaterialRecipe.Serializer> REFORGE_MATERIAL_SERIALIZER =
+            RECIPE_SERIALIZERS.register("reforge_material", ReforgeMaterialRecipe.Serializer::new);
+    public static final DeferredHolder<IngredientType<?>, IngredientType<GradedIngredient>> GRADED_INGREDIENT =
+            INGREDIENT_TYPES.register("graded", () -> new IngredientType<>(GradedIngredient.CODEC, GradedIngredient.STREAM_CODEC));
 
     // ---- Attributes ------------------------------------------------------------------------
     public static final DeferredHolder<Attribute, Attribute> PROJECTILE_DAMAGE = ATTRIBUTES.register("projectile_damage",
@@ -110,6 +125,9 @@ public final class HMRegistries {
         COMPONENTS.register(modBus);
         TABS.register(modBus);
         LOOT_MODIFIERS.register(modBus);
+        RECIPE_TYPES.register(modBus);
+        RECIPE_SERIALIZERS.register(modBus);
+        INGREDIENT_TYPES.register(modBus);
         modBus.addListener(HMRegistries::addPlayerAttributes);
         modBus.addListener(HMRegistries::registerCapabilities);
     }

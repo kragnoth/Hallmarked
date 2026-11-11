@@ -16,10 +16,19 @@ It was built for the **Gearwright's Hollow** modpack.
 - **53 qualities** across tools, bows, shields, armor (per piece) and baubles, ranging from *Worthless* to *Ascended*.
 - **Auto-marking:** the first time a piece of equipment enters your inventory, it has a chance (50 % by default) to roll a quality.
 - **Assay Anvil:** place equipment and a material in it, then strike the hammer to re-roll the mark. Valid materials are the
-  item's repair material, a configured override, or the fallback (obsidian). The items rest on the anvil's top.
+  item's repair material or any `hallmarked:reforge_material` recipe (obsidian works for everything by default). The items
+  rest on the anvil's top.
 - **Emerald Ring and Emerald Amulet:** Curios baubles that can carry bauble qualities. Curios itself is optional.
 - **New player attributes:** `hallmarked:projectile_damage` and `hallmarked:damage_resistance`.
-- **Compatibility:** Tetra modular items and Better Combat reach.
+- **Pack-maker hooks:**
+  - a `hallmarked:reforge_material` recipe type for anvil materials
+  - a `hallmarked:graded` ingredient, e.g. "requires a Masterwork sword"
+  - NeoForge events for grade odds, graded items and reforges, usable from KubeJS without a plugin
+  - held-item test commands
+  - JEI support
+
+  See [docs/INTEGRATION.md](docs/INTEGRATION.md).
+- **Compatibility:** Tetra modular items, Better Combat reach, JEI.
 
 ## Datapacks
 Qualities are JSON files at `data/<namespace>/qualities/*.json`. A file whose `name` matches an existing quality replaces it.
@@ -49,7 +58,7 @@ run `/hallmarked defaults rebuild world` (or `kubejs`); it backs up your existin
 
 ## Config
 `config/hallmarked-common.toml` has these options:
-- `Fallback`, `Overrides`, `Blacklist`
+- `Blacklist` (reforge materials are now recipes; see docs/INTEGRATION.md)
 - `AutoReforge`, `AutoReforgeChance`
 - `Grading.Enabled`, `Grading.LuckFactor`
 - `MaxDamageResistance`

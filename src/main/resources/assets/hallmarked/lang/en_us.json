@@ -154,5 +154,10 @@
   "hallmarked.fusion.marksmans": "Marksman's",
   "hallmarked.fusion.marksmans.title": "Aim",
   "hallmarked.fusion.lode_seekers": "Lode-Seeker's",
-  "hallmarked.fusion.lode_seekers.title": "Lodestone"
+  "hallmarked.fusion.lode_seekers.title": "Lodestone",
+  "jei.hallmarked.reforge": "Assay Anvil",
+  "jei.hallmarked.reforge.rerolls": "Re-rolls the quality",
+  "jei.hallmarked.reforge.any": "Any equipment; re-rolls the quality",
+  "jei.hallmarked.assay_anvil.info": "Place a piece of equipment and a material, then strike the hammer to re-roll its quality. The item's own repair material always works; other materials are listed under this block's recipes. The grade of work and its affixes are never changed here.",
+  "jei.hallmarked.baubles.info": "Worn in a Curios ring or necklace slot. Like other equipment, baubles can carry a quality and a grade of work."
 }

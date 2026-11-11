@@ -44,11 +44,15 @@ neoForge {
 
 repositories {
     maven { name = 'Curios'; url = 'https://maven.theillusivec4.top/' }
+    maven { name = 'JEI'; url = 'https://maven.blamejared.com/' }
 }
 
 dependencies {
     // Soft dependency: only the API is needed at compile time; Curios is optional at runtime.
     compileOnly "top.theillusivec4.curios:curios-neoforge:${curios_version}:api"
+    // Optional: JEI integration (plugin is only loaded when JEI is present).
+    compileOnly "mezz.jei:jei-${minecraft_version}-common-api:${jei_version}"
+    compileOnly "mezz.jei:jei-${minecraft_version}-neoforge-api:${jei_version}"
 }
 
 var generateModMetadata = tasks.register("generateModMetadata", ProcessResources) {

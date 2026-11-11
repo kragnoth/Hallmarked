@@ -1,0 +1,9 @@
+{
+  "type": "hallmarked:reforge_material",
+  "equipment": {
+    "tag": "c:tools/crossbow"
+  },
+  "material": {
+    "item": "minecraft:iron_ingot"
+  }
+}

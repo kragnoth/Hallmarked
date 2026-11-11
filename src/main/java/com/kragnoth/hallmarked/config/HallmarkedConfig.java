@@ -8,8 +8,6 @@ public final class HallmarkedConfig {
 
     public static final ModConfigSpec SPEC;
 
-    public static final ModConfigSpec.ConfigValue<String> FALLBACK_MATERIAL;
-    public static final ModConfigSpec.ConfigValue<List<? extends String>> MATERIAL_OVERRIDES;
     public static final ModConfigSpec.ConfigValue<List<? extends String>> BLACKLIST;
     public static final ModConfigSpec.BooleanValue AUTO_REFORGE;
     public static final ModConfigSpec.DoubleValue AUTO_REFORGE_CHANCE;
@@ -20,20 +18,8 @@ public final class HallmarkedConfig {
     static {
         ModConfigSpec.Builder b = new ModConfigSpec.Builder();
 
+        // Reforge materials are recipes now: data/<ns>/recipe/*.json with "type": "hallmarked:reforge_material".
         b.push("Materials");
-        FALLBACK_MATERIAL = b
-                .comment("This material can reforge any equipment, even equipment with no override or repair item.")
-                .define("Fallback", "minecraft:obsidian");
-        MATERIAL_OVERRIDES = b
-                .comment("Extra reforge materials for specific equipment, as \"equipment,material\" pairs.",
-                        "These are accepted in addition to the equipment's normal repair items and the fallback.")
-                .defineListAllowEmpty("Overrides",
-                        List.of("minecraft:bow,minecraft:string",
-                                "minecraft:crossbow,minecraft:iron_ingot",
-                                "hallmarked:emerald_ring,minecraft:emerald",
-                                "hallmarked:emerald_amulet,minecraft:emerald"),
-                        () -> "minecraft:bow,minecraft:string",
-                        o -> o instanceof String s && s.contains(","));
         BLACKLIST = b
                 .comment("Equipment that can never receive a quality (neither at the Assay Anvil nor automatically).")
                 .defineListAllowEmpty("Blacklist", List.of(), () -> "minecraft:stick", o -> o instanceof String);
