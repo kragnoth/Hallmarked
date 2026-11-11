@@ -11,7 +11,10 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.material.MapColor;
 import com.mojang.serialization.MapCodec;
 
-/** The Mountebank's job site: a banded, padlocked coffer that is never opened in front of customers. */
+/**
+ * The Mountebank's job site: a banded, padlocked coffer that is never opened in front of customers. Sneak and
+ * right-click it with a set piece to trade the piece in for a token (see {@link TradeIn}).
+ */
 public class MountebankCofferBlock extends HorizontalDirectionalBlock {
     public static final MapCodec<MountebankCofferBlock> CODEC = simpleCodec(p -> new MountebankCofferBlock());
 

@@ -68,7 +68,7 @@ public final class HallmarkedConfig {
         SMART_DROP = b.comment("Chance that a set piece dropping for a player (chests, parcels) is a missing piece of a set",
                         "they have already started, instead of a random piece.")
                 .defineInRange("SmartDropChance", 0.6, 0.0, 1.0);
-        TRADE_IN = b.comment("Set pieces a Mountebank takes for one Mountebank's Token (hand them to him: right-click holding one).")
+        TRADE_IN = b.comment("Set pieces traded in for one Mountebank's Token (sneak + right-click a Mountebank's Coffer holding one).")
                 .defineInRange("TradeInPieces", 1, 1, 64);
         b.pop();
 

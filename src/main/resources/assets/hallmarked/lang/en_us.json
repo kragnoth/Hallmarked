@@ -411,7 +411,7 @@
   "hallmarked.set.lamplighter.signet": "Lamplighter's Signet",
   "item.hallmarked.mountebank_token": "Mountebank's Token",
   "hallmarked.parcel.sworn_parcel": "Sworn Parcel",
-  "hallmarked.trade_in.taken": "The Mountebank pockets %s (%s/%s toward a token)",
-  "hallmarked.trade_in.token": "The Mountebank presses a token into your hand",
+  "hallmarked.trade_in.taken": "%s goes into the coffer (%s/%s toward a token)",
+  "hallmarked.trade_in.token": "%s goes into the coffer. A token drops out.",
   "tooltip.hallmarked.token": "Two buy a Sworn Parcel: a set piece, he swears it."
 }

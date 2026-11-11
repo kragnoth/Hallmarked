@@ -2,7 +2,8 @@
 
 A new villager profession. An unemployed villager takes the job at a **Mountebank's Coffer**
 (crafted: iron nugget top, iron nuggets either side of a barrel, gold ingot below). He sells sealed **parcels**, buys
-Smith's Scrap (6 for an emerald), and takes unwanted set pieces: right-click him holding one. Each piece (config
+Smith's Scrap (6 for an emerald), and buys unwanted set pieces through his coffer: sneak and right-click a Mountebank's Coffer holding one (he doesn't
+have to be there). Each piece (config
 `Sets.TradeInPieces`) earns a **Mountebank's Token**, and two tokens buy a **Sworn Parcel**, which always holds a set
 piece (60 % of the time one you're missing; see [SETS.md](SETS.md)). Every Mountebank offers the Sworn Parcel from
 Apprentice level on. A parcel's contents are decided the moment you open it (use it): a Rotten sword that
