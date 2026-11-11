@@ -88,6 +88,22 @@ public final class Grading {
      */
     @Nullable
     public static Grade pickGrade(ItemStack stack, String source, double luck, RandomSource random, Context ctx) {
+        Map<Grade, Double> w = gradeWeights(stack, source, luck, ctx);
+        double total = 0;
+        for (double v : w.values()) total += v;
+        if (total <= 0) return null;
+        double pick = random.nextDouble() * total;
+        Grade last = null;
+        for (Map.Entry<Grade, Double> e : w.entrySet()) {
+            last = e.getKey();
+            pick -= e.getValue();
+            if (pick < 0) return last;
+        }
+        return last;
+    }
+
+    /** Final per-grade weights for one roll: source weight, luck, regions, then {@link GradeRollEvent} listeners. */
+    public static Map<Grade, Double> gradeWeights(ItemStack stack, String source, double luck, Context ctx) {
         double factor = HallmarkedConfig.LUCK_FACTOR.get();
         List<Grade> grades = new ArrayList<>(GRADES.all());
         // Regions: luck adds, grade multipliers multiply.
@@ -104,19 +120,20 @@ public final class Grading {
         }
         GradeRollEvent event = NeoForge.EVENT_BUS.post(
                 new GradeRollEvent(stack.copy(), source, luck, ctx.player(), ctx.level(), ctx.pos(), base));
-        double[] w = new double[grades.size()];
-        double total = 0;
-        for (int i = 0; i < grades.size(); i++) {
-            w[i] = event.getWeight(grades.get(i).name());
-            total += w[i];
+        Map<Grade, Double> out = new LinkedHashMap<>();
+        for (Grade g : grades) out.put(g, Math.max(0, event.getWeight(g.name())));
+        return out;
+    }
+
+    /** Chance (0..1) that a found item of this base becomes some unique, for the given source. */
+    public static double uniqueChance(ItemStack stack, String source) {
+        if (SOURCE_CRAFTED.equals(source) || GRADES.get(UNIQUE_GRADE) == null) return 0;
+        double none = 1;
+        for (Unique u : UNIQUES.all()) {
+            double c = u.chance(source);
+            if (c > 0 && u.items().test(stack)) none *= 1 - c;
         }
-        if (total <= 0) return null;
-        double pick = random.nextDouble() * total;
-        for (int i = 0; i < grades.size(); i++) {
-            pick -= w[i];
-            if (pick < 0) return grades.get(i);
-        }
-        return grades.get(grades.size() - 1);
+        return 1 - none;
     }
 
     // ---- Affix rolling ---------------------------------------------------------------------

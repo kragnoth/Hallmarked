@@ -43,7 +43,8 @@ It was built for the **Gearwright's Hollow** modpack.
   - a `hallmarked:reforge_material` recipe type for anvil materials
   - a `hallmarked:graded` ingredient, e.g. "requires a Masterwork sword"
   - NeoForge events for grade odds, graded items and reforges, usable from KubeJS without a plugin
-  - held-item test commands
+  - test commands: generate tuned random gear, spawn a loot barrel or a champion mob, print exact grade odds
+    (see [docs/TESTING.md](docs/TESTING.md))
   - JEI support
 
   See [docs/INTEGRATION.md](docs/INTEGRATION.md).

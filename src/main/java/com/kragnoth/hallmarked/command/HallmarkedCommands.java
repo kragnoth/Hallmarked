@@ -50,7 +50,13 @@ public final class HallmarkedCommands {
                 .then(ItemCommands.grade())
                 .then(ItemCommands.quality())
                 .then(ItemCommands.affix())
-                .then(ItemCommands.unique()));
+                .then(ItemCommands.unique())
+                .then(TestCommands.generateCommand())
+                .then(TestCommands.lootBarrelCommand())
+                .then(TestCommands.championCommand())
+                .then(TestCommands.oddsCommand())
+                .then(TestCommands.appraiseCommand())
+                .then(TestCommands.dataCommand()));
     }
 
     private static int rebuild(CommandContext<CommandSourceStack> ctx, Target target) {
