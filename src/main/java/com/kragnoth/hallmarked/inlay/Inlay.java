@@ -49,6 +49,8 @@ public record Inlay(String name, String group, Ingredient template, Ingredient m
     public static Inlay parse(ResourceLocation id, JsonObject json) {
         String name = GsonHelper.getAsString(json, "name", id.getNamespace() + ".inlay." + id.getPath().replace('/', '.'));
         String group = GsonHelper.getAsString(json, "group", name);
+        com.kragnoth.hallmarked.grade.Strict.warnUnknownKeys(id, json,
+                com.kragnoth.hallmarked.grade.Strict.withSections("name", "group", "template", "material", "enchantments"), "Inlay");
 
         JsonElement tmpl = json.has("template") ? json.get("template") : itemJson(DEFAULT_TEMPLATE.toString());
         Ingredient template = Ingredient.CODEC_NONEMPTY.parse(JsonOps.INSTANCE, tmpl).getOrThrow(IllegalArgumentException::new);
@@ -61,6 +63,7 @@ public record Inlay(String name, String group, Ingredient template, Ingredient m
             List<Affix.Mod> mods = new ArrayList<>();
             for (JsonElement e : arr) {
                 JsonObject m = e.getAsJsonObject();
+                com.kragnoth.hallmarked.grade.Strict.warnUnknownKeys(id, m, com.kragnoth.hallmarked.grade.Strict.MODIFIER_KEYS, "Inlay modifier in");
                 String modName = GsonHelper.getAsString(m, "name").toLowerCase(Locale.ROOT);
                 if (!ResourceLocation.isValidPath(modName)) throw new IllegalArgumentException("invalid modifier name '" + modName + "'");
                 double v = GsonHelper.getAsDouble(m, "value");

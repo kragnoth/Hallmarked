@@ -60,13 +60,9 @@ public record Quality(String name, ChatFormatting color, int weight, Map<Categor
         ChatFormatting color = ChatFormatting.GRAY;
         String code = json.has("color_code") ? GsonHelper.getAsString(json, "color_code")
                 : json.has("color") ? GsonHelper.getAsString(json, "color") : "";
-        if (code.length() >= 2 && (code.charAt(0) == '§' || code.charAt(0) == '&')) {
-            ChatFormatting f = ChatFormatting.getByCode(code.charAt(1));
-            if (f != null) color = f;
-        } else if (!code.isEmpty()) {
-            ChatFormatting f = ChatFormatting.getByName(code);
-            if (f != null) color = f;
-        }
+        if (!code.isEmpty()) color = com.kragnoth.hallmarked.grade.Strict.color(code);
+        com.kragnoth.hallmarked.grade.Strict.warnUnknownKeys(fileId, json,
+                com.kragnoth.hallmarked.grade.Strict.withSections("name", "color", "color_code", "weight"), "Quality");
 
         int weight = Math.min(1_000_000, Math.max(0, GsonHelper.getAsInt(json, "weight", 1)));
 
@@ -78,6 +74,7 @@ public record Quality(String name, ChatFormatting color, int weight, Map<Categor
             List<Mod> mods = new ArrayList<>();
             for (JsonElement e : arr) {
                 JsonObject m = e.getAsJsonObject();
+                com.kragnoth.hallmarked.grade.Strict.warnUnknownKeys(fileId, m, com.kragnoth.hallmarked.grade.Strict.MODIFIER_KEYS, "Quality modifier in");
                 String attr = GsonHelper.getAsString(m, "attribute").toLowerCase(Locale.ROOT);
                 if (attr.startsWith("quality_equipment:")) attr = "hallmarked:" + attr.substring("quality_equipment:".length());
                 String modName = GsonHelper.getAsString(m, "name").toLowerCase(Locale.ROOT);
@@ -97,10 +94,6 @@ public record Quality(String name, ChatFormatting color, int weight, Map<Categor
     }
 
     private static AttributeModifier.Operation parseOperation(String s) {
-        return switch (s.toLowerCase(Locale.ROOT)) {
-            case "addition", "add", "add_value" -> AttributeModifier.Operation.ADD_VALUE;
-            case "multiply_base", "add_multiplied_base" -> AttributeModifier.Operation.ADD_MULTIPLIED_BASE;
-            default -> AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL;
-        };
+        return com.kragnoth.hallmarked.grade.Strict.operation(s);
     }
 }

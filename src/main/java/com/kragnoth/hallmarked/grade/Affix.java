@@ -57,6 +57,7 @@ public record Affix(String name, Type type, int weight, String group, Map<Catego
         Type type = Type.valueOf(GsonHelper.getAsString(json, "type", "prefix").toUpperCase(Locale.ROOT));
         int weight = Math.min(1_000_000, Math.max(0, GsonHelper.getAsInt(json, "weight", 10)));
         String group = GsonHelper.getAsString(json, "group", name);
+        Strict.warnUnknownKeys(id, json, Strict.withSections("name", "type", "weight", "group"), "Affix");
 
         Map<Category, List<Mod>> sections = new EnumMap<>(Category.class);
         for (Category c : Category.values()) {
@@ -65,6 +66,7 @@ public record Affix(String name, Type type, int weight, String group, Map<Catego
             List<Mod> mods = new ArrayList<>();
             for (JsonElement e : arr) {
                 JsonObject m = e.getAsJsonObject();
+                Strict.warnUnknownKeys(id, m, Strict.MODIFIER_KEYS, "Affix modifier in");
                 double min, max;
                 if (m.has("value")) {
                     min = max = GsonHelper.getAsDouble(m, "value");
@@ -86,10 +88,6 @@ public record Affix(String name, Type type, int weight, String group, Map<Catego
     }
 
     public static AttributeModifier.Operation parseOperation(String s) {
-        return switch (s.toLowerCase(Locale.ROOT)) {
-            case "addition", "add", "add_value" -> AttributeModifier.Operation.ADD_VALUE;
-            case "multiply_base", "add_multiplied_base" -> AttributeModifier.Operation.ADD_MULTIPLIED_BASE;
-            default -> AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL;
-        };
+        return Strict.operation(s);
     }
 }

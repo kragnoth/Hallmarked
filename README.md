@@ -70,6 +70,19 @@ materials are recipes; both sync to clients, unlike the config.
 ## Building
 Run `./gradlew build`. This needs JDK 21.
 
+## Acknowledgements
+Hallmarked stands on other people's ideas. No code from any of these projects is included; thanks to:
+
+- **Quality Equipment** by PooPmeep: the original concept of equipment qualities and a reforging station. Hallmarked
+  began as a clean-room rebuild of its gameplay (see [docs/SPEC.md](docs/SPEC.md)).
+- **Apotheosis** and **Placebo** by Shadows_of_Fire: they showed the right patterns for affix-style systems on
+  NeoForge, including modifier ids that are unique per equipment slot, virtual enchantment levels through
+  `GetEnchantmentLevelEvent`, and leaving server data alone on an integrated host when syncing to clients.
+- **Farmer's Delight** by vectorwing: a reference for block entity, menu and client-sync conventions.
+- **Diablo I and II** (Blizzard): the inspiration for grades, prefixes and suffixes, generated names, and rarity-driven rolls.
+- **Excalibur** by Maffhew: the visual style the original textures are drawn to match.
+- **Curios API** (TheIllusiveC4), **JEI** (mezz) and **NeoForge**, which the integrations are built on.
+
 ## License
 MIT. See [LICENSE](LICENSE).
 

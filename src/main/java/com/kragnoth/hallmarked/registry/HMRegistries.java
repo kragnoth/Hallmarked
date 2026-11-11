@@ -77,6 +77,15 @@ public final class HMRegistries {
                     .persistent(GradeData.CODEC)
                     .networkSynchronized(GradeData.STREAM_CODEC));
 
+    /**
+     * The name an item had before Hallmarked named it (e.g. from a loot table's set_name), so generated names build
+     * on it instead of wiping it, and it comes back if our name is dropped.
+     */
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<net.minecraft.network.chat.Component>> BASE_NAME =
+            COMPONENTS.registerComponentType("base_name", b -> b
+                    .persistent(net.minecraft.network.chat.ComponentSerialization.CODEC)
+                    .networkSynchronized(net.minecraft.network.chat.ComponentSerialization.STREAM_CODEC));
+
     /** Inlay names applied at the smithing table, in order. */
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<java.util.List<String>>> INLAYS =
             COMPONENTS.registerComponentType("inlays", b -> b

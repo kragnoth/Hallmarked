@@ -27,6 +27,7 @@ public record Fusion(String name, Affix.Type type, List<String> parts, @Nullable
 
     public static Fusion parse(ResourceLocation id, JsonObject json) {
         String name = GsonHelper.getAsString(json, "name", id.getNamespace() + ".fusion." + id.getPath().replace('/', '.'));
+        Strict.warnUnknownKeys(id, json, java.util.Set.of("name", "type", "parts", "title", "priority", "enabled"), "Fusion");
         Affix.Type type = Affix.Type.valueOf(GsonHelper.getAsString(json, "type", "prefix").toUpperCase(Locale.ROOT));
         List<String> parts = new ArrayList<>();
         for (JsonElement e : GsonHelper.getAsJsonArray(json, "parts")) parts.add(e.getAsString());

@@ -99,7 +99,7 @@ final class ItemCommands {
                 .then(Commands.literal("clear").executes(c -> {
                     ItemStack s = held(c);
                     s.remove(HMRegistries.GRADE.get());
-                    s.set(DataComponents.ITEM_NAME, s.getItem().components().get(DataComponents.ITEM_NAME));
+                    Grading.refreshName(s); // restores any base name another mod had given it
                     return ok(c, "Cleared grade (it will re-roll on the next inventory scan unless grading is off)");
                 }));
     }

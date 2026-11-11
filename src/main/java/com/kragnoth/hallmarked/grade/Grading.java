@@ -276,7 +276,7 @@ public final class Grading {
         }
         if (prefix == null && suffix == null) return tintedName(stack, g);
 
-        MutableComponent name = Component.translatable(stack.getItem().getDescriptionId());
+        MutableComponent name = baseName(stack).copy();
         if (prefix != null) name = Component.translatable("hallmarked.name.prefixed", Component.translatable(prefix), name);
         if (suffix != null) name = Component.translatable("hallmarked.name.suffixed", name, Component.translatable(suffix));
         return name.withStyle(g.color());
@@ -287,20 +287,45 @@ public final class Grading {
     private static Component tintedName(ItemStack stack, @Nullable Grade g) {
         if (g == null || g.inlayTint() == null) return null;
         if (stack.getOrDefault(HMRegistries.INLAYS.get(), List.of()).isEmpty() && !stack.has(HMRegistries.SEALED_INLAY.get())) return null;
-        return Component.translatable("hallmarked.name.tinted", Component.translatable(stack.getItem().getDescriptionId()))
+        return Component.translatable("hallmarked.name.tinted", baseName(stack))
                 .withStyle(net.minecraft.network.chat.Style.EMPTY.withColor(g.inlayTint()));
     }
 
     /** Keeps ITEM_NAME in step with the grade and the current base item (e.g. after a netherite upgrade). */
     public static void refreshName(ItemStack stack) {
+        captureBaseName(stack);
         Component want = desiredName(stack);
         Component current = stack.get(DataComponents.ITEM_NAME);
         if (want == null) {
             // Grade gone or no longer named (e.g. data changed on /reload): drop a name we generated, keep anyone else's.
-            if (isOurName(current)) stack.set(DataComponents.ITEM_NAME, stack.getItem().components().get(DataComponents.ITEM_NAME));
+            if (isOurName(current)) {
+                Component base = stack.get(HMRegistries.BASE_NAME.get());
+                stack.set(DataComponents.ITEM_NAME, base != null ? base : stack.getItem().components().get(DataComponents.ITEM_NAME));
+                stack.remove(HMRegistries.BASE_NAME.get());
+            }
             return;
         }
         if (!want.equals(current)) stack.set(DataComponents.ITEM_NAME, want);
+    }
+
+    /**
+     * The name to build on: a non-Hallmarked item_name another mod or loot table gave this stack, else the item's
+     * own default name (which follows the item, e.g. through a netherite upgrade).
+     */
+    public static Component baseName(ItemStack stack) {
+        Component base = stack.get(HMRegistries.BASE_NAME.get());
+        if (base != null) return base;
+        Component proto = stack.getItem().components().get(DataComponents.ITEM_NAME);
+        return proto != null ? proto : Component.translatable(stack.getItem().getDescriptionId());
+    }
+
+    /** Before our first rename, stash any item_name that was patched onto this stack by someone else. */
+    private static void captureBaseName(ItemStack stack) {
+        if (stack.has(HMRegistries.BASE_NAME.get())) return;
+        var patched = stack.getComponentsPatch().get(DataComponents.ITEM_NAME);
+        if (patched == null || patched.isEmpty()) return;
+        Component c = patched.get();
+        if (!isOurName(c)) stack.set(HMRegistries.BASE_NAME.get(), c);
     }
 
     private static boolean isOurName(@Nullable Component c) {

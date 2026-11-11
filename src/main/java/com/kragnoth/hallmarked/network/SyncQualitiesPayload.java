@@ -33,6 +33,9 @@ public record SyncQualitiesPayload(List<String> qualities, List<String> grades, 
     }
 
     public static void handle(SyncQualitiesPayload msg, IPayloadContext ctx) {
+        // Singleplayer/LAN host: client and server share these stores and the server already loaded them.
+        // Don't overwrite live server data from the client thread with a re-parsed copy.
+        if (net.neoforged.neoforge.server.ServerLifecycleHooks.getCurrentServer() != null) return;
         ctx.enqueueWork(() -> {
             Qualities.fromWire(msg.qualities());
             Grading.GRADES.fromWire(msg.grades());

@@ -33,7 +33,12 @@ public final class Hallmarked {
         return ResourceLocation.fromNamespaceAndPath(MODID, path);
     }
 
+    private static Boolean curios;
+
+    /** Cached: called from tick and tooltip paths. */
     public static boolean curiosLoaded() {
-        return ModList.get().isLoaded("curios");
+        Boolean c = curios;
+        if (c == null) curios = c = ModList.get().isLoaded("curios");
+        return c;
     }
 }

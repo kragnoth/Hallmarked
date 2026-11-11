@@ -41,7 +41,9 @@ public record Grade(String name, ChatFormatting color, int rank, int minAffixes,
 
     public static Grade parse(ResourceLocation id, JsonObject json) {
         String name = GsonHelper.getAsString(json, "name", id.getNamespace() + ".grade." + id.getPath());
-        ChatFormatting color = ChatFormatting.getByName(GsonHelper.getAsString(json, "color", "white"));
+        Strict.warnUnknownKeys(id, json, java.util.Set.of("name", "color", "rank", "affixes", "max_prefixes", "max_suffixes",
+                "flaws", "roll", "titled", "hidden", "luck_scaling", "weights", "inlay_slots", "inlay_tint", "enabled"), "Grade");
+        ChatFormatting color = Strict.color(GsonHelper.getAsString(json, "color", "white"));
         JsonObject affixes = GsonHelper.getAsJsonObject(json, "affixes", new JsonObject());
         JsonObject roll = GsonHelper.getAsJsonObject(json, "roll", new JsonObject());
         JsonObject w = GsonHelper.getAsJsonObject(json, "weights", new JsonObject());
@@ -59,7 +61,8 @@ public record Grade(String name, ChatFormatting color, int rank, int minAffixes,
                 GsonHelper.getAsBoolean(json, "titled", false), GsonHelper.getAsBoolean(json, "hidden", false),
                 GsonHelper.getAsDouble(json, "luck_scaling", 0.0), Map.copyOf(weights),
                 Math.max(0, GsonHelper.getAsInt(json, "inlay_slots", 0)),
-                json.has("inlay_tint") ? net.minecraft.network.chat.TextColor.parseColor(GsonHelper.getAsString(json, "inlay_tint")).result().orElse(null) : null,
+                json.has("inlay_tint") ? net.minecraft.network.chat.TextColor.parseColor(GsonHelper.getAsString(json, "inlay_tint"))
+                        .getOrThrow(msg -> new IllegalArgumentException("bad inlay_tint: " + msg)) : null,
                 source);
     }
 }

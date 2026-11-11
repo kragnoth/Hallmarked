@@ -106,7 +106,7 @@ public final class ClientEvents {
             List<Component> tip = e.getToolTip();
             // Titled items show their base item under the title, Diablo-style.
             if (grade != null && grade.titled() && !tip.isEmpty()) {
-                tip.add(1, Component.translatable(stack.getItem().getDescriptionId()).withStyle(ChatFormatting.GRAY));
+                tip.add(1, Grading.baseName(stack).copy().withStyle(ChatFormatting.GRAY));
             }
 
             // Insert above the advanced-tooltip footer (durability / id / component count) if present.
@@ -165,10 +165,20 @@ public final class ClientEvents {
                 }
             }
             for (var ench : inlay.enchantments().entrySet()) {
-                Component enchName = Component.translatable("enchantment." + ench.getKey().getNamespace() + "." + ench.getKey().getPath());
+                Component enchName = enchantmentName(ench.getKey());
                 block.add(Component.literal("   ").append(Component.translatable("tooltip.hallmarked.inlay_enchant", ench.getValue(), enchName))
                         .withStyle(ChatFormatting.BLUE));
             }
+        }
+
+        /** Real description from the (data-driven) enchantment registry; key guess only as a fallback. */
+        private static Component enchantmentName(net.minecraft.resources.ResourceLocation id) {
+            var level = net.minecraft.client.Minecraft.getInstance().level;
+            if (level != null) {
+                var holder = level.registryAccess().registryOrThrow(net.minecraft.core.registries.Registries.ENCHANTMENT).getHolder(id);
+                if (holder.isPresent()) return holder.get().value().description();
+            }
+            return Component.translatable("enchantment." + id.getNamespace() + "." + id.getPath());
         }
 
         private static MutableComponent statLine(Marks.Entry en, String indent, boolean advanced) {
