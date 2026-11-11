@@ -185,7 +185,14 @@ public final class HMRegistries {
 
     public static final DeferredBlock<com.kragnoth.hallmarked.gamble.MountebankCofferBlock> MOUNTEBANK_COFFER =
             BLOCKS.register("mountebank_coffer", com.kragnoth.hallmarked.gamble.MountebankCofferBlock::new);
-    public static final DeferredItem<BlockItem> MOUNTEBANK_COFFER_ITEM = ITEMS.registerSimpleBlockItem(MOUNTEBANK_COFFER);
+    /** Can't go inside other container items (coffers, shulkers, bundles, backpacks): a coffer item carries its contents. */
+    public static final DeferredItem<BlockItem> MOUNTEBANK_COFFER_ITEM = ITEMS.register("mountebank_coffer",
+            () -> (BlockItem) new BlockItem(MOUNTEBANK_COFFER.get(), new Item.Properties()) {
+                @Override
+                public boolean canFitInsideContainerItems() {
+                    return false;
+                }
+            });
     /** Earned by handing a Mountebank set pieces; buys a Sworn Parcel. */
     public static final DeferredItem<Item> MOUNTEBANK_TOKEN = ITEMS.registerSimpleItem("mountebank_token",
             new Item.Properties().rarity(net.minecraft.world.item.Rarity.UNCOMMON));

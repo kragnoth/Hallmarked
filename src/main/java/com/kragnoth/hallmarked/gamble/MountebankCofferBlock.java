@@ -129,7 +129,7 @@ public class MountebankCofferBlock extends BaseEntityBlock {
             level.playSound(null, pos, SoundEvents.CHEST_LOCKED, SoundSource.BLOCKS, 1.0f, 1.0f);
             return InteractionResult.CONSUME;
         }
-        player.openMenu(new SimpleMenuProvider((id, inv, p) -> ChestMenu.threeRows(id, inv, be.items()),
+        player.openMenu(new SimpleMenuProvider((id, inv, p) -> new CofferMenu(id, inv, be.items()),
                 Component.translatable("block.hallmarked.mountebank_coffer")));
         level.playSound(null, pos, SoundEvents.BARREL_OPEN, SoundSource.BLOCKS, 0.6f, 0.8f);
         return InteractionResult.CONSUME;

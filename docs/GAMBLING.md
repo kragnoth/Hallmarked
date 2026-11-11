@@ -40,6 +40,8 @@ The coffer is worth placing even without a Mountebank:
   explosions don't touch it, and hoppers can't reach into it. However it's broken, it drops as one item that keeps its
   contents and its owner, like a shulker box, so moving it spills nothing and a coffer carried off by someone else
   stays locked. An unowned coffer (placed before 1.19) belongs to whoever opens it first.
+  Like a shulker box it won't nest: coffers, shulker boxes and anything else that can't go inside a container item are
+  refused, and a coffer item can't go into shulkers, bundles or backpacks, so one stack can't grow into an oversized item.
 * **Fence.** Sneak and right-click it holding gear to sell:
   * **Set pieces** earn a Mountebank's Token each.
   * **Found graded gear** (from loot, mobs or parcels) earns emeralds by grade: Shoddy 1, Common 1, Journeyman 2,

@@ -53,6 +53,7 @@ public record Parcel(String name, int level, int weight, ChatFormatting color, i
             JsonObject sc = GsonHelper.getAsJsonObject(json, "second_cost");
             ResourceLocation itemId = ResourceLocation.parse(GsonHelper.getAsString(sc, "item"));
             second = BuiltInRegistries.ITEM.getOptional(itemId).orElseThrow(() -> new IllegalArgumentException("unknown item " + itemId));
+            if (second == net.minecraft.world.item.Items.AIR) throw new IllegalArgumentException("second_cost item can't be air");
             secondCount = Math.max(1, Math.min(64, GsonHelper.getAsInt(sc, "count", 1)));
         }
         Set<Category> cats = EnumSet.noneOf(Category.class);
@@ -73,7 +74,9 @@ public record Parcel(String name, int level, int weight, ChatFormatting color, i
     private static Item currency(JsonObject json) {
         if (!json.has("currency")) return net.minecraft.world.item.Items.EMERALD;
         ResourceLocation id = ResourceLocation.parse(GsonHelper.getAsString(json, "currency"));
-        return BuiltInRegistries.ITEM.getOptional(id).orElseThrow(() -> new IllegalArgumentException("unknown currency " + id));
+        var item = BuiltInRegistries.ITEM.getOptional(id).orElseThrow(() -> new IllegalArgumentException("unknown currency " + id));
+        if (item == net.minecraft.world.item.Items.AIR) throw new IllegalArgumentException("currency can't be air (the parcel would be free)");
+        return item;
     }
 
     private static double p(JsonObject json, String key, double def) {

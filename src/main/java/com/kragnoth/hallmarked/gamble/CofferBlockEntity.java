@@ -32,6 +32,11 @@ public class CofferBlockEntity extends BlockEntity {
         }
 
         @Override
+        public boolean canPlaceItem(int slot, net.minecraft.world.item.ItemStack stack) {
+            return CofferMenu.fits(stack);
+        }
+
+        @Override
         public boolean stillValid(Player player) {
             return !isRemoved() && level != null && level.getBlockEntity(worldPosition) == CofferBlockEntity.this
                     && player.distanceToSqr(worldPosition.getX() + 0.5, worldPosition.getY() + 0.5, worldPosition.getZ() + 0.5) <= 64;
