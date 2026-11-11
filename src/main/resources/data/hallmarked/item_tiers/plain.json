@@ -1,0 +1,21 @@
+{
+  "name": "hallmarked.tier.plain",
+  "items": [
+    "#hallmarked:tier/plain"
+  ],
+  "tool_tiers": [
+    "stone",
+    "gold"
+  ],
+  "armor_materials": [
+    "minecraft:gold",
+    "minecraft:chainmail"
+  ],
+  "max_grade": "hallmarked.grade.journeyman",
+  "max_roll": 0.6,
+  "overflow_grade": "hallmarked.grade.common",
+  "blocked_qualities": [
+    "hallmarked.quality.ascended",
+    "hallmarked.quality.divine"
+  ]
+}

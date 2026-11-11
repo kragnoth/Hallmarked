@@ -1,0 +1,13 @@
+{
+  "name": "hallmarked.loot_odds.late",
+  "tables": [
+    "minecraft:chests/ancient_city",
+    "minecraft:chests/ancient_city_ice_box",
+    "minecraft:chests/end_city_treasure",
+    "minecraft:chests/bastion_treasure",
+    "minecraft:chests/woodland_mansion",
+    "minecraft:chests/trial_chambers/reward_ominous*"
+  ],
+  "luck": 1.0,
+  "cap_shift": 1
+}

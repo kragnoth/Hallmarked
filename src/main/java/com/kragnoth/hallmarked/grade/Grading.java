@@ -74,8 +74,14 @@ public final class Grading {
     // ---- Grade selection -------------------------------------------------------------------
 
     /** Where and for whom a roll happens; any field may be null. */
-    public record Context(@Nullable Player player, @Nullable Level level, @Nullable Vec3 pos) {
+    /** @param table the loot table being rolled, when the item comes from one (for per-table odds) */
+    public record Context(@Nullable Player player, @Nullable Level level, @Nullable Vec3 pos,
+                          @Nullable net.minecraft.resources.ResourceLocation table) {
         public static final Context NONE = new Context(null, null, null);
+
+        public Context(@Nullable Player player, @Nullable Level level, @Nullable Vec3 pos) {
+            this(player, level, pos, null);
+        }
 
         public static Context of(Player player) {
             return new Context(player, player.level(), player.position());
@@ -113,6 +119,7 @@ public final class Grading {
             luck += r.luck();
             r.gradeMultipliers().forEach((k, v) -> regionMult.merge(k, v, (a, b) -> a * b));
         }
+        luck += com.kragnoth.hallmarked.tier.LootOdds.forTable(ctx.table()).luck();
         Map<Grade, Double> base = new LinkedHashMap<>();
         for (Grade g : grades) {
             double mult = Math.max(0.1, 1.0 + luck * factor * g.luckScaling());
@@ -208,7 +215,15 @@ public final class Grading {
         Grade g = unique != null ? GRADES.get(UNIQUE_GRADE) : pickGrade(stack, source, luck, random, ctx);
         if (g == null) return false;
         if (unique != null) stack.set(HMRegistries.UNIQUE.get(), unique.name());
-        GradeData rolled = unique != null ? new GradeData(g.name(), List.of(), "", "") : rollData(stack, g, random);
+        float rollCap = 1f;
+        if (unique == null) {
+            Cap cap = capFor(stack, ctx);
+            if (cap != null) {
+                if (g.rank() > cap.grade().rank()) g = cap.overflow();
+                rollCap = cap.maxRoll();
+            }
+        }
+        GradeData rolled = unique != null ? new GradeData(g.name(), List.of(), "", "") : capRolls(rollData(stack, g, random), rollCap);
         ItemGradedEvent event = NeoForge.EVENT_BUS.post(new ItemGradedEvent(stack.copy(), source, ctx.player(), ctx.level(), rolled));
         GradeData result = event.getResult() != null ? event.getResult() : rolled; // never leave an item ungraded (would re-roll forever)
         stack.set(HMRegistries.GRADE.get(), result);
@@ -223,6 +238,41 @@ public final class Grading {
             announce(sp, stack, finalGrade);
         }
         return true;
+    }
+
+    /** The effective material-tier cap for this item and roll, or null when uncapped. */
+    public record Cap(Grade grade, Grade overflow, float maxRoll, com.kragnoth.hallmarked.tier.ItemTier tier, int shift) {}
+
+    @Nullable
+    public static Cap capFor(ItemStack stack, Context ctx) {
+        var tier = com.kragnoth.hallmarked.tier.ItemTier.of(stack);
+        if (tier == null) return null;
+        Grade top = findGrade(tier.maxGrade());
+        if (top == null) return null;
+        int shift = com.kragnoth.hallmarked.tier.LootOdds.forTable(ctx.table()).capShift();
+        int allowed = top.rank() + shift;
+        Grade best = null;
+        for (Grade x : GRADES.all()) {
+            if (x.name().equals(UNIQUE_GRADE) || x.rank() > allowed) continue;
+            if (best == null || x.rank() > best.rank()) best = x;
+        }
+        if (best == null) return null;
+        // Lifted past its cap by a special table: the work is exceptional, so the roll cap goes too.
+        Grade overflow = findGrade(tier.overflowGrade());
+        if (overflow == null || overflow.rank() > best.rank()) overflow = best;
+        return new Cap(best, overflow, shift > 0 ? 1f : tier.maxRoll(), tier, shift);
+    }
+
+    /** Clamps prefix and suffix rolls (not flaws) to {@code max}. */
+    private static GradeData capRolls(GradeData d, float max) {
+        if (max >= 1f) return d;
+        List<GradeData.Rolled> out = new ArrayList<>();
+        for (GradeData.Rolled r : d.affixes()) {
+            Affix a = AFFIXES.get(r.affix());
+            boolean flaw = a != null && a.type() == Affix.Type.FLAW;
+            out.add(flaw || r.roll() <= max ? r : new GradeData.Rolled(r.affix(), max));
+        }
+        return new GradeData(d.grade(), out, d.titleFirst(), d.titleSecond());
     }
 
     public static boolean isUnappraised(ItemStack stack) {

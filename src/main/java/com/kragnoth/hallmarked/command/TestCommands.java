@@ -518,21 +518,38 @@ final class TestCommands {
         SuggestionProvider<CommandSourceStack> sources = (c, b) ->
                 SharedSuggestionProvider.suggest(List.of(Grading.SOURCE_LOOT, Grading.SOURCE_CRAFTED, Grading.SOURCE_MOB), b);
         return Commands.literal("odds")
-                .executes(c -> odds(c, Grading.SOURCE_LOOT, null))
+                .executes(c -> odds(c, Grading.SOURCE_LOOT, null, null))
                 .then(Commands.argument("source", StringArgumentType.word()).suggests(sources)
-                        .executes(c -> odds(c, StringArgumentType.getString(c, "source"), null))
+                        .executes(c -> odds(c, StringArgumentType.getString(c, "source"), null, null))
                         .then(Commands.argument("luck", DoubleArgumentType.doubleArg(-1024, 1024))
-                                .executes(c -> odds(c, StringArgumentType.getString(c, "source"), DoubleArgumentType.getDouble(c, "luck")))));
+                                .executes(c -> odds(c, StringArgumentType.getString(c, "source"), DoubleArgumentType.getDouble(c, "luck"), null))
+                                .then(Commands.argument("table", ResourceLocationArgument.id()).suggests((c, b) ->
+                                                SharedSuggestionProvider.suggestResource(c.getSource().getServer().reloadableRegistries().getKeys(Registries.LOOT_TABLE), b))
+                                        .executes(c -> odds(c, StringArgumentType.getString(c, "source"), DoubleArgumentType.getDouble(c, "luck"),
+                                                ResourceLocationArgument.getId(c, "table"))))));
     }
 
     /** Exact odds at your position (regions apply) with the held item, or an iron sword if you hold no equipment. */
-    private static int odds(CommandContext<CommandSourceStack> c, String source, @Nullable Double luckArg) throws CommandSyntaxException {
+    private static int odds(CommandContext<CommandSourceStack> c, String source, @Nullable Double luckArg,
+                            @Nullable ResourceLocation table) throws CommandSyntaxException {
         ServerPlayer p = c.getSource().getPlayerOrException();
         ItemStack held = p.getMainHandItem();
         ItemStack probe = Grading.canGrade(held) ? held : new ItemStack(Items.IRON_SWORD);
         double luck = luckArg != null ? luckArg : p.getLuck();
-        Grading.Context ctx = Grading.SOURCE_CRAFTED.equals(source) ? Grading.Context.of(p) : new Grading.Context(p, p.level(), p.position());
-        Map<Grade, Double> w = Grading.gradeWeights(probe, source, luck, ctx);
+        Grading.Context ctx = Grading.SOURCE_CRAFTED.equals(source) ? Grading.Context.of(p) : new Grading.Context(p, p.level(), p.position(), table);
+        Map<Grade, Double> w = new java.util.LinkedHashMap<>(Grading.gradeWeights(probe, source, luck, ctx));
+        // Material tier cap: grades above it fold into the cap, as they do when an item is graded.
+        Grading.Cap cap = Grading.capFor(probe, ctx);
+        if (cap != null) {
+            double folded = 0;
+            for (var e : w.entrySet()) {
+                if (!e.getKey().name().equals(Grading.UNIQUE_GRADE) && e.getKey().rank() > cap.grade().rank()) {
+                    folded += e.getValue();
+                    e.setValue(0.0);
+                }
+            }
+            w.merge(cap.overflow(), folded, Double::sum);
+        }
         double total = w.values().stream().mapToDouble(Double::doubleValue).sum();
         double unique = Grading.uniqueChance(probe, source);
         c.getSource().sendSuccess(() -> Component.literal("Grade odds for ").append(probe.getHoverName())
@@ -540,12 +557,23 @@ final class TestCommands {
         if (total <= 0) return fail(c, "Every grade has weight 0 for this source");
         w.entrySet().stream()
                 .sorted((a, b) -> Integer.compare(a.getKey().rank(), b.getKey().rank()))
+                .filter(e -> e.getValue() > 0)
                 .forEach(e -> {
                     double pct = e.getValue() / total * 100 * (1 - unique);
                     c.getSource().sendSuccess(() -> Component.literal(String.format("  %6.2f%%  ", pct))
                             .append(Component.translatable(e.getKey().name()).withStyle(e.getKey().color())), false);
                 });
         if (unique > 0) c.getSource().sendSuccess(() -> Component.literal(String.format("  %6.2f%%  unique (rolled first)", unique * 100)), false);
+        if (cap != null) {
+            c.getSource().sendSuccess(() -> Component.literal("  Tier " + shortId(cap.tier().name()) + ": capped at ")
+                    .append(Component.translatable(cap.grade().name()).withStyle(cap.grade().color()))
+                    .append(cap.maxRoll() < 1f ? String.format(", affix rolls up to %.2f", cap.maxRoll()) : "")
+                    .append(cap.shift() > 0 ? " (raised " + cap.shift() + " by this table)" : ""), false);
+        }
+        if (table != null) {
+            var eff = com.kragnoth.hallmarked.tier.LootOdds.forTable(table);
+            c.getSource().sendSuccess(() -> Component.literal(String.format("  Table %s: luck %+.1f, cap shift %d", table, eff.luck(), eff.capShift())), false);
+        }
         return 1;
     }
 
@@ -573,6 +601,8 @@ final class TestCommands {
             line(src, "Uniques: " + Grading.UNIQUES.all().size());
             line(src, "Regions: " + Grading.REGIONS.all().size());
             line(src, "Tempering outcomes: " + Tempering.OUTCOMES.all().size());
+            line(src, "Item tiers: " + com.kragnoth.hallmarked.tier.ItemTier.STORE.all().size()
+                    + "  Loot odds: " + com.kragnoth.hallmarked.tier.LootOdds.STORE.all().size());
             line(src, "Equipment items: " + candidates(new Spec()).size());
             line(src, "(Entries skipped for missing mods or with errors are listed in the server log.)");
             return 1;

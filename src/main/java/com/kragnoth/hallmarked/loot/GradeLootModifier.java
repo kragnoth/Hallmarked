@@ -56,7 +56,7 @@ public class GradeLootModifier extends LootModifier {
         Player player = ctx.getParamOrNull(LootContextParams.LAST_DAMAGE_PLAYER);
         if (player == null && ctx.getParamOrNull(LootContextParams.THIS_ENTITY) instanceof Player p) player = p;
         if (player == null && ctx.getParamOrNull(LootContextParams.ATTACKING_ENTITY) instanceof Player p) player = p;
-        return new Grading.Context(player, ctx.getLevel(), ctx.getParamOrNull(LootContextParams.ORIGIN));
+        return new Grading.Context(player, ctx.getLevel(), ctx.getParamOrNull(LootContextParams.ORIGIN), ctx.getQueriedLootTableId());
     }
 
     @Override

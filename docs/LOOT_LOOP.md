@@ -80,3 +80,54 @@ multipliers multiply.
 
 Conditions are `dimension`, `min_distance`/`max_distance` (horizontal blocks from world spawn), `min_y`/`max_y` and
 `sources`. `sources` defaults to loot and mob, so crafting somewhere special doesn't help.
+
+## Material tiers and per-table odds
+Two server-side data types shape how good a drop can be.
+
+**Item tiers** (`data/<ns>/item_tiers/*.json`) cap crude bases, Diablo item-level style.
+
+| Tier | Default items | Highest grade | Affix rolls up to | Blocked qualities |
+|---|---|---|---|---|
+| Crude | wooden tools, leather armor | Journeyman | 0.4 | Ascended, Divine, Mythic, Legendary |
+| Plain | stone and gold tools, gold and chainmail armor | Journeyman | 0.6 | Ascended, Divine |
+| (none) | iron, diamond, netherite, anything unlisted | no cap | no cap | none |
+
+A roll above the cap becomes the tier's `overflow_grade` (Common by default), so better materials always roll better.
+Items match by `items` (ids or `#tags`; `#hallmarked:tier/crude` and `#hallmarked:tier/plain` start empty for modded
+gear), then by vanilla tool tier (`tool_tiers`) or armor material id (`armor_materials`).
+
+```json
+{ "items": ["#hallmarked:tier/crude"], "tool_tiers": ["wood"], "armor_materials": ["minecraft:leather"],
+  "max_grade": "hallmarked.grade.journeyman", "max_roll": 0.4, "overflow_grade": "hallmarked.grade.common",
+  "blocked_qualities": ["hallmarked.quality.ascended"] }
+```
+
+**Loot odds** (`data/<ns>/loot_odds/*.json`) adjust luck per loot table, and can lift tier caps.
+
+| Entry | Tables | Luck | Cap shift |
+|---|---|---|---|
+| early | village chests, spawn bonus chest, igloo, shipwreck supply, small underwater ruin, ruined portal | -2 | 0 |
+| late | ancient city (and ice box), end city treasure, bastion treasure, woodland mansion, ominous trial vaults | +1 | +1 |
+
+`cap_shift` raises every tier's cap by that many grades and removes its roll cap: a wooden sword in an ancient city
+can be Masterwork, because there's probably a reason it's there. A trailing `*` in a table id matches by prefix.
+
+```json
+{ "tables": ["minecraft:chests/village/*"], "luck": -2.0, "cap_shift": 0 }
+```
+
+Resulting loot odds (Luck 0, no region):
+
+| Chest | Gear | Shoddy | Common | Journeyman | Masterwork | Gearwrought |
+|---|---|---|---|---|---|---|
+| village | crude / plain | 10 % | 57 % | 33 % | 0 | 0 |
+| village | iron and up | 10 % | 47 % | 33 % | 10 % | 0.4 % |
+| other | crude / plain | 6 % | 58 % | 36 % | 0 | 0 |
+| other | iron and up | 6 % | 36 % | 36 % | 19 % | 3 % |
+| ancient city | crude / plain | 5 % | 36 % | 37 % | 22 % | 0 |
+| ancient city | iron and up | 5 % | 32 % | 37 % | 22 % | 4 % |
+
+Caps apply to loot, mob gear and crafted gear alike. They don't apply to uniques, to forced grades in the test commands
+(`grade=...`), or to the Ashen Altar: tempering is how a crude piece is pushed past what its material allows.
+`/hallmarked odds [source] [luck] [table]` shows the capped odds for the held item.
+

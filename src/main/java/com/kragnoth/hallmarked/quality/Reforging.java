@@ -49,7 +49,10 @@ public final class Reforging {
 
     @Nullable
     public static Quality roll(ItemStack stack, RandomSource random) {
-        List<Quality> pool = pool(stack);
+        List<Quality> pool = new ArrayList<>(pool(stack));
+        // Material tiers can rule out the top qualities (server-side data; rolling only happens on the server).
+        var tier = com.kragnoth.hallmarked.tier.ItemTier.of(stack);
+        if (tier != null && !tier.blockedQualities().isEmpty()) pool.removeIf(q -> tier.blockedQualities().contains(q.name()));
         long total = 0;
         for (Quality q : pool) total += q.weight();
         if (total <= 0) return null;

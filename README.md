@@ -26,7 +26,8 @@ It was built for the **Gearwright's Hollow** modpack.
   - Found Masterwork, Gearwrought and Unique pieces arrive **Unappraised** until you strike them at the Assay Anvil.
   - Hand-written **Uniques** carry lore.
   - Gamble a piece at the **Ashen Altar**: it may ascend, gain a forbidden affix, or be marred, and is locked either way.
-  - Deeper, farther and stranger places roll better.
+  - Deeper, farther and stranger places roll better, early chests roll worse, and crude materials (wood, leather,
+    stone, gold, chainmail) are capped unless they turn up somewhere special.
 
   See [docs/LOOT_LOOP.md](docs/LOOT_LOOP.md).
 - **Procs:** Bleeding, Staggering, Leeching, of Embers, Cleaving, of Reprisal and of the Reaper put combat effects

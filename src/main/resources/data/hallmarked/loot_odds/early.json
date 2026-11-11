@@ -1,0 +1,13 @@
+{
+  "name": "hallmarked.loot_odds.early",
+  "tables": [
+    "minecraft:chests/village/*",
+    "minecraft:chests/spawn_bonus_chest",
+    "minecraft:chests/igloo_chest",
+    "minecraft:chests/shipwreck_supply",
+    "minecraft:chests/underwater_ruin_small",
+    "minecraft:chests/ruined_portal"
+  ],
+  "luck": -2.0,
+  "cap_shift": 0
+}

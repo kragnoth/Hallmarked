@@ -1,0 +1,21 @@
+{
+  "name": "hallmarked.tier.crude",
+  "items": [
+    "#hallmarked:tier/crude"
+  ],
+  "tool_tiers": [
+    "wood"
+  ],
+  "armor_materials": [
+    "minecraft:leather"
+  ],
+  "max_grade": "hallmarked.grade.journeyman",
+  "max_roll": 0.4,
+  "overflow_grade": "hallmarked.grade.common",
+  "blocked_qualities": [
+    "hallmarked.quality.ascended",
+    "hallmarked.quality.divine",
+    "hallmarked.quality.mythic",
+    "hallmarked.quality.legendary"
+  ]
+}
