@@ -1,0 +1,7 @@
+{
+  "name": "hallmarked.conversion.digger_reach",
+  "role": "digger",
+  "from": "minecraft:player.entity_interaction_range",
+  "to": "minecraft:player.block_interaction_range",
+  "scale": 1.0
+}

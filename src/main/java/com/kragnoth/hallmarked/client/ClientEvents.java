@@ -300,6 +300,10 @@ public final class ClientEvents {
             AttributeModifier mod = en.modifier();
             MutableComponent line = Component.literal(indent).append(en.attribute().value().toComponent(mod, TooltipFlag.NORMAL)
                     .withStyle(mod.amount() > 0 ? ChatFormatting.BLUE : ChatFormatting.RED));
+            if (en.converted()) {
+                line.append(Component.literal(" ").append(Component.translatable("tooltip.hallmarked.converted"))
+                        .withStyle(ChatFormatting.DARK_GRAY, ChatFormatting.ITALIC));
+            }
             if (advanced && en.origin() == Marks.Origin.AFFIX) {
                 line.append(Component.literal("  ").append(Component.translatable(en.label()))
                         .append(" [" + fmt(en, en.min()) + " .. " + fmt(en, en.max()) + "]")

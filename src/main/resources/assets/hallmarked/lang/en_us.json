@@ -284,5 +284,6 @@
   "hallmarked.fusion.cutpurses": "Cutpurse's",
   "hallmarked.fusion.cutpurses.title": "Gutter-Saint",
   "hallmarked.affix.long_handled": "Long-handled",
-  "hallmarked.affix.of_the_sump": "of the Sump"
+  "hallmarked.affix.of_the_sump": "of the Sump",
+  "tooltip.hallmarked.converted": "(suited to this tool)"
 }

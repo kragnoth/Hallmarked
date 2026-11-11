@@ -1,0 +1,7 @@
+{
+  "name": "hallmarked.conversion.weapon_break_speed",
+  "role": "weapon",
+  "from": "minecraft:player.block_break_speed",
+  "to": "minecraft:generic.attack_damage",
+  "scale": 0.75
+}

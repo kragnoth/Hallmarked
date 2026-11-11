@@ -1,0 +1,8 @@
+{
+  "name": "hallmarked.conversion.digger_attack_speed",
+  "role": "digger",
+  "from": "minecraft:generic.attack_speed",
+  "to": "minecraft:player.mining_efficiency",
+  "scale": 15.0,
+  "operation": "addition"
+}

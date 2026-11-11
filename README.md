@@ -70,6 +70,22 @@ Qualities are JSON files at `data/<namespace>/qualities/*.json`. A file whose `n
 Datapacks written for *Quality Equipment* (`quality_equipment.quality.*` names, `color_code`, and `quality_equipment:` attributes)
 still load. Items that carry the old mod's quality are converted automatically when they enter a player's inventory.
 
+**Quality conversions** (`data/<namespace>/quality_conversions/*.json`): qualities are written for tools in general, so on a
+pure weapon or a pure digger part of the bundle would do nothing. Instead, that stat becomes the matching one for the tool's role,
+marked *(suited to this tool)* in the tooltip. Axes, bows, armor and baubles are unaffected, and penalties are never converted.
+
+| Role | From | To |
+|---|---|---|
+| weapon (sword, mace) | break speed | attack damage (×0.75) |
+| digger (pickaxe, shovel, hoe) | attack damage | break speed |
+| digger | attack speed | mining efficiency (+15 per +100 %) |
+| digger | reach | block reach |
+
+```json
+{ "role": "weapon", "from": "minecraft:player.block_break_speed", "to": "minecraft:generic.attack_damage",
+  "scale": 0.75, "operation": "multiply_total", "convert_negative": false }
+```
+
 Grades live in `data/<namespace>/grades/*.json`, affixes in `data/<namespace>/affixes/*.json` and fusions in `data/<namespace>/fusions/*.json`.
 See [docs/GRADES.md](docs/GRADES.md) for their formats.
 

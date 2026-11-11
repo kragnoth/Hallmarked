@@ -31,10 +31,11 @@ public final class Marks {
      * @param min         affix range low end (equal to max for qualities)
      * @param max         affix range high end
      * @param index       index into the item's rolled affixes (-1 for quality modifiers)
+     * @param converted   a quality stat re-aimed to suit the tool's role (see {@link com.kragnoth.hallmarked.quality.Conversion})
      */
     public record Entry(Holder<Attribute> attribute, AttributeModifier modifier, @Nullable EquipmentSlotGroup slot,
                         @Nullable EquipmentSlotGroup displaySlot, boolean shadow,
-                        Origin origin, String label, double min, double max, int index) {}
+                        Origin origin, String label, double min, double max, int index, boolean converted) {}
 
     /**
      * Modifier ids are qualified by slot group ("hallmarked:keen_attack_damage/mainhand"). Vanilla replaces a modifier
@@ -48,9 +49,17 @@ public final class Marks {
         if (q != null) {
             Equipment.Applied ap = Equipment.applied(q, stack);
             if (ap != null) {
+                String role = com.kragnoth.hallmarked.quality.Conversion.roleOf(stack);
                 for (Quality.Mod m : q.section(ap.section())) {
+                    var conv = com.kragnoth.hallmarked.quality.Conversion.find(role, m.attributeId(), m.value());
+                    if (conv != null) {
+                        double v = m.value() * conv.scale();
+                        var op = conv.operation() != null ? conv.operation() : m.operation();
+                        emit(out, conv.target(), m.name() + ap.idSuffix(), v, op, ap.slot(), Origin.QUALITY, q.name(), v, v, -1, true);
+                        continue;
+                    }
                     m.attribute().ifPresent(attr -> emit(out, attr, m.name() + ap.idSuffix(), m.value(), m.operation(),
-                            ap.slot(), Origin.QUALITY, q.name(), m.value(), m.value(), -1));
+                            ap.slot(), Origin.QUALITY, q.name(), m.value(), m.value(), -1, false));
                 }
             }
         }
@@ -66,7 +75,7 @@ public final class Marks {
                 final int idx = i;
                 for (Affix.Mod m : a.section(ap.section())) {
                     m.attribute().ifPresent(attr -> emit(out, attr, "affix/" + idx + "/" + m.name() + ap.idSuffix(),
-                            m.value(r.roll()), m.operation(), ap.slot(), Origin.AFFIX, a.name(), m.min(), m.max(), idx));
+                            m.value(r.roll()), m.operation(), ap.slot(), Origin.AFFIX, a.name(), m.min(), m.max(), idx, false));
                 }
             }
         }
@@ -76,7 +85,7 @@ public final class Marks {
             if (ap != null) {
                 for (Affix.Mod m : unique.section(ap.section())) {
                     m.attribute().ifPresent(attr -> emit(out, attr, "unique/" + m.name() + ap.idSuffix(),
-                            m.min(), m.operation(), ap.slot(), Origin.UNIQUE, unique.name(), m.min(), m.max(), -1));
+                            m.min(), m.operation(), ap.slot(), Origin.UNIQUE, unique.name(), m.min(), m.max(), -1, false));
                 }
             }
         }
@@ -98,22 +107,23 @@ public final class Marks {
         if (ap == null) return;
         for (Affix.Mod m : inlay.section(ap.section())) {
             m.attribute().ifPresent(attr -> emit(out, attr, prefix + m.name() + ap.idSuffix(),
-                    m.min(), m.operation(), ap.slot(), Origin.INLAY, inlay.name(), m.min(), m.max(), index));
+                    m.min(), m.operation(), ap.slot(), Origin.INLAY, inlay.name(), m.min(), m.max(), index, false));
         }
     }
 
     private static void emit(List<Entry> out, Holder<Attribute> attr, String path, double amount, AttributeModifier.Operation op,
-                             @Nullable EquipmentSlotGroup group, Origin origin, String label, double min, double max, int index) {
+                             @Nullable EquipmentSlotGroup group, Origin origin, String label, double min, double max, int index,
+                             boolean converted) {
         if (group == null) { // bauble: the player-side sync qualifies the id with the curio slot
-            out.add(new Entry(attr, new AttributeModifier(Hallmarked.id(path), amount, op), null, null, false, origin, label, min, max, index));
+            out.add(new Entry(attr, new AttributeModifier(Hallmarked.id(path), amount, op), null, null, false, origin, label, min, max, index, converted));
         } else if (group == EquipmentSlotGroup.HAND) {
             out.add(new Entry(attr, new AttributeModifier(Hallmarked.id(path + "/mainhand"), amount, op),
-                    EquipmentSlotGroup.MAINHAND, EquipmentSlotGroup.HAND, false, origin, label, min, max, index));
+                    EquipmentSlotGroup.MAINHAND, EquipmentSlotGroup.HAND, false, origin, label, min, max, index, converted));
             out.add(new Entry(attr, new AttributeModifier(Hallmarked.id(path + "/offhand"), amount, op),
-                    EquipmentSlotGroup.OFFHAND, EquipmentSlotGroup.HAND, true, origin, label, min, max, index));
+                    EquipmentSlotGroup.OFFHAND, EquipmentSlotGroup.HAND, true, origin, label, min, max, index, converted));
         } else {
             out.add(new Entry(attr, new AttributeModifier(Hallmarked.id(path + "/" + group.getSerializedName()), amount, op),
-                    group, group, false, origin, label, min, max, index));
+                    group, group, false, origin, label, min, max, index, converted));
         }
     }
 

@@ -1,0 +1,7 @@
+{
+  "name": "hallmarked.conversion.digger_attack_damage",
+  "role": "digger",
+  "from": "minecraft:generic.attack_damage",
+  "to": "minecraft:player.block_break_speed",
+  "scale": 1.0
+}
