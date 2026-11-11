@@ -130,6 +130,12 @@ public final class HMRegistries {
                     .persistent(Codec.BOOL)
                     .networkSynchronized(ByteBufCodecs.BOOL));
 
+    /** A Mountebank's Coffer's owner, kept on the item when the coffer is broken. */
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<com.kragnoth.hallmarked.gamble.CofferOwner>> COFFER_OWNER =
+            COMPONENTS.registerComponentType("coffer_owner", b -> b
+                    .persistent(com.kragnoth.hallmarked.gamble.CofferOwner.CODEC)
+                    .networkSynchronized(com.kragnoth.hallmarked.gamble.CofferOwner.STREAM_CODEC));
+
     /** Marks an item as a piece of a named set. */
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<com.kragnoth.hallmarked.sets.SetPiece>> SET_PIECE =
             COMPONENTS.registerComponentType("set_piece", b -> b

@@ -65,6 +65,12 @@ public final class ClientEvents {
                 return;
             }
             if (stack.is(HMRegistries.MOUNTEBANK_COFFER_ITEM.get())) {
+                var owner = stack.get(HMRegistries.COFFER_OWNER.get());
+                if (owner != null) {
+                    long stacks = stack.getOrDefault(net.minecraft.core.component.DataComponents.CONTAINER,
+                            net.minecraft.world.item.component.ItemContainerContents.EMPTY).nonEmptyStream().count();
+                    e.getToolTip().add(Component.translatable("tooltip.hallmarked.coffer.packed", owner.name(), stacks).withStyle(ChatFormatting.GOLD));
+                }
                 e.getToolTip().add(Component.translatable("tooltip.hallmarked.coffer").withStyle(ChatFormatting.GRAY));
                 return;
             }

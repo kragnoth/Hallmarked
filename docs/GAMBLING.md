@@ -36,8 +36,10 @@ guaranteed one of the two slots at its level. `"currency"` sets what the price i
 The coffer is worth placing even without a Mountebank:
 
 * **Locked storage.** Right-click to open 27 slots. Only the player who placed it can open it (creative players too);
-  anyone else hears the lock. Non-owners can't break it, explosions don't touch it, and hoppers can't reach into it.
-  Breaking it (as its owner) drops its contents.
+  anyone else hears the lock. Non-owners can't break it by any player action (mining, Ultimine, hammers, paxels),
+  explosions don't touch it, and hoppers can't reach into it. However it's broken, it drops as one item that keeps its
+  contents and its owner, like a shulker box, so moving it spills nothing and a coffer carried off by someone else
+  stays locked. An unowned coffer (placed before 1.19) belongs to whoever opens it first.
 * **Fence.** Sneak and right-click it holding gear to sell:
   * **Set pieces** earn a Mountebank's Token each.
   * **Found graded gear** (from loot, mobs or parcels) earns emeralds by grade: Shoddy 1, Common 1, Journeyman 2,

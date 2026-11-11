@@ -417,5 +417,6 @@
   "hallmarked.coffer.locked": "Locked. It belongs to %s.",
   "hallmarked.coffer.sold": "%s goes into the coffer: %s emeralds",
   "tooltip.hallmarked.coffer": "Locked storage only you can open. Sneak + right-click holding gear to sell it, or a set piece for a token.",
-  "hallmarked.coffer.crafted": "He won't buy what you made yourself."
+  "hallmarked.coffer.crafted": "He won't buy what you made yourself.",
+  "tooltip.hallmarked.coffer.packed": "Locked to %s, holding %s stacks"
 }

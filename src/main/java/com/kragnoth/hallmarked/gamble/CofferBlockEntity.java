@@ -13,7 +13,10 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
 /**
- * The coffer's 27 locked slots and its owner. Deliberately not a {@code Container} and with no item-handler
+ * The coffer's 27 locked slots and its owner. Like a shulker box, both travel with the coffer when it's broken
+ * (the {@code minecraft:container} and {@code hallmarked:coffer_owner} item components), so breaking or moving it
+ * never spills anything or unlocks it.
+ * <p> Deliberately not a {@code Container} and with no item-handler
  * capability, so hoppers and pipes can't reach in: the only way in is the owner opening it.
  */
 public class CofferBlockEntity extends BlockEntity {
@@ -50,6 +53,10 @@ public class CofferBlockEntity extends BlockEntity {
         setChanged();
     }
 
+    public boolean isEmpty() {
+        return items.isEmpty();
+    }
+
     /** Owners, creative players, and anyone at all if the coffer has no owner (placed before locking existed). */
     public boolean mayOpen(Player player) {
         return owner == null || owner.equals(player.getUUID()) || player.isCreative();
@@ -63,6 +70,36 @@ public class CofferBlockEntity extends BlockEntity {
             tag.putUUID("Owner", owner);
             tag.putString("OwnerName", ownerName);
         }
+    }
+
+    @Override
+    protected void collectImplicitComponents(net.minecraft.core.component.DataComponentMap.Builder components) {
+        super.collectImplicitComponents(components);
+        components.set(net.minecraft.core.component.DataComponents.CONTAINER,
+                net.minecraft.world.item.component.ItemContainerContents.fromItems(items.getItems()));
+        if (owner != null) components.set(HMRegistries.COFFER_OWNER.get(), new CofferOwner(owner, ownerName));
+    }
+
+    @Override
+    protected void applyImplicitComponents(BlockEntity.DataComponentInput input) {
+        super.applyImplicitComponents(input);
+        items.clearContent();
+        input.getOrDefault(net.minecraft.core.component.DataComponents.CONTAINER,
+                net.minecraft.world.item.component.ItemContainerContents.EMPTY).copyInto(items.getItems());
+        CofferOwner o = input.get(HMRegistries.COFFER_OWNER.get());
+        if (o != null) {
+            owner = o.id();
+            ownerName = o.name();
+        }
+    }
+
+    @Override
+    @SuppressWarnings("deprecation")
+    public void removeComponentsFromTag(CompoundTag tag) {
+        super.removeComponentsFromTag(tag);
+        tag.remove("Items");
+        tag.remove("Owner");
+        tag.remove("OwnerName");
     }
 
     @Override
