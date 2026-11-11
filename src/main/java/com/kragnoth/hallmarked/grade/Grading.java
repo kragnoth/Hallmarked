@@ -197,7 +197,8 @@ public final class Grading {
         stack.set(HMRegistries.GRADE.get(), result);
         Grade finalGrade = GRADES.get(result.grade());
         // Found (not crafted) top-grade gear arrives Unappraised; its fanfare waits for the reveal at the anvil.
-        boolean sealedAway = finalGrade != null && finalGrade.appraise() && !SOURCE_CRAFTED.equals(source);
+        boolean sealedAway = finalGrade != null && finalGrade.appraise()
+                && com.kragnoth.hallmarked.config.HallmarkedConfig.APPRAISAL.get() && !SOURCE_CRAFTED.equals(source);
         if (sealedAway) stack.set(HMRegistries.UNAPPRAISED.get(), true);
         refreshName(stack);
         if (!sealedAway && finalGrade != null && finalGrade.announce() != null

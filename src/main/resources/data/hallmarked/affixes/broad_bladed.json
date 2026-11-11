@@ -1,0 +1,17 @@
+{
+  "name": "hallmarked.affix.broad_bladed",
+  "type": "prefix",
+  "weight": 8,
+  "group": "sweep",
+  "tool": {
+    "modifiers": [
+      {
+        "name": "broad_bladed_sweep",
+        "attribute": "minecraft:player.sweeping_damage_ratio",
+        "operation": "addition",
+        "min": 0.1,
+        "max": 0.35
+      }
+    ]
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "name": "hallmarked.affix.rimed",
+  "type": "prefix",
+  "weight": 6,
+  "group": "elemental",
+  "requires_mods": [
+    "apothic_attributes"
+  ],
+  "tool": {
+    "modifiers": [
+      {
+        "name": "rimed_cold",
+        "attribute": "apothic_attributes:cold_damage",
+        "operation": "addition",
+        "min": 1.0,
+        "max": 3.0
+      }
+    ]
+  }
+}

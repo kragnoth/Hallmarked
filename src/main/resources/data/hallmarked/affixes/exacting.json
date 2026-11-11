@@ -1,0 +1,31 @@
+{
+  "name": "hallmarked.affix.exacting",
+  "type": "prefix",
+  "weight": 6,
+  "group": "crit_chance",
+  "requires_mods": [
+    "apothic_attributes"
+  ],
+  "tool": {
+    "modifiers": [
+      {
+        "name": "exacting_crit",
+        "attribute": "apothic_attributes:crit_chance",
+        "operation": "addition",
+        "min": 0.03,
+        "max": 0.1
+      }
+    ]
+  },
+  "bow": {
+    "modifiers": [
+      {
+        "name": "exacting_crit_bow",
+        "attribute": "apothic_attributes:crit_chance",
+        "operation": "addition",
+        "min": 0.03,
+        "max": 0.1
+      }
+    ]
+  }
+}

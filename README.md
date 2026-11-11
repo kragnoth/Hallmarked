@@ -30,8 +30,8 @@ It was built for the **Gearwright's Hollow** modpack.
 
   See [docs/LOOT_LOOP.md](docs/LOOT_LOOP.md).
 - **Procs:** Bleeding, Staggering, Leeching, of Embers, Cleaving, of Reprisal and of the Reaper put combat effects
-  on affixes, for players and for mobs carrying the gear. Affixes from other mods (NeoVitae, Iron's Spellbooks,
-  Lodestone) only exist when those mods are installed. See [docs/PROCS.md](docs/PROCS.md).
+  on affixes, for players and for mobs carrying the gear. Affixes from other mods (Apothic Attributes, Caverns & Chasms, NeoVitae, Iron's Spellbooks,
+  Lodestone, FTB Ultimine) only exist when those mods are installed. See [docs/PROCS.md](docs/PROCS.md).
 - **53 qualities** across tools, bows, shields, armor (per piece) and baubles, ranging from *Worthless* to *Ascended*.
 - **Auto-marking:** the first time a piece of equipment enters your inventory, it has a chance (50 % by default) to roll a quality.
 - **Assay Anvil:** place equipment and a material in it, then strike the hammer to re-roll the mark. Valid materials are the
@@ -79,7 +79,7 @@ run `/hallmarked defaults rebuild world` (or `kubejs`); it backs up your existin
 `config/hallmarked-common.toml` has these options. Exclusions use the `hallmarked:equipment/excluded` item tag, and reforge
 materials are recipes; both sync to clients, unlike the config.
 - `AutoReforge`, `AutoReforgeChance`
-- `Grading.Enabled`, `Grading.LuckFactor`, `Grading.MobEquipment`
+- `Grading.Enabled`, `Grading.LuckFactor`, `Grading.MobEquipment`, `Grading.Appraisal` (off = no Unappraised gear; overrides the grade files)
 - `hallmarked-client.toml`: `ItemBeams`, `MobBeams`, `MobTitles`, `Range`
 - `Procs.Enabled`, `Procs.MobsUseProcs`
 - `MaxDamageResistance`

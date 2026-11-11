@@ -1,0 +1,20 @@
+{
+  "name": "hallmarked.affix.veinseeking",
+  "type": "prefix",
+  "weight": 5,
+  "group": "ultimine",
+  "requires_mods": [
+    "ftbultimine"
+  ],
+  "tool": {
+    "modifiers": [
+      {
+        "name": "veinseeking_blocks",
+        "attribute": "ftbultimine:max_blocks_modifier",
+        "operation": "addition",
+        "min": 4.0,
+        "max": 16.0
+      }
+    ]
+  }
+}

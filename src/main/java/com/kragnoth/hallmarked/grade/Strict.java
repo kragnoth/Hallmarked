@@ -32,6 +32,7 @@ public final class Strict {
     public static void warnUnknownKeys(ResourceLocation id, JsonObject json, Set<String> allowed, String what) {
         if (id.getPath().equals("synced")) return;
         for (String key : json.keySet()) {
+            if (key.equals("requires_mods") || key.equals("enabled")) continue; // handled by DataStore for every type
             if (!allowed.contains(key)) Hallmarked.LOG.warn("{} {}: unknown key '{}' is ignored (typo?)", what, id, key);
         }
     }

@@ -1,0 +1,12 @@
+{
+  "name": "hallmarked.fusion.of_the_siege",
+  "type": "suffix",
+  "requires_mods": [
+    "apothic_attributes"
+  ],
+  "parts": [
+    "hallmarked.affix.bodkin",
+    "hallmarked.affix.of_the_breach"
+  ],
+  "title": "hallmarked.fusion.of_the_siege.title"
+}

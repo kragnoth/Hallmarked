@@ -1,0 +1,20 @@
+{
+  "name": "hallmarked.affix.of_the_breach",
+  "type": "suffix",
+  "weight": 5,
+  "group": "prot_break",
+  "requires_mods": [
+    "apothic_attributes"
+  ],
+  "tool": {
+    "modifiers": [
+      {
+        "name": "breach_prot_pierce",
+        "attribute": "apothic_attributes:prot_pierce",
+        "operation": "addition",
+        "min": 1.0,
+        "max": 4.0
+      }
+    ]
+  }
+}

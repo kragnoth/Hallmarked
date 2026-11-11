@@ -1,0 +1,17 @@
+{
+  "name": "hallmarked.affix.soft_soled",
+  "type": "prefix",
+  "weight": 7,
+  "group": "sneak",
+  "armor": {
+    "modifiers": [
+      {
+        "name": "soft_soled_sneak",
+        "attribute": "minecraft:player.sneaking_speed",
+        "operation": "addition",
+        "min": 0.03,
+        "max": 0.1
+      }
+    ]
+  }
+}

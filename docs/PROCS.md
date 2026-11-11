@@ -46,3 +46,40 @@ Bundled mod-gated affixes:
 | *Runed* | Iron's Spellbooks | +3–8 % spell power (baubles), +2–6 % (helmets) |
 | *of the Well* | Iron's Spellbooks | +20–60 max mana (baubles), +15–40 (chestplates) |
 | *Thaumic* | Lodestone | +0.5–1.5 magic proficiency (baubles) |
+| *Exacting* | Apothic Attributes | +3–10 % crit chance (tools, bows) |
+| *of Ruin* | Apothic Attributes | +10–35 % crit damage (tools, bows) |
+| *Bodkin* | Apothic Attributes | +1–4 armor pierce (tools, bows) |
+| *Rending* | Apothic Attributes | +3–10 % armor shred (tools); shares a group with *Bodkin* |
+| *of the Breach* | Apothic Attributes | +1–4 protection pierce (tools) |
+| *of the Headsman* | Apothic Attributes | +1–4 % of the target's current health as damage (tools) |
+| *Searing* / *Rimed* | Apothic Attributes | +1–3 fire / cold damage (tools); one or the other |
+| *Supple* | Apothic Attributes | +5–20 % draw speed (bows) |
+| *of Distance* | Apothic Attributes | +8–25 % arrow velocity (bows) |
+| *Elusive* | Apothic Attributes | +1–3 % dodge per armor piece, +2–5 % on baubles |
+| *of Convalescence* | Apothic Attributes | +3–8 % healing received per armor piece, +5–15 % on baubles |
+| *of the Scholar* | Apothic Attributes | +5–20 % experience (tools), +10–30 % (baubles) |
+| *Salt-lined* | Caverns & Chasms | +3–8 % magic protection per armor piece |
+| *Hushed* | Caverns & Chasms | +3–8 % stealth per armor piece, +5–15 % on baubles |
+| *Hexed* | Lodestone | +1–3 magic damage (tools) |
+| *Chalk-scribed* | Lodestone | +3–10 % magic resistance per armor piece |
+| *Veinseeking* | FTB Ultimine | +4–16 blocks per ultimine (tools) |
+
+Gated fusions: *Assassin's* (Exacting + of Ruin), *of the Siege* (Bodkin + of the Breach),
+*of the Longbowman* (Supple + of Distance), *Cutpurse's* (Soft-soled + Hushed).
+
+## New vanilla-attribute affixes (always available)
+
+| Affix | Effect |
+|---|---|
+| *Broad-bladed* | +0.10–0.35 sweeping damage ratio (tools) |
+| *Mason's* | +1–5 mining efficiency (tools) |
+| *Soft-soled* | +3–10 % sneaking speed per armor piece |
+| *Sapper's* | +8–25 % explosion knockback resistance per armor piece |
+| *of the Deep* | Oxygen and water movement per armor piece; helmets get more oxygen and underwater mining speed instead |
+| *of the Salamander* | 10–30 % shorter burning per armor piece |
+| *of Sure Footing* | +0.5–1.5 safe fall distance per armor piece; boots get +1–4 and movement efficiency instead |
+
+Fusion: *of the Diver* (of the Deep + of Sure Footing).
+
+A piece-specific section (`helmet`, `chestplate`, `leggings`, `boots`) now wins over a generic `armor` section in the same file.
+

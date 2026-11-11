@@ -1,0 +1,12 @@
+{
+  "name": "hallmarked.fusion.cutpurses",
+  "type": "prefix",
+  "requires_mods": [
+    "caverns_and_chasms"
+  ],
+  "parts": [
+    "hallmarked.affix.soft_soled",
+    "hallmarked.affix.hushed"
+  ],
+  "title": "hallmarked.fusion.cutpurses.title"
+}

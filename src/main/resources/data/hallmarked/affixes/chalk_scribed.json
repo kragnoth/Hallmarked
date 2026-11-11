@@ -1,0 +1,20 @@
+{
+  "name": "hallmarked.affix.chalk_scribed",
+  "type": "prefix",
+  "weight": 5,
+  "group": "magic_resistance",
+  "requires_mods": [
+    "lodestone"
+  ],
+  "armor": {
+    "modifiers": [
+      {
+        "name": "chalk_scribed_resist",
+        "attribute": "lodestone:magic_resistance",
+        "operation": "multiply_total",
+        "min": 0.03,
+        "max": 0.1
+      }
+    ]
+  }
+}

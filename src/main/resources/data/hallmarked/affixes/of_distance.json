@@ -1,0 +1,20 @@
+{
+  "name": "hallmarked.affix.of_distance",
+  "type": "suffix",
+  "weight": 7,
+  "group": "arrow_velocity",
+  "requires_mods": [
+    "apothic_attributes"
+  ],
+  "bow": {
+    "modifiers": [
+      {
+        "name": "distance_velocity",
+        "attribute": "apothic_attributes:arrow_velocity",
+        "operation": "addition",
+        "min": 0.08,
+        "max": 0.25
+      }
+    ]
+  }
+}

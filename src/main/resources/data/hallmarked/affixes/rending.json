@@ -1,0 +1,20 @@
+{
+  "name": "hallmarked.affix.rending",
+  "type": "prefix",
+  "weight": 6,
+  "group": "armor_break",
+  "requires_mods": [
+    "apothic_attributes"
+  ],
+  "tool": {
+    "modifiers": [
+      {
+        "name": "rending_shred",
+        "attribute": "apothic_attributes:armor_shred",
+        "operation": "addition",
+        "min": 0.03,
+        "max": 0.1
+      }
+    ]
+  }
+}

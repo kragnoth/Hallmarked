@@ -1,0 +1,17 @@
+{
+  "name": "hallmarked.affix.of_the_salamander",
+  "type": "suffix",
+  "weight": 6,
+  "group": "burning",
+  "armor": {
+    "modifiers": [
+      {
+        "name": "salamander_burning",
+        "attribute": "minecraft:generic.burning_time",
+        "operation": "multiply_total",
+        "min": -0.1,
+        "max": -0.3
+      }
+    ]
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "name": "hallmarked.affix.hushed",
+  "type": "prefix",
+  "weight": 5,
+  "group": "stealth",
+  "requires_mods": [
+    "caverns_and_chasms"
+  ],
+  "armor": {
+    "modifiers": [
+      {
+        "name": "hushed_stealth",
+        "attribute": "caverns_and_chasms:stealth",
+        "operation": "addition",
+        "min": 0.03,
+        "max": 0.08
+      }
+    ]
+  },
+  "bauble": {
+    "modifiers": [
+      {
+        "name": "hushed_stealth_bauble",
+        "attribute": "caverns_and_chasms:stealth",
+        "operation": "addition",
+        "min": 0.05,
+        "max": 0.15
+      }
+    ]
+  }
+}

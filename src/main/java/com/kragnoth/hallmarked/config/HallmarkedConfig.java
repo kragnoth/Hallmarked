@@ -14,6 +14,7 @@ public final class HallmarkedConfig {
     public static final ModConfigSpec.BooleanValue GRADING;
     public static final ModConfigSpec.DoubleValue LUCK_FACTOR;
     public static final ModConfigSpec.BooleanValue MOB_EQUIPMENT;
+    public static final ModConfigSpec.BooleanValue APPRAISAL;
     public static final ModConfigSpec.BooleanValue PROCS;
     public static final ModConfigSpec.BooleanValue MOB_PROCS;
 
@@ -46,6 +47,12 @@ public final class HallmarkedConfig {
                 .comment("If true, equipment mobs spawn with is graded (and may get a quality) when they enter the world,",
                         "using the grades' \"mob\" weights. Mobs fight with those stats, and drop graded gear.")
                 .define("MobEquipment", true);
+        APPRAISAL = b
+                .comment("If true, found gear of grades marked \"appraise\" (Masterwork, Gearwrought, Unique by default) arrives",
+                        "Unappraised: affixes hidden and dormant until struck at an Assay Anvil.",
+                        "If false, nothing new is sealed, and Unappraised items a player carries are revealed automatically.",
+                        "Overrides the per-grade \"appraise\" flag without a datapack edit.")
+                .define("Appraisal", true);
         b.pop();
 
         b.push("Procs");

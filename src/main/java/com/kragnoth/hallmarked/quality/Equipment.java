@@ -127,8 +127,9 @@ public final class Equipment {
         if (cat == Category.ARMOR) {
             Category piece = armorPiece(stack);
             if (piece == null) return null;
-            if (q.has(Category.ARMOR)) return new Applied(Category.ARMOR, piece.slot(), "_" + piece.key());
+            // A piece-specific section (e.g. "boots") overrides the generic "armor" one for that piece.
             if (q.has(piece)) return new Applied(piece, piece.slot(), "");
+            if (q.has(Category.ARMOR)) return new Applied(Category.ARMOR, piece.slot(), "_" + piece.key());
             return null;
         }
         return q.has(cat) ? new Applied(cat, cat.slot(), "") : null;

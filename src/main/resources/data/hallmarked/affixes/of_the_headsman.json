@@ -1,0 +1,20 @@
+{
+  "name": "hallmarked.affix.of_the_headsman",
+  "type": "suffix",
+  "weight": 4,
+  "group": "current_hp",
+  "requires_mods": [
+    "apothic_attributes"
+  ],
+  "tool": {
+    "modifiers": [
+      {
+        "name": "headsman_current_hp",
+        "attribute": "apothic_attributes:current_hp_damage",
+        "operation": "addition",
+        "min": 0.01,
+        "max": 0.04
+      }
+    ]
+  }
+}

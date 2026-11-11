@@ -1,0 +1,31 @@
+{
+  "name": "hallmarked.affix.elusive",
+  "type": "prefix",
+  "weight": 5,
+  "group": "dodge",
+  "requires_mods": [
+    "apothic_attributes"
+  ],
+  "armor": {
+    "modifiers": [
+      {
+        "name": "elusive_dodge",
+        "attribute": "apothic_attributes:dodge_chance",
+        "operation": "addition",
+        "min": 0.01,
+        "max": 0.03
+      }
+    ]
+  },
+  "bauble": {
+    "modifiers": [
+      {
+        "name": "elusive_dodge_bauble",
+        "attribute": "apothic_attributes:dodge_chance",
+        "operation": "addition",
+        "min": 0.02,
+        "max": 0.05
+      }
+    ]
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "name": "hallmarked.affix.of_convalescence",
+  "type": "suffix",
+  "weight": 6,
+  "group": "healing",
+  "requires_mods": [
+    "apothic_attributes"
+  ],
+  "armor": {
+    "modifiers": [
+      {
+        "name": "convalescence_healing",
+        "attribute": "apothic_attributes:healing_received",
+        "operation": "addition",
+        "min": 0.03,
+        "max": 0.08
+      }
+    ]
+  },
+  "bauble": {
+    "modifiers": [
+      {
+        "name": "convalescence_healing_bauble",
+        "attribute": "apothic_attributes:healing_received",
+        "operation": "addition",
+        "min": 0.05,
+        "max": 0.15
+      }
+    ]
+  }
+}

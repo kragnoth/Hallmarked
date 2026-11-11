@@ -1,0 +1,31 @@
+{
+  "name": "hallmarked.affix.of_the_scholar",
+  "type": "suffix",
+  "weight": 5,
+  "group": "experience",
+  "requires_mods": [
+    "apothic_attributes"
+  ],
+  "tool": {
+    "modifiers": [
+      {
+        "name": "scholar_xp",
+        "attribute": "apothic_attributes:experience_gained",
+        "operation": "addition",
+        "min": 0.05,
+        "max": 0.2
+      }
+    ]
+  },
+  "bauble": {
+    "modifiers": [
+      {
+        "name": "scholar_xp_bauble",
+        "attribute": "apothic_attributes:experience_gained",
+        "operation": "addition",
+        "min": 0.1,
+        "max": 0.3
+      }
+    ]
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "name": "hallmarked.affix.salt_lined",
+  "type": "prefix",
+  "weight": 6,
+  "group": "magic_protection",
+  "requires_mods": [
+    "caverns_and_chasms"
+  ],
+  "armor": {
+    "modifiers": [
+      {
+        "name": "salt_lined_magic",
+        "attribute": "caverns_and_chasms:magic_protection",
+        "operation": "addition",
+        "min": 0.03,
+        "max": 0.08
+      }
+    ]
+  }
+}

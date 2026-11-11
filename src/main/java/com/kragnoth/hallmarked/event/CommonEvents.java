@@ -188,6 +188,8 @@ public final class CommonEvents {
      */
     private static void processFirstSeen(ServerPlayer player, ItemStack stack, boolean autoQuality, double chance, boolean grading) {
         Reforging.migrateLegacy(stack);
+        // Appraisal switched off in the config: reveal anything still sealed from before.
+        if (Grading.isUnappraised(stack) && !HallmarkedConfig.APPRAISAL.get()) Grading.appraise(stack, player);
 
         if (grading && !stack.has(HMRegistries.GRADE.get()) && Grading.canGrade(stack)) {
             Grading.grade(stack, Grading.SOURCE_CRAFTED, player.getLuck(), player.getRandom(), Grading.Context.of(player));

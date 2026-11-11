@@ -1,0 +1,20 @@
+{
+  "name": "hallmarked.affix.hexed",
+  "type": "prefix",
+  "weight": 5,
+  "group": "magic_damage",
+  "requires_mods": [
+    "lodestone"
+  ],
+  "tool": {
+    "modifiers": [
+      {
+        "name": "hexed_magic",
+        "attribute": "lodestone:magic_damage",
+        "operation": "addition",
+        "min": 1.0,
+        "max": 3.0
+      }
+    ]
+  }
+}

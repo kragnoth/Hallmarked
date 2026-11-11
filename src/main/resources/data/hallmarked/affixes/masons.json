@@ -1,0 +1,17 @@
+{
+  "name": "hallmarked.affix.masons",
+  "type": "prefix",
+  "weight": 8,
+  "group": "mining_efficiency",
+  "tool": {
+    "modifiers": [
+      {
+        "name": "masons_efficiency",
+        "attribute": "minecraft:player.mining_efficiency",
+        "operation": "addition",
+        "min": 1.0,
+        "max": 5.0
+      }
+    ]
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "name": "hallmarked.affix.of_the_deep",
+  "type": "suffix",
+  "weight": 6,
+  "group": "water",
+  "armor": {
+    "modifiers": [
+      {
+        "name": "deep_oxygen",
+        "attribute": "minecraft:generic.oxygen_bonus",
+        "operation": "addition",
+        "min": 0.5,
+        "max": 1.5
+      },
+      {
+        "name": "deep_water",
+        "attribute": "minecraft:generic.water_movement_efficiency",
+        "operation": "addition",
+        "min": 0.05,
+        "max": 0.15
+      }
+    ]
+  },
+  "helmet": {
+    "modifiers": [
+      {
+        "name": "deep_oxygen_helm",
+        "attribute": "minecraft:generic.oxygen_bonus",
+        "operation": "addition",
+        "min": 1.0,
+        "max": 3.0
+      },
+      {
+        "name": "deep_mining",
+        "attribute": "minecraft:player.submerged_mining_speed",
+        "operation": "addition",
+        "min": 0.2,
+        "max": 0.6
+      }
+    ]
+  }
+}

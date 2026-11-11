@@ -1,0 +1,12 @@
+{
+  "name": "hallmarked.fusion.of_the_longbowman",
+  "type": "suffix",
+  "requires_mods": [
+    "apothic_attributes"
+  ],
+  "parts": [
+    "hallmarked.affix.supple",
+    "hallmarked.affix.of_distance"
+  ],
+  "title": "hallmarked.fusion.of_the_longbowman.title"
+}

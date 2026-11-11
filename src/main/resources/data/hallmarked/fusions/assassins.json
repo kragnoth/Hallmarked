@@ -1,0 +1,12 @@
+{
+  "name": "hallmarked.fusion.assassins",
+  "type": "prefix",
+  "requires_mods": [
+    "apothic_attributes"
+  ],
+  "parts": [
+    "hallmarked.affix.exacting",
+    "hallmarked.affix.of_ruin"
+  ],
+  "title": "hallmarked.fusion.assassins.title"
+}

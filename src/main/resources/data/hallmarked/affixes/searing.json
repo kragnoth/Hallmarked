@@ -1,0 +1,20 @@
+{
+  "name": "hallmarked.affix.searing",
+  "type": "prefix",
+  "weight": 6,
+  "group": "elemental",
+  "requires_mods": [
+    "apothic_attributes"
+  ],
+  "tool": {
+    "modifiers": [
+      {
+        "name": "searing_fire",
+        "attribute": "apothic_attributes:fire_damage",
+        "operation": "addition",
+        "min": 1.0,
+        "max": 3.0
+      }
+    ]
+  }
+}

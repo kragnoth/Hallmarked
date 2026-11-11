@@ -1,0 +1,35 @@
+{
+  "name": "hallmarked.affix.of_sure_footing",
+  "type": "suffix",
+  "weight": 6,
+  "group": "footing",
+  "armor": {
+    "modifiers": [
+      {
+        "name": "sure_footing_fall",
+        "attribute": "minecraft:generic.safe_fall_distance",
+        "operation": "addition",
+        "min": 0.5,
+        "max": 1.5
+      }
+    ]
+  },
+  "boots": {
+    "modifiers": [
+      {
+        "name": "sure_footing_fall_boots",
+        "attribute": "minecraft:generic.safe_fall_distance",
+        "operation": "addition",
+        "min": 1.0,
+        "max": 4.0
+      },
+      {
+        "name": "sure_footing_mud",
+        "attribute": "minecraft:generic.movement_efficiency",
+        "operation": "addition",
+        "min": 0.2,
+        "max": 0.6
+      }
+    ]
+  }
+}

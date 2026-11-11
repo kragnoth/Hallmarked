@@ -1,0 +1,17 @@
+{
+  "name": "hallmarked.affix.sappers",
+  "type": "prefix",
+  "weight": 6,
+  "group": "blast",
+  "armor": {
+    "modifiers": [
+      {
+        "name": "sappers_blast",
+        "attribute": "minecraft:generic.explosion_knockback_resistance",
+        "operation": "addition",
+        "min": 0.08,
+        "max": 0.25
+      }
+    ]
+  }
+}
