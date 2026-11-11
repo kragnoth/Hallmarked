@@ -118,6 +118,18 @@
   ],
   "bonuses": [
     {
+      "pieces": 1,
+      "per_piece": true,
+      "modifiers": [
+        {
+          "name": "wayfarer_per_piece_projectile",
+          "attribute": "hallmarked:projectile_damage",
+          "operation": "multiply_total",
+          "value": 0.02
+        }
+      ]
+    },
+    {
       "pieces": 2,
       "modifiers": [
         {
@@ -131,6 +143,23 @@
           "attribute": "minecraft:player.sneaking_speed",
           "operation": "addition",
           "value": 0.05
+        }
+      ]
+    },
+    {
+      "pieces": 3,
+      "modifiers": [
+        {
+          "name": "wayfarer_3_armor",
+          "attribute": "minecraft:generic.armor",
+          "operation": "addition",
+          "value": 1
+        },
+        {
+          "name": "wayfarer_3_fall",
+          "attribute": "minecraft:generic.safe_fall_distance",
+          "operation": "addition",
+          "value": 2
         }
       ]
     },
@@ -178,6 +207,62 @@
           "operation": "addition",
           "value": 0.5
         }
+      ]
+    }
+  ],
+  "tables": [
+    {
+      "tables": [
+        "minecraft:chests/village/village_fletcher"
+      ],
+      "chance": 0.05
+    },
+    {
+      "tables": [
+        "minecraft:chests/village/village_tannery"
+      ],
+      "chance": 0.05,
+      "pieces": [
+        "hood",
+        "leggings",
+        "boots"
+      ]
+    },
+    {
+      "tables": [
+        "minecraft:chests/pillager_outpost"
+      ],
+      "chance": 0.05,
+      "pieces": [
+        "longbow",
+        "brigandine",
+        "hood"
+      ]
+    },
+    {
+      "tables": [
+        "minecraft:chests/jungle_temple"
+      ],
+      "chance": 0.05
+    },
+    {
+      "tables": [
+        "minecraft:chests/shipwreck_supply"
+      ],
+      "chance": 0.02,
+      "pieces": [
+        "hood",
+        "boots"
+      ]
+    },
+    {
+      "tables": [
+        "minecraft:chests/trial_chambers/reward*"
+      ],
+      "chance": 0.03,
+      "pieces": [
+        "longbow",
+        "brigandine"
       ]
     }
   ]

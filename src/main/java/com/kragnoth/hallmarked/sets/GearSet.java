@@ -38,7 +38,7 @@ import net.minecraft.world.item.DyeColor;
  * become that piece instead.
  */
 public record GearSet(String name, ChatFormatting color, Map<String, Double> chance, List<Piece> pieces,
-                      List<Bonus> bonuses, JsonObject source) {
+                      List<Bonus> bonuses, List<TableEntry> tables, JsonObject source) {
 
     public record Piece(String key, String name, ResourceLocation item, @Nullable Integer dye,
                         @Nullable ResourceLocation trimPattern, @Nullable ResourceLocation trimMaterial,
@@ -47,7 +47,24 @@ public record GearSet(String name, ChatFormatting color, Map<String, Double> cha
         public List<Affix.Mod> section(Category c) { return modifiers; }
     }
 
-    public record Bonus(int pieces, List<Affix.Mod> modifiers, List<Proc> procs) {}
+    /**
+     * @param perPiece the modifiers are multiplied by the number of pieces worn (once at least {@code pieces} are worn);
+     *                 procs on a per-piece bonus don't scale
+     */
+    public record Bonus(int pieces, boolean perPiece, List<Affix.Mod> modifiers, List<Proc> procs) {}
+
+    /**
+     * Extra chance for a piece to turn up in specific loot tables, on top of base items rolled there.
+     * {@code tables} use a trailing {@code *} as a prefix match; {@code pieces} limits which pieces fit the place
+     * (empty: any).
+     */
+    public record TableEntry(List<String> tables, double chance, List<String> pieces) {
+        public boolean matches(ResourceLocation table) {
+            String id = table.toString();
+            for (String t : tables) if (t.endsWith("*") ? id.startsWith(t.substring(0, t.length() - 1)) : id.equals(t)) return true;
+            return false;
+        }
+    }
 
     public double chance(String source) {
         return chance.getOrDefault(source, 0.0);
@@ -60,7 +77,7 @@ public record GearSet(String name, ChatFormatting color, Map<String, Double> cha
     }
 
     public static GearSet parse(ResourceLocation id, JsonObject json) {
-        Strict.warnUnknownKeys(id, json, Set.of("name", "color", "chance", "pieces", "bonuses"), "Set");
+        Strict.warnUnknownKeys(id, json, Set.of("name", "color", "chance", "pieces", "bonuses", "tables"), "Set");
         String name = GsonHelper.getAsString(json, "name", id.getNamespace() + ".set." + id.getPath().replace('/', '.'));
         ChatFormatting color = ChatFormatting.getByName(GsonHelper.getAsString(json, "color", "green"));
         if (color == null || !color.isColor()) color = ChatFormatting.GREEN;
@@ -89,7 +106,7 @@ public record GearSet(String name, ChatFormatting color, Map<String, Double> cha
         List<Bonus> bonuses = new ArrayList<>();
         for (JsonElement e : GsonHelper.getAsJsonArray(json, "bonuses", new JsonArray())) {
             JsonObject b = e.getAsJsonObject();
-            Strict.warnUnknownKeys(id, b, Set.of("pieces", "modifiers", "procs"), "Set bonus in");
+            Strict.warnUnknownKeys(id, b, Set.of("pieces", "per_piece", "modifiers", "procs"), "Set bonus in");
             List<Proc> procs = new ArrayList<>();
             for (JsonElement pe : GsonHelper.getAsJsonArray(b, "procs", new JsonArray())) {
                 try {
@@ -98,12 +115,22 @@ public record GearSet(String name, ChatFormatting color, Map<String, Double> cha
                     // a proc whose mod is missing: the rest of the bonus still applies
                 }
             }
-            bonuses.add(new Bonus(Math.max(1, GsonHelper.getAsInt(b, "pieces")), mods(id, b, name), List.copyOf(procs)));
+            bonuses.add(new Bonus(Math.max(1, GsonHelper.getAsInt(b, "pieces", 1)), GsonHelper.getAsBoolean(b, "per_piece", false),
+                    mods(id, b, name), List.copyOf(procs)));
+        }
+        List<TableEntry> tables = new ArrayList<>();
+        for (JsonElement e : GsonHelper.getAsJsonArray(json, "tables", new JsonArray())) {
+            JsonObject t = e.getAsJsonObject();
+            Strict.warnUnknownKeys(id, t, Set.of("tables", "chance", "pieces"), "Set table entry in");
+            List<String> ids = new ArrayList<>(), keys = new ArrayList<>();
+            for (JsonElement x : GsonHelper.getAsJsonArray(t, "tables")) ids.add(x.getAsString());
+            for (JsonElement x : GsonHelper.getAsJsonArray(t, "pieces", new JsonArray())) keys.add(x.getAsString());
+            tables.add(new TableEntry(List.copyOf(ids), Math.max(0, Math.min(1, GsonHelper.getAsDouble(t, "chance"))), List.copyOf(keys)));
         }
         bonuses.sort((a, b) -> Integer.compare(a.pieces, b.pieces));
         JsonObject source = json.deepCopy();
         source.addProperty("name", name);
-        return new GearSet(name, color, Map.copyOf(chance), List.copyOf(pieces), List.copyOf(bonuses), source);
+        return new GearSet(name, color, Map.copyOf(chance), List.copyOf(pieces), List.copyOf(bonuses), List.copyOf(tables), source);
     }
 
     /** Fixed-value modifiers; attributes from mods that aren't installed are dropped quietly. */

@@ -108,6 +108,23 @@
       ]
     },
     {
+      "pieces": 3,
+      "modifiers": [
+        {
+          "name": "free_lance_3_knockback",
+          "attribute": "minecraft:generic.attack_knockback",
+          "operation": "addition",
+          "value": 0.5
+        },
+        {
+          "name": "free_lance_3_kb_resist",
+          "attribute": "minecraft:generic.knockback_resistance",
+          "operation": "addition",
+          "value": 0.05
+        }
+      ]
+    },
+    {
       "pieces": 4,
       "modifiers": [
         {
@@ -139,6 +156,39 @@
           "power": 1.0,
           "duration": 60
         }
+      ]
+    }
+  ],
+  "tables": [
+    {
+      "tables": [
+        "minecraft:chests/village/village_weaponsmith",
+        "minecraft:chests/village/village_armorer"
+      ],
+      "chance": 0.05
+    },
+    {
+      "tables": [
+        "minecraft:chests/pillager_outpost"
+      ],
+      "chance": 0.06
+    },
+    {
+      "tables": [
+        "minecraft:chests/trial_chambers/reward*"
+      ],
+      "chance": 0.05
+    },
+    {
+      "tables": [
+        "minecraft:chests/bastion_other",
+        "minecraft:chests/bastion_bridge"
+      ],
+      "chance": 0.03,
+      "pieces": [
+        "sallet",
+        "sabatons",
+        "arming_sword"
       ]
     }
   ]

@@ -185,6 +185,35 @@
       ]
     },
     {
+      "pieces": 3,
+      "modifiers": [
+        {
+          "name": "thaumaturge_3_regen",
+          "attribute": "irons_spellbooks:mana_regen",
+          "operation": "addition",
+          "value": 0.05
+        },
+        {
+          "name": "thaumaturge_3_resist",
+          "attribute": "lodestone:magic_resistance",
+          "operation": "multiply_total",
+          "value": 0.05
+        },
+        {
+          "name": "thaumaturge_3_xp",
+          "attribute": "apothic_attributes:experience_gained",
+          "operation": "addition",
+          "value": 0.05
+        },
+        {
+          "name": "thaumaturge_3_health",
+          "attribute": "minecraft:generic.max_health",
+          "operation": "addition",
+          "value": 1
+        }
+      ]
+    },
+    {
       "pieces": 4,
       "modifiers": [
         {
@@ -246,6 +275,59 @@
           "operation": "addition",
           "value": 1
         }
+      ]
+    }
+  ],
+  "tables": [
+    {
+      "tables": [
+        "minecraft:chests/woodland_mansion"
+      ],
+      "chance": 0.08
+    },
+    {
+      "tables": [
+        "minecraft:chests/stronghold_library"
+      ],
+      "chance": 0.08
+    },
+    {
+      "tables": [
+        "minecraft:chests/ancient_city"
+      ],
+      "chance": 0.05
+    },
+    {
+      "tables": [
+        "minecraft:chests/igloo_chest"
+      ],
+      "chance": 0.04,
+      "pieces": [
+        "cowl",
+        "robe"
+      ]
+    },
+    {
+      "tables": [
+        "minecraft:chests/village/village_temple",
+        "minecraft:chests/village/village_cartographer"
+      ],
+      "chance": 0.03,
+      "pieces": [
+        "phylactery",
+        "cowl"
+      ]
+    },
+    {
+      "tables": [
+        "minecraft:chests/village/village_tannery"
+      ],
+      "chance": 0.03,
+      "pieces": [
+        "cowl",
+        "robe",
+        "breeches",
+        "slippers"
       ]
     }
   ]

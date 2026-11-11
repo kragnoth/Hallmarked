@@ -336,7 +336,9 @@ public final class ClientEvents {
             for (var bonus : set.bonuses()) {
                 boolean on = n >= bonus.pieces();
                 ChatFormatting c = on ? ChatFormatting.GREEN : ChatFormatting.DARK_GRAY;
-                MutableComponent line = Component.literal(" (" + bonus.pieces() + ") ").withStyle(c);
+                MutableComponent line = bonus.perPiece()
+                        ? Component.literal(" (").append(Component.translatable("tooltip.hallmarked.set.per_piece")).append(") ").withStyle(c)
+                        : Component.literal(" (" + bonus.pieces() + ") ").withStyle(c);
                 boolean first = true;
                 for (var m : bonus.modifiers()) {
                     var attr = m.attribute();

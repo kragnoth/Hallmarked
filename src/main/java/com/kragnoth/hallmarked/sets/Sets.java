@@ -155,25 +155,48 @@ public final class Sets {
         if (proper) out.computeIfAbsent(p.set(), k -> new HashSet<>()).add(p.piece());
     }
 
+    /** A worn set: how many distinct pieces, and which bonuses that unlocks. */
+    public record Worn(int count, List<GearSet.Bonus> bonuses) {}
+
     /** Active bonuses, in set order: every bonus whose piece count is met. */
-    public static Map<GearSet, List<GearSet.Bonus>> active(LivingEntity entity) {
-        Map<GearSet, List<GearSet.Bonus>> out = new LinkedHashMap<>();
+    public static Map<GearSet, Worn> active(LivingEntity entity) {
+        Map<GearSet, Worn> out = new LinkedHashMap<>();
         for (var e : worn(entity).entrySet()) {
             GearSet set = STORE.get(e.getKey());
             if (set == null) continue;
             int n = e.getValue().size();
             List<GearSet.Bonus> on = new ArrayList<>();
             for (GearSet.Bonus b : set.bonuses()) if (n >= b.pieces()) on.add(b);
-            if (!on.isEmpty()) out.put(set, on);
+            if (!on.isEmpty()) out.put(set, new Worn(n, on));
         }
         return out;
+    }
+
+    /**
+     * Adds set pieces to a loot roll from a table the set lists, chance scaled by luck (the table's loot-odds luck
+     * plus the looter's): x(1 + LuckFactor * luck), never below a quarter of the base chance.
+     */
+    public static void inject(List<ItemStack> loot, ResourceLocation table, double luck, RandomSource random, @Nullable RegistryAccess access) {
+        if (Grading.GRADES.get(SET_GRADE) == null) return;
+        double total = luck + com.kragnoth.hallmarked.tier.LootOdds.forTable(table).luck();
+        double scale = Math.max(0.25, 1 + com.kragnoth.hallmarked.config.HallmarkedConfig.LUCK_FACTOR.get() * total);
+        for (GearSet set : STORE.all()) {
+            for (GearSet.TableEntry entry : set.tables()) {
+                if (!entry.matches(table) || random.nextDouble() >= entry.chance() * scale) continue;
+                List<GearSet.Piece> options = new ArrayList<>();
+                for (GearSet.Piece p : set.pieces()) if (entry.pieces().isEmpty() || entry.pieces().contains(p.key())) options.add(p);
+                if (options.isEmpty()) continue;
+                ItemStack piece = create(set, options.get(random.nextInt(options.size())), access);
+                if (piece != null) loot.add(piece);
+            }
+        }
     }
 
     /** Procs from full-enough sets; they fire at their listed (max) values. */
     public static List<Proc> activeProcs(LivingEntity entity) {
         List<Proc> out = new ArrayList<>();
         if (!(entity instanceof Player)) return out;
-        for (var bonuses : active(entity).values()) for (GearSet.Bonus b : bonuses) out.addAll(b.procs());
+        for (Worn w : active(entity).values()) for (GearSet.Bonus b : w.bonuses()) out.addAll(b.procs());
         return out;
     }
 
@@ -189,12 +212,13 @@ public final class Sets {
         Map<ResourceLocation, Desired> desired = new HashMap<>();
         for (var e : active(player).entrySet()) {
             String setPath = e.getKey().name().replace(':', '.').toLowerCase(java.util.Locale.ROOT);
-            for (GearSet.Bonus b : e.getValue()) {
+            for (GearSet.Bonus b : e.getValue().bonuses()) {
+                double mult = b.perPiece() ? e.getValue().count() : 1;
                 for (Affix.Mod m : b.modifiers()) {
                     var attr = m.attribute();
                     if (attr.isEmpty()) continue;
-                    ResourceLocation id = Hallmarked.id(BONUS_PREFIX + setPath + "/" + b.pieces() + "/" + m.name());
-                    desired.put(id, new Desired(attr.get(), new AttributeModifier(id, m.min(), m.operation())));
+                    ResourceLocation id = Hallmarked.id(BONUS_PREFIX + setPath + "/" + b.pieces() + (b.perPiece() ? "p" : "") + "/" + m.name());
+                    desired.put(id, new Desired(attr.get(), new AttributeModifier(id, m.min() * mult, m.operation())));
                 }
             }
         }

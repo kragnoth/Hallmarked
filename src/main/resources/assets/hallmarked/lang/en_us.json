@@ -344,5 +344,6 @@
   "hallmarked.gamble.exceptional": "The parcel held %s. Exceptional work!",
   "hallmarked.gamble.both": "The parcel held %s. Exceptional, and cursed.",
   "hallmarked.gamble.empty": "The parcel is empty. Of course it is.",
-  "tooltip.hallmarked.exceptional": "Exceptional work: rolled past its usual limits"
+  "tooltip.hallmarked.exceptional": "Exceptional work: rolled past its usual limits",
+  "tooltip.hallmarked.set.per_piece": "per piece"
 }

@@ -109,6 +109,23 @@
       ]
     },
     {
+      "pieces": 3,
+      "modifiers": [
+        {
+          "name": "oathsworn_3_armor",
+          "attribute": "minecraft:generic.armor",
+          "operation": "addition",
+          "value": 1
+        },
+        {
+          "name": "oathsworn_3_health",
+          "attribute": "minecraft:generic.max_health",
+          "operation": "addition",
+          "value": 2
+        }
+      ]
+    },
+    {
       "pieces": 4,
       "modifiers": [
         {
@@ -147,6 +164,55 @@
           "chance": 0.25,
           "power": 0.3
         }
+      ]
+    }
+  ],
+  "tables": [
+    {
+      "tables": [
+        "minecraft:chests/stronghold_corridor",
+        "minecraft:chests/stronghold_crossing"
+      ],
+      "chance": 0.05
+    },
+    {
+      "tables": [
+        "minecraft:chests/end_city_treasure"
+      ],
+      "chance": 0.06
+    },
+    {
+      "tables": [
+        "minecraft:chests/desert_pyramid",
+        "minecraft:chests/jungle_temple"
+      ],
+      "chance": 0.03,
+      "pieces": [
+        "helm",
+        "cuirass",
+        "bulwark"
+      ]
+    },
+    {
+      "tables": [
+        "minecraft:chests/village/village_temple"
+      ],
+      "chance": 0.03,
+      "pieces": [
+        "bulwark",
+        "helm"
+      ]
+    },
+    {
+      "tables": [
+        "minecraft:chests/village/village_armorer"
+      ],
+      "chance": 0.02,
+      "pieces": [
+        "helm",
+        "cuirass",
+        "greaves",
+        "sabatons"
       ]
     }
   ]
