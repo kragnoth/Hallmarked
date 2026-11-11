@@ -1,0 +1,17 @@
+{
+  "name": "hallmarked.affix.fleet",
+  "type": "prefix",
+  "weight": 6,
+  "group": "move",
+  "boots": {
+    "modifiers": [
+      {
+        "name": "fleet_movement_speed",
+        "attribute": "minecraft:generic.movement_speed",
+        "operation": "multiply_total",
+        "min": 0.02,
+        "max": 0.07
+      }
+    ]
+  }
+}

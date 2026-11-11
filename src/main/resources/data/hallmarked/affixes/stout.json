@@ -1,0 +1,17 @@
+{
+  "name": "hallmarked.affix.stout",
+  "type": "prefix",
+  "weight": 10,
+  "group": "projectile",
+  "bow": {
+    "modifiers": [
+      {
+        "name": "stout_projectile_damage",
+        "attribute": "hallmarked:projectile_damage",
+        "operation": "multiply_total",
+        "min": 0.04,
+        "max": 0.15
+      }
+    ]
+  }
+}

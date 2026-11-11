@@ -1,0 +1,28 @@
+{
+  "name": "hallmarked.affix.ward_etched",
+  "type": "prefix",
+  "weight": 5,
+  "group": "resist",
+  "bauble": {
+    "modifiers": [
+      {
+        "name": "ward_etched_damage_resistance",
+        "attribute": "hallmarked:damage_resistance",
+        "operation": "multiply_total",
+        "min": 0.01,
+        "max": 0.03
+      }
+    ]
+  },
+  "shield": {
+    "modifiers": [
+      {
+        "name": "ward_etched_shield_damage_resistance",
+        "attribute": "hallmarked:damage_resistance",
+        "operation": "multiply_total",
+        "min": 0.01,
+        "max": 0.03
+      }
+    ]
+  }
+}

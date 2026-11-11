@@ -1,0 +1,17 @@
+{
+  "name": "hallmarked.affix.of_force",
+  "type": "suffix",
+  "weight": 8,
+  "group": "knockback",
+  "tool": {
+    "modifiers": [
+      {
+        "name": "of_force_knockback",
+        "attribute": "minecraft:generic.attack_knockback",
+        "operation": "addition",
+        "min": 0.2,
+        "max": 0.8
+      }
+    ]
+  }
+}

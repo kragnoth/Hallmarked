@@ -1,0 +1,17 @@
+{
+  "name": "hallmarked.affix.of_the_hunt",
+  "type": "suffix",
+  "weight": 8,
+  "group": "projectile_s",
+  "bow": {
+    "modifiers": [
+      {
+        "name": "of_the_hunt_projectile_damage",
+        "attribute": "hallmarked:projectile_damage",
+        "operation": "multiply_total",
+        "min": 0.03,
+        "max": 0.1
+      }
+    ]
+  }
+}

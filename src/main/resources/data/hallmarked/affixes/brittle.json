@@ -1,0 +1,16 @@
+{
+  "name": "hallmarked.affix.brittle",
+  "type": "flaw",
+  "weight": 6,
+  "armor": {
+    "modifiers": [
+      {
+        "name": "brittle_toughness",
+        "attribute": "minecraft:generic.armor_toughness",
+        "operation": "addition",
+        "min": -0.25,
+        "max": -1.0
+      }
+    ]
+  }
+}

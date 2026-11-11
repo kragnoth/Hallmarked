@@ -3,8 +3,13 @@ package com.kragnoth.hallmarked.registry;
 import com.kragnoth.hallmarked.Hallmarked;
 import com.kragnoth.hallmarked.block.AssayAnvilBlock;
 import com.kragnoth.hallmarked.block.AssayAnvilBlockEntity;
+import com.kragnoth.hallmarked.grade.GradeData;
+import com.kragnoth.hallmarked.loot.GradeLootModifier;
 import com.kragnoth.hallmarked.menu.AssayAnvilMenu;
 import com.mojang.serialization.Codec;
+import com.mojang.serialization.MapCodec;
+import net.neoforged.neoforge.common.loot.IGlobalLootModifier;
+import net.neoforged.neoforge.registries.NeoForgeRegistries;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
@@ -41,6 +46,8 @@ public final class HMRegistries {
     public static final DeferredRegister<Attribute> ATTRIBUTES = DeferredRegister.create(Registries.ATTRIBUTE, Hallmarked.MODID);
     public static final DeferredRegister.DataComponents COMPONENTS =
             DeferredRegister.createDataComponents(Registries.DATA_COMPONENT_TYPE, Hallmarked.MODID);
+    public static final DeferredRegister<MapCodec<? extends IGlobalLootModifier>> LOOT_MODIFIERS =
+            DeferredRegister.create(NeoForgeRegistries.Keys.GLOBAL_LOOT_MODIFIER_SERIALIZERS, Hallmarked.MODID);
     public static final DeferredRegister<CreativeModeTab> TABS =
             DeferredRegister.create(Registries.CREATIVE_MODE_TAB, Hallmarked.MODID);
 
@@ -55,6 +62,15 @@ public final class HMRegistries {
             COMPONENTS.registerComponentType("rolled", b -> b
                     .persistent(Codec.BOOL)
                     .networkSynchronized(ByteBufCodecs.BOOL));
+
+    /** Grade of work plus rolled affixes. */
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<GradeData>> GRADE =
+            COMPONENTS.registerComponentType("grade", b -> b
+                    .persistent(GradeData.CODEC)
+                    .networkSynchronized(GradeData.STREAM_CODEC));
+
+    public static final DeferredHolder<MapCodec<? extends IGlobalLootModifier>, MapCodec<GradeLootModifier>> GRADE_LOOT =
+            LOOT_MODIFIERS.register("grade_loot", () -> GradeLootModifier.CODEC);
 
     // ---- Attributes ------------------------------------------------------------------------
     public static final DeferredHolder<Attribute, Attribute> PROJECTILE_DAMAGE = ATTRIBUTES.register("projectile_damage",
@@ -93,6 +109,7 @@ public final class HMRegistries {
         ATTRIBUTES.register(modBus);
         COMPONENTS.register(modBus);
         TABS.register(modBus);
+        LOOT_MODIFIERS.register(modBus);
         modBus.addListener(HMRegistries::addPlayerAttributes);
         modBus.addListener(HMRegistries::registerCapabilities);
     }

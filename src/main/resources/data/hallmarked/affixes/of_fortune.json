@@ -1,0 +1,39 @@
+{
+  "name": "hallmarked.affix.of_fortune",
+  "type": "suffix",
+  "weight": 6,
+  "group": "luck_s",
+  "tool": {
+    "modifiers": [
+      {
+        "name": "of_fortune_luck",
+        "attribute": "minecraft:generic.luck",
+        "operation": "addition",
+        "min": 0.25,
+        "max": 1.0
+      }
+    ]
+  },
+  "bow": {
+    "modifiers": [
+      {
+        "name": "of_fortune_bow_luck",
+        "attribute": "minecraft:generic.luck",
+        "operation": "addition",
+        "min": 0.25,
+        "max": 1.0
+      }
+    ]
+  },
+  "helmet": {
+    "modifiers": [
+      {
+        "name": "of_fortune_helmet_luck",
+        "attribute": "minecraft:generic.luck",
+        "operation": "addition",
+        "min": 0.25,
+        "max": 0.75
+      }
+    ]
+  }
+}

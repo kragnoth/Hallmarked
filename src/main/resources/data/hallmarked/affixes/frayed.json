@@ -1,0 +1,16 @@
+{
+  "name": "hallmarked.affix.frayed",
+  "type": "flaw",
+  "weight": 10,
+  "bow": {
+    "modifiers": [
+      {
+        "name": "frayed_projectile_damage",
+        "attribute": "hallmarked:projectile_damage",
+        "operation": "multiply_total",
+        "min": -0.04,
+        "max": -0.12
+      }
+    ]
+  }
+}

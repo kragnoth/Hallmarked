@@ -1,0 +1,16 @@
+{
+  "name": "hallmarked.affix.dulled",
+  "type": "flaw",
+  "weight": 10,
+  "tool": {
+    "modifiers": [
+      {
+        "name": "dulled_attack_damage",
+        "attribute": "minecraft:generic.attack_damage",
+        "operation": "multiply_total",
+        "min": -0.04,
+        "max": -0.1
+      }
+    ]
+  }
+}

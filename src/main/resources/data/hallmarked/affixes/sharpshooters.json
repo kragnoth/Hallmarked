@@ -1,0 +1,17 @@
+{
+  "name": "hallmarked.affix.sharpshooters",
+  "type": "prefix",
+  "weight": 6,
+  "group": "projectile",
+  "bauble": {
+    "modifiers": [
+      {
+        "name": "sharpshooters_projectile_damage",
+        "attribute": "hallmarked:projectile_damage",
+        "operation": "multiply_total",
+        "min": 0.02,
+        "max": 0.06
+      }
+    ]
+  }
+}

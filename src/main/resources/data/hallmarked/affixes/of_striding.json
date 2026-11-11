@@ -1,0 +1,17 @@
+{
+  "name": "hallmarked.affix.of_striding",
+  "type": "suffix",
+  "weight": 5,
+  "group": "step",
+  "boots": {
+    "modifiers": [
+      {
+        "name": "of_striding_step_height",
+        "attribute": "minecraft:generic.step_height",
+        "operation": "addition",
+        "min": 0.25,
+        "max": 0.5
+      }
+    ]
+  }
+}

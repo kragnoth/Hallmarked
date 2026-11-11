@@ -1,0 +1,23 @@
+{
+  "name": "hallmarked.grade.shoddy",
+  "color": "dark_gray",
+  "rank": 0,
+  "affixes": {
+    "min": 0,
+    "max": 0
+  },
+  "max_prefixes": 0,
+  "max_suffixes": 0,
+  "flaws": 1,
+  "roll": {
+    "min": 0.0,
+    "max": 1.0
+  },
+  "titled": false,
+  "hidden": false,
+  "luck_scaling": -1.0,
+  "weights": {
+    "crafted": 14,
+    "loot": 6
+  }
+}

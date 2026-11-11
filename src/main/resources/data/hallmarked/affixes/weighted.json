@@ -1,0 +1,24 @@
+{
+  "name": "hallmarked.affix.weighted",
+  "type": "prefix",
+  "weight": 6,
+  "group": "melee_damage",
+  "tool": {
+    "modifiers": [
+      {
+        "name": "weighted_attack_damage",
+        "attribute": "minecraft:generic.attack_damage",
+        "operation": "multiply_total",
+        "min": 0.05,
+        "max": 0.16
+      },
+      {
+        "name": "weighted_attack_speed",
+        "attribute": "minecraft:generic.attack_speed",
+        "operation": "multiply_total",
+        "min": -0.03,
+        "max": -0.06
+      }
+    ]
+  }
+}

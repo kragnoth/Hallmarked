@@ -1,0 +1,17 @@
+{
+  "name": "hallmarked.affix.of_leaping",
+  "type": "suffix",
+  "weight": 5,
+  "group": "jump",
+  "leggings": {
+    "modifiers": [
+      {
+        "name": "of_leaping_jump",
+        "attribute": "minecraft:generic.jump_strength",
+        "operation": "multiply_total",
+        "min": 0.05,
+        "max": 0.2
+      }
+    ]
+  }
+}

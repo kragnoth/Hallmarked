@@ -1,0 +1,28 @@
+{
+  "name": "hallmarked.affix.of_the_quarry",
+  "type": "suffix",
+  "weight": 8,
+  "group": "dig_s",
+  "tool": {
+    "modifiers": [
+      {
+        "name": "of_the_quarry_dig_speed",
+        "attribute": "minecraft:player.block_break_speed",
+        "operation": "multiply_total",
+        "min": 0.05,
+        "max": 0.2
+      }
+    ]
+  },
+  "bauble": {
+    "modifiers": [
+      {
+        "name": "of_the_quarry_bauble_dig_speed",
+        "attribute": "minecraft:player.block_break_speed",
+        "operation": "multiply_total",
+        "min": 0.02,
+        "max": 0.08
+      }
+    ]
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "name": "hallmarked.affix.braced",
+  "type": "prefix",
+  "weight": 6,
+  "group": "knockback_res",
+  "armor": {
+    "modifiers": [
+      {
+        "name": "braced_knockback_resistance",
+        "attribute": "minecraft:generic.knockback_resistance",
+        "operation": "addition",
+        "min": 0.02,
+        "max": 0.08
+      }
+    ]
+  },
+  "shield": {
+    "modifiers": [
+      {
+        "name": "braced_shield_knockback_resistance",
+        "attribute": "minecraft:generic.knockback_resistance",
+        "operation": "addition",
+        "min": 0.03,
+        "max": 0.1
+      }
+    ]
+  }
+}

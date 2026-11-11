@@ -1,0 +1,93 @@
+package com.kragnoth.hallmarked.grade;
+
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.kragnoth.hallmarked.quality.Category;
+import com.kragnoth.hallmarked.quality.Sectioned;
+import java.util.ArrayList;
+import java.util.EnumMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Optional;
+import net.minecraft.core.Holder;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.util.GsonHelper;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+
+/**
+ * A rollable affix. Prefixes and suffixes appear on Journeyman-and-better work; flaws only on Shoddy work.
+ * Each modifier has a min..max range; the item's stored roll (0..1) picks the value inside it.
+ *
+ * <pre>{@code
+ * { "name": "hallmarked.affix.honed", "type": "prefix", "weight": 10, "group": "melee_damage",
+ *   "tool": { "modifiers": [ { "name": "honed_attack_damage", "attribute": "minecraft:generic.attack_damage",
+ *                              "operation": "multiply_total", "min": 0.03, "max": 0.12 } ] } }
+ * }</pre>
+ */
+public record Affix(String name, Type type, int weight, String group, Map<Category, List<Mod>> sections, JsonObject source)
+        implements Sectioned {
+
+    public enum Type { PREFIX, SUFFIX, FLAW }
+
+    public record Mod(String name, ResourceLocation attributeId, AttributeModifier.Operation operation, double min, double max) {
+        public double value(float roll) {
+            return min + (max - min) * roll;
+        }
+
+        public Optional<Holder.Reference<Attribute>> attribute() {
+            return BuiltInRegistries.ATTRIBUTE.getHolder(attributeId);
+        }
+    }
+
+    @Override
+    public boolean has(Category c) {
+        return sections.containsKey(c);
+    }
+
+    public List<Mod> section(Category c) {
+        return sections.getOrDefault(c, List.of());
+    }
+
+    public static Affix parse(ResourceLocation id, JsonObject json) {
+        String name = GsonHelper.getAsString(json, "name", id.getNamespace() + ".affix." + id.getPath().replace('/', '.'));
+        Type type = Type.valueOf(GsonHelper.getAsString(json, "type", "prefix").toUpperCase(Locale.ROOT));
+        int weight = Math.max(0, GsonHelper.getAsInt(json, "weight", 10));
+        String group = GsonHelper.getAsString(json, "group", name);
+
+        Map<Category, List<Mod>> sections = new EnumMap<>(Category.class);
+        for (Category c : Category.values()) {
+            if (!json.has(c.key())) continue;
+            JsonArray arr = GsonHelper.getAsJsonArray(GsonHelper.getAsJsonObject(json, c.key()), "modifiers", new JsonArray());
+            List<Mod> mods = new ArrayList<>();
+            for (JsonElement e : arr) {
+                JsonObject m = e.getAsJsonObject();
+                double min, max;
+                if (m.has("value")) {
+                    min = max = GsonHelper.getAsDouble(m, "value");
+                } else {
+                    min = GsonHelper.getAsDouble(m, "min");
+                    max = GsonHelper.getAsDouble(m, "max");
+                }
+                mods.add(new Mod(GsonHelper.getAsString(m, "name").toLowerCase(Locale.ROOT),
+                        ResourceLocation.parse(GsonHelper.getAsString(m, "attribute").toLowerCase(Locale.ROOT)),
+                        parseOp(GsonHelper.getAsString(m, "operation", "multiply_total")), min, max));
+            }
+            sections.put(c, List.copyOf(mods));
+        }
+        JsonObject source = json.deepCopy();
+        source.addProperty("name", name);
+        return new Affix(name, type, weight, group, sections, source);
+    }
+
+    static AttributeModifier.Operation parseOp(String s) {
+        return switch (s.toLowerCase(Locale.ROOT)) {
+            case "addition", "add", "add_value" -> AttributeModifier.Operation.ADD_VALUE;
+            case "multiply_base", "add_multiplied_base" -> AttributeModifier.Operation.ADD_MULTIPLIED_BASE;
+            default -> AttributeModifier.Operation.ADD_MULTIPLIED_TOTAL;
+        };
+    }
+}

@@ -1,0 +1,17 @@
+{
+  "name": "hallmarked.affix.long_hafted",
+  "type": "prefix",
+  "weight": 6,
+  "group": "reach",
+  "tool": {
+    "modifiers": [
+      {
+        "name": "long_hafted_reach",
+        "attribute": "minecraft:player.entity_interaction_range",
+        "operation": "addition",
+        "min": 0.25,
+        "max": 1.0
+      }
+    ]
+  }
+}

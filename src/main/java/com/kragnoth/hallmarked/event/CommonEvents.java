@@ -3,11 +3,10 @@ package com.kragnoth.hallmarked.event;
 import com.kragnoth.hallmarked.Hallmarked;
 import com.kragnoth.hallmarked.compat.CuriosCompat;
 import com.kragnoth.hallmarked.config.HallmarkedConfig;
+import com.kragnoth.hallmarked.grade.Grading;
+import com.kragnoth.hallmarked.grade.Marks;
 import com.kragnoth.hallmarked.network.SyncQualitiesPayload;
-import com.kragnoth.hallmarked.quality.Category;
-import com.kragnoth.hallmarked.quality.Equipment;
 import com.kragnoth.hallmarked.quality.Qualities;
-import com.kragnoth.hallmarked.quality.Quality;
 import com.kragnoth.hallmarked.quality.Reforging;
 import com.kragnoth.hallmarked.registry.HMRegistries;
 import java.util.HashMap;
@@ -43,34 +42,24 @@ public final class CommonEvents {
     @SubscribeEvent
     public static void onAddReloadListeners(AddReloadListenerEvent event) {
         event.addListener(new Qualities.Loader());
+        event.addListener(Grading.GRADES.loader());
+        event.addListener(Grading.AFFIXES.loader());
     }
 
     /** Fires for each joining player and for everyone after /reload. */
     @SubscribeEvent
     public static void onDatapackSync(OnDatapackSyncEvent event) {
-        SyncQualitiesPayload payload = new SyncQualitiesPayload(Qualities.toWire());
+        SyncQualitiesPayload payload = SyncQualitiesPayload.snapshot();
         event.getRelevantPlayers().forEach(p -> PacketDistributor.sendToPlayer(p, payload));
     }
 
-    // ---- Item modifiers (tools, bows, shields, armor) --------------------------------------
+    // ---- Item modifiers (quality + affixes on tools, bows, shields, armor) -----------------
 
     @SubscribeEvent
     public static void onItemAttributes(ItemAttributeModifierEvent event) {
-        ItemStack stack = event.getItemStack();
-        Quality q = Reforging.qualityOf(stack);
-        if (q == null) return;
-        Equipment.Applied applied = Equipment.applied(q, stack);
-        if (applied == null || applied.slot() == null) return; // baubles are applied to the player instead
-
-        for (Quality.Mod m : q.section(applied.section())) {
-            m.attribute().ifPresent(attr -> event.addModifier(attr,
-                    new AttributeModifier(itemModifierId(m, applied), m.value(), m.operation()),
-                    applied.slot()));
+        for (Marks.Entry e : Marks.of(event.getItemStack())) {
+            if (e.slot() != null) event.addModifier(e.attribute(), e.modifier(), e.slot());
         }
-    }
-
-    public static ResourceLocation itemModifierId(Quality.Mod m, Equipment.Applied applied) {
-        return Hallmarked.id(m.name() + applied.idSuffix());
     }
 
     // ---- Damage ----------------------------------------------------------------------------
@@ -101,7 +90,7 @@ public final class CommonEvents {
         event.setNewDamage((float) (event.getNewDamage() * (1.0 - resistance)));
     }
 
-    // ---- Per-player tick: auto-reforge, legacy migration, bauble modifiers -----------------
+    // ---- Per-player tick: first-seen rolls, legacy migration, names, bauble modifiers ------
 
     private static final int INTERVAL = 10;
     /** Bauble modifiers currently applied to each player: id -> attribute. Transient, rebuilt on respawn/login. */
@@ -117,17 +106,32 @@ public final class CommonEvents {
     }
 
     private static void scanInventory(ServerPlayer player) {
-        boolean auto = HallmarkedConfig.AUTO_REFORGE.get();
+        boolean autoQuality = HallmarkedConfig.AUTO_REFORGE.get();
         double chance = HallmarkedConfig.AUTO_REFORGE_CHANCE.get();
+        boolean grading = HallmarkedConfig.GRADING.get();
         Inventory inv = player.getInventory();
         for (int i = 0; i < inv.getContainerSize(); i++) {
             ItemStack stack = inv.getItem(i);
             if (stack.isEmpty()) continue;
-            Reforging.migrateLegacy(stack);
-            if (!auto) continue;
-            if (stack.has(HMRegistries.ROLLED.get()) || stack.has(HMRegistries.QUALITY.get())) continue;
-            if (!Reforging.isEligible(stack)) continue;
+            processFirstSeen(player, stack, autoQuality, chance, grading);
+        }
+    }
 
+    /**
+     * Anything not graded by the loot modifier (crafted, traded, given) is treated as crafted work and
+     * graded with the player's Luck. Crafted odds are lower than loot, but the top grade is never off the table.
+     */
+    private static void processFirstSeen(ServerPlayer player, ItemStack stack, boolean autoQuality, double chance, boolean grading) {
+        Reforging.migrateLegacy(stack);
+
+        if (grading && !stack.has(HMRegistries.GRADE.get()) && Grading.canGrade(stack)) {
+            Grading.grade(stack, Grading.SOURCE_CRAFTED, player.getLuck(), player.getRandom());
+        } else if (stack.has(HMRegistries.GRADE.get())) {
+            Grading.refreshName(stack);
+        }
+
+        if (autoQuality && !stack.has(HMRegistries.ROLLED.get()) && !stack.has(HMRegistries.QUALITY.get())
+                && Reforging.isEligible(stack)) {
             stack.set(HMRegistries.ROLLED.get(), true);
             if (player.getRandom().nextDouble() < chance) Reforging.reforge(stack, player.getRandom());
         }
@@ -138,19 +142,18 @@ public final class CommonEvents {
         List<ItemStack> worn = CuriosCompat.equipped(player);
         for (int slot = 0; slot < worn.size(); slot++) {
             ItemStack stack = worn.get(slot);
-            if (stack.isEmpty()) continue;
-            Reforging.migrateLegacy(stack);
-            Quality q = Reforging.qualityOf(stack);
-            if (q == null) continue;
-            for (Quality.Mod m : q.section(Category.BAUBLE)) {
-                ResourceLocation id = Hallmarked.id("bauble/" + slot + "/" + m.name());
-                m.attribute().ifPresent(attr -> desired.put(id, new Desired(attr, new AttributeModifier(id, m.value(), m.operation()))));
+            if (stack.isEmpty() || !Marks.isBauble(stack)) continue;
+            processFirstSeen(player, stack, HallmarkedConfig.AUTO_REFORGE.get(),
+                    HallmarkedConfig.AUTO_REFORGE_CHANCE.get(), HallmarkedConfig.GRADING.get());
+            for (Marks.Entry e : Marks.of(stack)) {
+                if (e.slot() != null) continue;
+                ResourceLocation id = Hallmarked.id("bauble/" + slot + "/" + e.modifier().id().getPath());
+                desired.put(id, new Desired(e.attribute(), new AttributeModifier(id, e.modifier().amount(), e.modifier().operation())));
             }
         }
 
         Map<ResourceLocation, Holder<Attribute>> applied = APPLIED_BAUBLES.computeIfAbsent(player, p -> new HashMap<>());
 
-        // Remove stale
         var it = applied.entrySet().iterator();
         while (it.hasNext()) {
             var e = it.next();
@@ -161,18 +164,15 @@ public final class CommonEvents {
                 it.remove();
             }
         }
-        // Add / update
         for (var e : desired.entrySet()) {
             AttributeInstance inst = player.getAttribute(e.getValue().attribute());
             if (inst == null) continue;
             AttributeModifier current = inst.getModifier(e.getKey());
             AttributeModifier want = e.getValue().modifier();
-            if (current != null && current.amount() == want.amount() && current.operation() == want.operation()) {
-                applied.put(e.getKey(), e.getValue().attribute());
-                continue;
+            if (current == null || current.amount() != want.amount() || current.operation() != want.operation()) {
+                if (current != null) inst.removeModifier(e.getKey());
+                inst.addTransientModifier(want);
             }
-            if (current != null) inst.removeModifier(e.getKey());
-            inst.addTransientModifier(want);
             applied.put(e.getKey(), e.getValue().attribute());
         }
         if (player.getHealth() > player.getMaxHealth()) player.setHealth(player.getMaxHealth());

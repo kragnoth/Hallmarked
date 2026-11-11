@@ -1,0 +1,28 @@
+{
+  "name": "hallmarked.affix.riveted",
+  "type": "prefix",
+  "weight": 10,
+  "group": "armor",
+  "armor": {
+    "modifiers": [
+      {
+        "name": "riveted_armor",
+        "attribute": "minecraft:generic.armor",
+        "operation": "addition",
+        "min": 0.5,
+        "max": 2.0
+      }
+    ]
+  },
+  "shield": {
+    "modifiers": [
+      {
+        "name": "riveted_shield_armor",
+        "attribute": "minecraft:generic.armor",
+        "operation": "addition",
+        "min": 0.5,
+        "max": 1.5
+      }
+    ]
+  }
+}

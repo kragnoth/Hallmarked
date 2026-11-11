@@ -1,0 +1,17 @@
+{
+  "name": "hallmarked.affix.gilded",
+  "type": "prefix",
+  "weight": 8,
+  "group": "luck",
+  "bauble": {
+    "modifiers": [
+      {
+        "name": "gilded_luck",
+        "attribute": "minecraft:generic.luck",
+        "operation": "addition",
+        "min": 0.2,
+        "max": 0.6
+      }
+    ]
+  }
+}

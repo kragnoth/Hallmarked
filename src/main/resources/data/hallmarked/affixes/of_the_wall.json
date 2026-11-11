@@ -1,0 +1,17 @@
+{
+  "name": "hallmarked.affix.of_the_wall",
+  "type": "suffix",
+  "weight": 6,
+  "group": "knockback_res_s",
+  "chestplate": {
+    "modifiers": [
+      {
+        "name": "of_the_wall_knockback_resistance",
+        "attribute": "minecraft:generic.knockback_resistance",
+        "operation": "addition",
+        "min": 0.03,
+        "max": 0.1
+      }
+    ]
+  }
+}

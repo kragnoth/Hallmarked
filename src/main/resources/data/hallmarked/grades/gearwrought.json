@@ -1,0 +1,23 @@
+{
+  "name": "hallmarked.grade.gearwrought",
+  "color": "gold",
+  "rank": 4,
+  "affixes": {
+    "min": 5,
+    "max": 6
+  },
+  "max_prefixes": 3,
+  "max_suffixes": 3,
+  "flaws": 0,
+  "roll": {
+    "min": 0.6,
+    "max": 1.0
+  },
+  "titled": true,
+  "hidden": false,
+  "luck_scaling": 3.0,
+  "weights": {
+    "crafted": 0.5,
+    "loot": 3
+  }
+}

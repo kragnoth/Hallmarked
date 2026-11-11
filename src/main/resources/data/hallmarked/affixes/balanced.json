@@ -1,0 +1,17 @@
+{
+  "name": "hallmarked.affix.balanced",
+  "type": "prefix",
+  "weight": 10,
+  "group": "melee_speed",
+  "tool": {
+    "modifiers": [
+      {
+        "name": "balanced_attack_speed",
+        "attribute": "minecraft:generic.attack_speed",
+        "operation": "multiply_total",
+        "min": 0.03,
+        "max": 0.12
+      }
+    ]
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "name": "hallmarked.affix.quarriers",
+  "type": "prefix",
+  "weight": 8,
+  "group": "dig",
+  "tool": {
+    "modifiers": [
+      {
+        "name": "quarriers_dig_speed",
+        "attribute": "minecraft:player.block_break_speed",
+        "operation": "multiply_total",
+        "min": 0.05,
+        "max": 0.25
+      }
+    ]
+  }
+}

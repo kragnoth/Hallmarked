@@ -1,0 +1,39 @@
+{
+  "name": "hallmarked.affix.of_swiftness",
+  "type": "suffix",
+  "weight": 6,
+  "group": "move_s",
+  "bow": {
+    "modifiers": [
+      {
+        "name": "of_swiftness_bow_movement_speed",
+        "attribute": "minecraft:generic.movement_speed",
+        "operation": "multiply_total",
+        "min": 0.02,
+        "max": 0.06
+      }
+    ]
+  },
+  "boots": {
+    "modifiers": [
+      {
+        "name": "of_swiftness_movement_speed",
+        "attribute": "minecraft:generic.movement_speed",
+        "operation": "multiply_total",
+        "min": 0.02,
+        "max": 0.06
+      }
+    ]
+  },
+  "bauble": {
+    "modifiers": [
+      {
+        "name": "of_swiftness_bauble_movement_speed",
+        "attribute": "minecraft:generic.movement_speed",
+        "operation": "multiply_total",
+        "min": 0.01,
+        "max": 0.04
+      }
+    ]
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "name": "hallmarked.affix.hardened",
+  "type": "prefix",
+  "weight": 8,
+  "group": "toughness",
+  "armor": {
+    "modifiers": [
+      {
+        "name": "hardened_toughness",
+        "attribute": "minecraft:generic.armor_toughness",
+        "operation": "addition",
+        "min": 0.5,
+        "max": 2.0
+      }
+    ]
+  }
+}

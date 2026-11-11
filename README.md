@@ -7,6 +7,11 @@ a stamped mark such as *Keen*, *Rusted*, *Masterful*, *Forsaken* or *Ascended* t
 It was built for the **Gearwright's Hollow** modpack.
 
 ## Features
+- **Grades of work, Diablo-style:** every piece of equipment is *Shoddy*, *Common*, *Journeyman*, *Masterwork* or
+  *Gearwrought*. Higher grades roll more affixes with stronger values. Journeyman pieces get names like
+  "Honed Iron Sword of Haste", and Masterwork and Gearwrought pieces get titles like "Ashen Vow". Loot rolls
+  better than crafted gear, Luck tips the odds, and a crafted Gearwrought piece is rare but possible.
+  See [docs/GRADES.md](docs/GRADES.md).
 - **53 qualities** across tools, bows, shields, armor (per piece) and baubles, ranging from *Worthless* to *Ascended*.
 - **Auto-marking:** the first time a piece of equipment enters your inventory, it has a chance (50 % by default) to roll a quality.
 - **Assay Anvil:** place equipment and a material in it, then strike the hammer to re-roll the mark. Valid materials are the
@@ -35,10 +40,14 @@ Qualities are JSON files at `data/<namespace>/qualities/*.json`. A file whose `n
 Datapacks written for *Quality Equipment* (`quality_equipment.quality.*` names, `color_code`, and `quality_equipment:` attributes)
 still load. Items that carry the old mod's quality are converted automatically when they enter a player's inventory.
 
+Grades live in `data/<namespace>/grades/*.json` and affixes in `data/<namespace>/affixes/*.json`.
+See [docs/GRADES.md](docs/GRADES.md) for their formats.
+
 ## Config
 `config/hallmarked-common.toml` has these options:
 - `Fallback`, `Overrides`, `Blacklist`
 - `AutoReforge`, `AutoReforgeChance`
+- `Grading.Enabled`, `Grading.LuckFactor`
 - `MaxDamageResistance`
 
 ## Building

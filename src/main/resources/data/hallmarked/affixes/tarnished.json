@@ -1,0 +1,16 @@
+{
+  "name": "hallmarked.affix.tarnished",
+  "type": "flaw",
+  "weight": 10,
+  "bauble": {
+    "modifiers": [
+      {
+        "name": "tarnished_luck",
+        "attribute": "minecraft:generic.luck",
+        "operation": "addition",
+        "min": -0.1,
+        "max": -0.4
+      }
+    ]
+  }
+}

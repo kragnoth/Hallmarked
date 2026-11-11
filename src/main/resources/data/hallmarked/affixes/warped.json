@@ -1,0 +1,16 @@
+{
+  "name": "hallmarked.affix.warped",
+  "type": "flaw",
+  "weight": 10,
+  "tool": {
+    "modifiers": [
+      {
+        "name": "warped_attack_speed",
+        "attribute": "minecraft:generic.attack_speed",
+        "operation": "multiply_total",
+        "min": -0.04,
+        "max": -0.12
+      }
+    ]
+  }
+}

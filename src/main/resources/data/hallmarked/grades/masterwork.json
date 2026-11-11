@@ -1,0 +1,23 @@
+{
+  "name": "hallmarked.grade.masterwork",
+  "color": "yellow",
+  "rank": 3,
+  "affixes": {
+    "min": 3,
+    "max": 4
+  },
+  "max_prefixes": 2,
+  "max_suffixes": 2,
+  "flaws": 0,
+  "roll": {
+    "min": 0.25,
+    "max": 0.85
+  },
+  "titled": true,
+  "hidden": false,
+  "luck_scaling": 2.0,
+  "weights": {
+    "crafted": 7,
+    "loot": 19
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "name": "hallmarked.affix.of_haste",
+  "type": "suffix",
+  "weight": 10,
+  "group": "melee_speed_s",
+  "tool": {
+    "modifiers": [
+      {
+        "name": "of_haste_attack_speed",
+        "attribute": "minecraft:generic.attack_speed",
+        "operation": "multiply_total",
+        "min": 0.03,
+        "max": 0.1
+      }
+    ]
+  },
+  "bauble": {
+    "modifiers": [
+      {
+        "name": "of_haste_bauble_attack_speed",
+        "attribute": "minecraft:generic.attack_speed",
+        "operation": "multiply_total",
+        "min": 0.02,
+        "max": 0.05
+      }
+    ]
+  }
+}

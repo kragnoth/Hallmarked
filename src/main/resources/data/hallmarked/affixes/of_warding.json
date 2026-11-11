@@ -1,0 +1,28 @@
+{
+  "name": "hallmarked.affix.of_warding",
+  "type": "suffix",
+  "weight": 6,
+  "group": "resist_s",
+  "armor": {
+    "modifiers": [
+      {
+        "name": "of_warding_damage_resistance",
+        "attribute": "hallmarked:damage_resistance",
+        "operation": "multiply_total",
+        "min": 0.01,
+        "max": 0.03
+      }
+    ]
+  },
+  "shield": {
+    "modifiers": [
+      {
+        "name": "of_warding_shield_damage_resistance",
+        "attribute": "hallmarked:damage_resistance",
+        "operation": "multiply_total",
+        "min": 0.01,
+        "max": 0.04
+      }
+    ]
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "name": "hallmarked.affix.honed",
+  "type": "prefix",
+  "weight": 10,
+  "group": "melee_damage",
+  "tool": {
+    "modifiers": [
+      {
+        "name": "honed_attack_damage",
+        "attribute": "minecraft:generic.attack_damage",
+        "operation": "multiply_total",
+        "min": 0.03,
+        "max": 0.12
+      }
+    ]
+  }
+}

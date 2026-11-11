@@ -1,20 +1,23 @@
 package com.kragnoth.hallmarked.client;
 
 import com.kragnoth.hallmarked.Hallmarked;
-import com.kragnoth.hallmarked.event.CommonEvents;
-import com.kragnoth.hallmarked.quality.Category;
-import com.kragnoth.hallmarked.quality.Equipment;
+import com.kragnoth.hallmarked.grade.Grade;
+import com.kragnoth.hallmarked.grade.Grading;
+import com.kragnoth.hallmarked.grade.Marks;
 import com.kragnoth.hallmarked.quality.Quality;
 import com.kragnoth.hallmarked.quality.Reforging;
 import com.kragnoth.hallmarked.registry.HMRegistries;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.world.entity.EquipmentSlotGroup;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -42,67 +45,87 @@ public final class ClientEvents {
 
     @EventBusSubscriber(modid = Hallmarked.MODID, value = Dist.CLIENT)
     public static final class GameBus {
+        private static final DecimalFormat FMT = new DecimalFormat("#.##");
 
-        /** Pull the quality's modifiers out of vanilla's sections; they're listed under the quality instead. */
+        /** Pull our modifiers out of vanilla's sections; they're listed under the quality and grade instead. */
         @SubscribeEvent
-        public static void skipQualityModifiers(GatherSkippedAttributeTooltipsEvent e) {
-            ItemStack stack = e.getStack();
-            Quality q = Reforging.qualityOf(stack);
-            if (q == null) return;
-            Equipment.Applied applied = Equipment.applied(q, stack);
-            if (applied == null || applied.slot() == null) return;
-            for (Quality.Mod m : q.section(applied.section())) e.skipId(CommonEvents.itemModifierId(m, applied));
+        public static void skipOwnModifiers(GatherSkippedAttributeTooltipsEvent e) {
+            for (Marks.Entry entry : Marks.of(e.getStack())) {
+                if (entry.slot() != null) e.skipId(entry.modifier().id());
+            }
         }
 
         @SubscribeEvent(priority = EventPriority.LOW)
         public static void tooltip(ItemTooltipEvent e) {
             ItemStack stack = e.getItemStack();
-            String name = stack.get(HMRegistries.QUALITY.get());
-            if (name == null) return;
-            Quality q = Reforging.qualityOf(stack);
+            String qualityName = stack.get(HMRegistries.QUALITY.get());
+            Grade grade = Grading.gradeOf(stack);
+            if (qualityName == null && grade == null) return;
 
+            List<Marks.Entry> entries = Marks.of(stack);
             List<Component> block = new ArrayList<>();
-            block.add(Component.empty());
-            block.add(Component.translatable("tooltip.hallmarked.quality").withStyle(ChatFormatting.GRAY)
-                    .append(Component.translatable(name).withStyle(q != null ? q.color() : ChatFormatting.GRAY)));
+            boolean advanced = e.getFlags().isAdvanced();
 
-            if (q != null) {
-                List<Quality.Mod> mods;
-                Component heading;
-                Equipment.Applied applied = Equipment.applied(q, stack);
-                if (applied != null && applied.section() == Category.BAUBLE) {
-                    mods = q.section(Category.BAUBLE);
-                    heading = Component.translatable("tooltip.hallmarked.bauble");
-                } else if (applied != null && applied.slot() != null) {
-                    mods = q.section(applied.section());
-                    heading = Component.translatable("item.modifiers." + applied.slot().getSerializedName());
-                } else {
-                    mods = List.of();
-                    heading = null;
-                }
-                if (heading != null && !mods.isEmpty()) {
-                    block.add(heading.copy().withStyle(ChatFormatting.GRAY));
-                    List<Quality.Mod> sorted = new ArrayList<>(mods);
-                    sorted.sort(Comparator.comparing((Quality.Mod m) -> m.value() <= 0)); // positives first, stable
-                    for (Quality.Mod m : sorted) {
-                        m.attribute().ifPresent(attr -> {
-                            AttributeModifier mod = new AttributeModifier(Hallmarked.id(m.name()), m.value(), m.operation());
-                            MutableComponent line = attr.value().toComponent(mod, e.getFlags());
-                            block.add(Component.literal(" ").append(line.withStyle(m.value() > 0 ? ChatFormatting.BLUE : ChatFormatting.RED)));
-                        });
-                    }
-                }
+            // Quality block
+            if (qualityName != null) {
+                Quality q = Reforging.qualityOf(stack);
+                block.add(Component.empty());
+                block.add(Component.translatable("tooltip.hallmarked.quality").withStyle(ChatFormatting.GRAY)
+                        .append(Component.translatable(qualityName).withStyle(q != null ? q.color() : ChatFormatting.GRAY)));
+                addLines(block, entries, Marks.Origin.QUALITY, advanced, e.getFlags());
+            }
+
+            // Grade block
+            if (grade != null && !grade.hidden()) {
+                block.add(Component.empty());
+                block.add(Component.translatable(grade.name()).withStyle(grade.color()));
+                addLines(block, entries, Marks.Origin.AFFIX, advanced, e.getFlags());
+            }
+
+            List<Component> tip = e.getToolTip();
+            // Titled items show their base item under the title, Diablo-style.
+            if (grade != null && grade.titled() && !tip.isEmpty()) {
+                tip.add(1, Component.translatable(stack.getItem().getDescriptionId()).withStyle(ChatFormatting.GRAY));
             }
 
             // Insert above the advanced-tooltip footer (durability / id / component count) if present.
-            List<Component> tip = e.getToolTip();
             int insertAt = tip.size();
-            if (e.getFlags().isAdvanced()) {
+            if (advanced) {
                 insertAt -= 2;
                 if (stack.isDamaged()) insertAt -= 1;
                 insertAt = Math.max(1, insertAt);
             }
             tip.addAll(insertAt, block);
+        }
+
+        private static void addLines(List<Component> block, List<Marks.Entry> all, Marks.Origin origin, boolean advanced, TooltipFlag flag) {
+            List<Marks.Entry> list = new ArrayList<>();
+            for (Marks.Entry en : all) if (en.origin() == origin) list.add(en);
+            if (list.isEmpty()) return;
+
+            EquipmentSlotGroup slot = list.get(0).slot();
+            Component heading = slot == null
+                    ? Component.translatable("tooltip.hallmarked.bauble")
+                    : Component.translatable("item.modifiers." + slot.getSerializedName());
+            block.add(heading.copy().withStyle(ChatFormatting.GRAY));
+
+            list.sort(Comparator.comparing((Marks.Entry en) -> en.modifier().amount() <= 0)); // positives first, stable
+            for (Marks.Entry en : list) {
+                AttributeModifier mod = en.modifier();
+                MutableComponent line = Component.literal(" ").append(en.attribute().value().toComponent(mod, TooltipFlag.NORMAL)
+                        .withStyle(mod.amount() > 0 ? ChatFormatting.BLUE : ChatFormatting.RED));
+                if (advanced && origin == Marks.Origin.AFFIX) {
+                    line.append(Component.literal("  ").append(Component.translatable(en.label()))
+                            .append(" [" + fmt(en, en.min()) + " .. " + fmt(en, en.max()) + "]")
+                            .withStyle(ChatFormatting.DARK_GRAY));
+                }
+                block.add(line);
+            }
+        }
+
+        private static String fmt(Marks.Entry en, double v) {
+            return en.modifier().operation() == AttributeModifier.Operation.ADD_VALUE
+                    ? FMT.format(v) : FMT.format(v * 100) + "%";
         }
     }
 }

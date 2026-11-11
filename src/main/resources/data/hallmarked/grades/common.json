@@ -1,0 +1,23 @@
+{
+  "name": "hallmarked.grade.common",
+  "color": "white",
+  "rank": 1,
+  "affixes": {
+    "min": 0,
+    "max": 0
+  },
+  "max_prefixes": 0,
+  "max_suffixes": 0,
+  "flaws": 0,
+  "roll": {
+    "min": 0.0,
+    "max": 0.0
+  },
+  "titled": false,
+  "hidden": true,
+  "luck_scaling": 0.0,
+  "weights": {
+    "crafted": 55.5,
+    "loot": 36
+  }
+}

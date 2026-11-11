@@ -26,7 +26,7 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
  * @param sections modifiers per category
  * @param source   original JSON, kept for client sync
  */
-public record Quality(String name, ChatFormatting color, int weight, Map<Category, List<Mod>> sections, JsonObject source) {
+public record Quality(String name, ChatFormatting color, int weight, Map<Category, List<Mod>> sections, JsonObject source) implements Sectioned {
 
     public static final String LEGACY_PREFIX = "quality_equipment.quality.";
     public static final String PREFIX = "hallmarked.quality.";
@@ -38,6 +38,7 @@ public record Quality(String name, ChatFormatting color, int weight, Map<Categor
         }
     }
 
+    @Override
     public boolean has(Category c) {
         return sections.containsKey(c);
     }

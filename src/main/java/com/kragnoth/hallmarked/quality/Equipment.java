@@ -55,11 +55,11 @@ public final class Equipment {
     }
 
     /**
-     * The section of {@code q} that applies to {@code stack}, and the slot it applies in.
+     * The section of {@code q} (a quality or affix) that applies to {@code stack}, and the slot it applies in.
      * Returns null when the quality has nothing for this item.
      */
     @Nullable
-    public static Applied applied(Quality q, ItemStack stack) {
+    public static Applied applied(Sectioned q, ItemStack stack) {
         Category cat = categoryOf(stack);
         if (cat == null) return null;
         if (cat == Category.ARMOR) {
