@@ -1,0 +1,31 @@
+{
+  "name": "hallmarked.affix.runed",
+  "type": "prefix",
+  "weight": 6,
+  "group": "spell_power",
+  "requires_mods": [
+    "irons_spellbooks"
+  ],
+  "bauble": {
+    "modifiers": [
+      {
+        "name": "runed_spell_power",
+        "attribute": "irons_spellbooks:spell_power",
+        "operation": "multiply_base",
+        "min": 0.03,
+        "max": 0.08
+      }
+    ]
+  },
+  "helmet": {
+    "modifiers": [
+      {
+        "name": "runed_helmet_spell_power",
+        "attribute": "irons_spellbooks:spell_power",
+        "operation": "multiply_base",
+        "min": 0.02,
+        "max": 0.06
+      }
+    ]
+  }
+}

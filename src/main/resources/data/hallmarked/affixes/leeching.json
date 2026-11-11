@@ -1,0 +1,19 @@
+{
+  "name": "hallmarked.affix.leeching",
+  "type": "prefix",
+  "weight": 5,
+  "group": "leech",
+  "tool": {
+    "modifiers": []
+  },
+  "procs": [
+    {
+      "type": "leech",
+      "chance": 1.0,
+      "power": {
+        "min": 0.03,
+        "max": 0.08
+      }
+    }
+  ]
+}

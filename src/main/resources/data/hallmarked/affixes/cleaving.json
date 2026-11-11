@@ -1,0 +1,19 @@
+{
+  "name": "hallmarked.affix.cleaving",
+  "type": "prefix",
+  "weight": 5,
+  "group": "cleave",
+  "tool": {
+    "modifiers": []
+  },
+  "procs": [
+    {
+      "type": "cleave",
+      "chance": 1.0,
+      "power": {
+        "min": 0.15,
+        "max": 0.35
+      }
+    }
+  ]
+}

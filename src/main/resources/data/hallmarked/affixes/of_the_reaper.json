@@ -1,0 +1,22 @@
+{
+  "name": "hallmarked.affix.of_the_reaper",
+  "type": "suffix",
+  "weight": 5,
+  "group": "reaper",
+  "tool": {
+    "modifiers": []
+  },
+  "procs": [
+    {
+      "type": "reaper",
+      "chance": {
+        "min": 0.5,
+        "max": 1.0
+      },
+      "power": {
+        "min": 1,
+        "max": 3
+      }
+    }
+  ]
+}

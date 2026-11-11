@@ -1,0 +1,19 @@
+{
+  "name": "hallmarked.affix.staggering",
+  "type": "prefix",
+  "weight": 6,
+  "group": "stagger",
+  "tool": {
+    "modifiers": []
+  },
+  "procs": [
+    {
+      "type": "stagger",
+      "chance": {
+        "min": 0.06,
+        "max": 0.15
+      },
+      "duration": 50
+    }
+  ]
+}

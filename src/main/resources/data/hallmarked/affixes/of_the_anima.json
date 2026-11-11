@@ -1,0 +1,22 @@
+{
+  "name": "hallmarked.affix.of_the_anima",
+  "type": "suffix",
+  "weight": 5,
+  "group": "anima",
+  "requires_mods": [
+    "neovitae"
+  ],
+  "tool": {
+    "modifiers": []
+  },
+  "procs": [
+    {
+      "type": "anima",
+      "chance": 1.0,
+      "power": {
+        "min": 25,
+        "max": 150
+      }
+    }
+  ]
+}

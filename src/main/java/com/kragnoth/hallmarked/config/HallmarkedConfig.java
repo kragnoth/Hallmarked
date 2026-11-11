@@ -14,6 +14,8 @@ public final class HallmarkedConfig {
     public static final ModConfigSpec.BooleanValue GRADING;
     public static final ModConfigSpec.DoubleValue LUCK_FACTOR;
     public static final ModConfigSpec.BooleanValue MOB_EQUIPMENT;
+    public static final ModConfigSpec.BooleanValue PROCS;
+    public static final ModConfigSpec.BooleanValue MOB_PROCS;
 
     static {
         ModConfigSpec.Builder b = new ModConfigSpec.Builder();
@@ -44,6 +46,13 @@ public final class HallmarkedConfig {
                 .comment("If true, equipment mobs spawn with is graded (and may get a quality) when they enter the world,",
                         "using the grades' \"mob\" weights. Mobs fight with those stats, and drop graded gear.")
                 .define("MobEquipment", true);
+        b.pop();
+
+        b.push("Procs");
+        PROCS = b.comment("Master switch for affix procs (bleed, stagger, leech, ignite, cleave, reprisal, reaper, anima).",
+                        "Procs that need another mod only exist when that mod is installed.")
+                .define("Enabled", true);
+        MOB_PROCS = b.comment("If true, mobs wearing graded gear trigger its procs too.").define("MobsUseProcs", true);
         b.pop();
 
         b.push("Balance");

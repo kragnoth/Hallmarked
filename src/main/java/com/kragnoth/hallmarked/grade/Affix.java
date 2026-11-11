@@ -28,7 +28,8 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
  *                              "operation": "multiply_total", "min": 0.03, "max": 0.12 } ] } }
  * }</pre>
  */
-public record Affix(String name, Type type, int weight, String group, Map<Category, List<Mod>> sections, JsonObject source)
+public record Affix(String name, Type type, int weight, String group, Map<Category, List<Mod>> sections,
+                    List<com.kragnoth.hallmarked.proc.Proc> procs, JsonObject source)
         implements Sectioned {
 
     /** FORBIDDEN affixes never roll normally; only the Ashen Altar grants them. */
@@ -58,7 +59,7 @@ public record Affix(String name, Type type, int weight, String group, Map<Catego
         Type type = Type.valueOf(GsonHelper.getAsString(json, "type", "prefix").toUpperCase(Locale.ROOT));
         int weight = Math.min(1_000_000, Math.max(0, GsonHelper.getAsInt(json, "weight", 10)));
         String group = GsonHelper.getAsString(json, "group", name);
-        Strict.warnUnknownKeys(id, json, Strict.withSections("name", "type", "weight", "group"), "Affix");
+        Strict.warnUnknownKeys(id, json, Strict.withSections("name", "type", "weight", "group", "procs", "requires_mods"), "Affix");
 
         Map<Category, List<Mod>> sections = new EnumMap<>(Category.class);
         for (Category c : Category.values()) {
@@ -83,9 +84,19 @@ public record Affix(String name, Type type, int weight, String group, Map<Catego
             }
             sections.put(c, List.copyOf(mods));
         }
+        List<com.kragnoth.hallmarked.proc.Proc> procs = new ArrayList<>();
+        for (JsonElement e : GsonHelper.getAsJsonArray(json, "procs", new JsonArray())) {
+            procs.add(com.kragnoth.hallmarked.proc.Proc.parse(id, e.getAsJsonObject()));
+        }
+        // An affix whose attribute belongs to a mod that isn't installed can't load (so it never rolls).
+        for (List<Mod> mods : sections.values()) {
+            for (Mod m : mods) {
+                if (m.attribute().isEmpty()) throw new IllegalArgumentException("unknown attribute " + m.attributeId());
+            }
+        }
         JsonObject source = json.deepCopy();
         source.addProperty("name", name);
-        return new Affix(name, type, weight, group, sections, source);
+        return new Affix(name, type, weight, group, sections, List.copyOf(procs), source);
     }
 
     public static AttributeModifier.Operation parseOperation(String s) {

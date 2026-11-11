@@ -1,0 +1,9 @@
+{
+  "name": "hallmarked.fusion.grave_fed",
+  "type": "prefix",
+  "parts": [
+    "hallmarked.affix.leeching",
+    "hallmarked.affix.of_the_reaper"
+  ],
+  "title": "hallmarked.fusion.grave_fed.title"
+}

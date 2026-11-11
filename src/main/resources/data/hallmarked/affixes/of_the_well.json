@@ -1,0 +1,31 @@
+{
+  "name": "hallmarked.affix.of_the_well",
+  "type": "suffix",
+  "weight": 6,
+  "group": "mana",
+  "requires_mods": [
+    "irons_spellbooks"
+  ],
+  "bauble": {
+    "modifiers": [
+      {
+        "name": "well_max_mana",
+        "attribute": "irons_spellbooks:max_mana",
+        "operation": "addition",
+        "min": 20,
+        "max": 60
+      }
+    ]
+  },
+  "chestplate": {
+    "modifiers": [
+      {
+        "name": "well_chest_max_mana",
+        "attribute": "irons_spellbooks:max_mana",
+        "operation": "addition",
+        "min": 15,
+        "max": 40
+      }
+    ]
+  }
+}

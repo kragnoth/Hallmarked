@@ -1,0 +1,20 @@
+{
+  "name": "hallmarked.affix.thaumic",
+  "type": "prefix",
+  "weight": 5,
+  "group": "proficiency",
+  "requires_mods": [
+    "lodestone"
+  ],
+  "bauble": {
+    "modifiers": [
+      {
+        "name": "thaumic_proficiency",
+        "attribute": "lodestone:magic_proficiency",
+        "operation": "addition",
+        "min": 0.5,
+        "max": 1.5
+      }
+    ]
+  }
+}

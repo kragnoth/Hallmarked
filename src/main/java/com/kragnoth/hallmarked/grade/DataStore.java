@@ -67,10 +67,16 @@ public final class DataStore<T> {
                         .comparing((Map.Entry<ResourceLocation, JsonElement> e) -> !e.getKey().getNamespace().equals(Hallmarked.MODID))
                         .thenComparing(e -> e.getKey().toString()));
                 List<T> loaded = new ArrayList<>();
+                int skippedForMods = 0;
                 java.util.Set<String> disabled = new java.util.HashSet<>();
                 for (var e : entries) {
                     try {
                         JsonObject json = e.getValue().getAsJsonObject();
+                        // "requires_mods": [...] keeps an entry out entirely unless every listed mod is installed.
+                        if (!requiredModsPresent(json)) {
+                            skippedForMods++;
+                            continue;
+                        }
                         // {"name": "...", "enabled": false} switches off an entry (including built-ins) by name.
                         if (json.has("enabled") && !json.get("enabled").getAsBoolean()) {
                             if (json.has("name")) disabled.add(json.get("name").getAsString());
@@ -83,9 +89,18 @@ public final class DataStore<T> {
                 }
                 loaded.removeIf(t -> disabled.contains(nameOf.apply(t)));
                 set(loaded);
-                Hallmarked.LOG.info("Loaded {} {}", byName.size(), folder);
+                Hallmarked.LOG.info("Loaded {} {}{}", byName.size(), folder,
+                        skippedForMods > 0 ? " (" + skippedForMods + " skipped: required mods not installed)" : "");
             }
         };
+    }
+
+    private static boolean requiredModsPresent(JsonObject json) {
+        if (!json.has("requires_mods")) return true;
+        for (JsonElement m : json.getAsJsonArray("requires_mods")) {
+            if (!net.neoforged.fml.ModList.get().isLoaded(m.getAsString())) return false;
+        }
+        return true;
     }
 
     public List<String> toWire() {

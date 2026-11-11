@@ -56,6 +56,10 @@ public final class HMRegistries {
     public static final DeferredRegister<RecipeType<?>> RECIPE_TYPES = DeferredRegister.create(Registries.RECIPE_TYPE, Hallmarked.MODID);
     public static final DeferredRegister<RecipeSerializer<?>> RECIPE_SERIALIZERS = DeferredRegister.create(Registries.RECIPE_SERIALIZER, Hallmarked.MODID);
     public static final DeferredRegister<IngredientType<?>> INGREDIENT_TYPES = DeferredRegister.create(NeoForgeRegistries.Keys.INGREDIENT_TYPES, Hallmarked.MODID);
+    public static final DeferredRegister<net.minecraft.world.effect.MobEffect> EFFECTS =
+            DeferredRegister.create(Registries.MOB_EFFECT, Hallmarked.MODID);
+    public static final DeferredHolder<net.minecraft.world.effect.MobEffect, net.minecraft.world.effect.MobEffect> BLEEDING =
+            EFFECTS.register("bleeding", com.kragnoth.hallmarked.proc.BleedingEffect::new);
     public static final DeferredRegister<CreativeModeTab> TABS =
             DeferredRegister.create(Registries.CREATIVE_MODE_TAB, Hallmarked.MODID);
 
@@ -181,6 +185,7 @@ public final class HMRegistries {
         COMPONENTS.register(modBus);
         TABS.register(modBus);
         LOOT_MODIFIERS.register(modBus);
+        EFFECTS.register(modBus);
         RECIPE_TYPES.register(modBus);
         RECIPE_SERIALIZERS.register(modBus);
         INGREDIENT_TYPES.register(modBus);

@@ -1,0 +1,9 @@
+{
+  "name": "hallmarked.fusion.butchers",
+  "type": "prefix",
+  "parts": [
+    "hallmarked.affix.cleaving",
+    "hallmarked.affix.staggering"
+  ],
+  "title": "hallmarked.fusion.butchers.title"
+}

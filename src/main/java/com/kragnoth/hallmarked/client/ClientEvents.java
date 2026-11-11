@@ -116,6 +116,7 @@ public final class ClientEvents {
                     }
                 } else {
                     addLines(block, entries, Marks.Origin.AFFIX, advanced, Grading.fusions(Grading.dataOf(stack)));
+                    addProcLines(block, stack);
                 }
             }
 
@@ -275,6 +276,24 @@ public final class ClientEvents {
                 if (holder.isPresent()) return holder.get().value().description();
             }
             return Component.translatable("enchantment." + id.getNamespace() + "." + id.getPath());
+        }
+
+        /** One line per proc: "15% on hit: Bleeding (1 dmg/s, 4s)", values from the affix roll. */
+        private static void addProcLines(List<Component> block, ItemStack stack) {
+            var d = Grading.dataOf(stack);
+            if (d == null) return;
+            for (var r : d.affixes()) {
+                var a = Grading.AFFIXES.get(r.affix());
+                if (a == null) continue;
+                for (var proc : a.procs()) {
+                    double power = proc.power(r.roll());
+                    boolean pct = switch (proc.type()) { case LEECH, CLEAVE, REPRISAL -> true; default -> false; };
+                    String powerText = pct ? FMT.format(power * 100) : FMT.format(power);
+                    block.add(Component.literal(" ").append(Component.translatable("hallmarked.proc." + proc.type().id(),
+                            FMT.format(proc.chance(r.roll()) * 100), powerText, FMT.format(proc.duration() / 20.0)))
+                            .withStyle(ChatFormatting.DARK_AQUA));
+                }
+            }
         }
 
         private static MutableComponent statLine(Marks.Entry en, String indent, boolean advanced) {

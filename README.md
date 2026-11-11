@@ -29,6 +29,9 @@ It was built for the **Gearwright's Hollow** modpack.
   - Deeper, farther and stranger places roll better.
 
   See [docs/LOOT_LOOP.md](docs/LOOT_LOOP.md).
+- **Procs:** Bleeding, Staggering, Leeching, of Embers, Cleaving, of Reprisal and of the Reaper put combat effects
+  on affixes, for players and for mobs carrying the gear. Affixes from other mods (NeoVitae, Iron's Spellbooks,
+  Lodestone) only exist when those mods are installed. See [docs/PROCS.md](docs/PROCS.md).
 - **53 qualities** across tools, bows, shields, armor (per piece) and baubles, ranging from *Worthless* to *Ascended*.
 - **Auto-marking:** the first time a piece of equipment enters your inventory, it has a chance (50 % by default) to roll a quality.
 - **Assay Anvil:** place equipment and a material in it, then strike the hammer to re-roll the mark. Valid materials are the
@@ -78,6 +81,7 @@ materials are recipes; both sync to clients, unlike the config.
 - `AutoReforge`, `AutoReforgeChance`
 - `Grading.Enabled`, `Grading.LuckFactor`, `Grading.MobEquipment`
 - `hallmarked-client.toml`: `ItemBeams`, `MobBeams`, `MobTitles`, `Range`
+- `Procs.Enabled`, `Procs.MobsUseProcs`
 - `MaxDamageResistance`
 
 ## Building

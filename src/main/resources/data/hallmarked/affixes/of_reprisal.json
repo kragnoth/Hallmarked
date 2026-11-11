@@ -1,0 +1,25 @@
+{
+  "name": "hallmarked.affix.of_reprisal",
+  "type": "suffix",
+  "weight": 5,
+  "group": "reprisal",
+  "chestplate": {
+    "modifiers": []
+  },
+  "shield": {
+    "modifiers": []
+  },
+  "procs": [
+    {
+      "type": "reprisal",
+      "chance": {
+        "min": 0.2,
+        "max": 0.35
+      },
+      "power": {
+        "min": 0.2,
+        "max": 0.5
+      }
+    }
+  ]
+}
