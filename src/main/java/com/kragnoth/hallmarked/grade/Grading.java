@@ -243,6 +243,7 @@ public final class Grading {
         boolean sealedAway = finalGrade != null && finalGrade.appraise()
                 && com.kragnoth.hallmarked.config.HallmarkedConfig.APPRAISAL.get() && !SOURCE_CRAFTED.equals(source);
         if (sealedAway) stack.set(HMRegistries.UNAPPRAISED.get(), true);
+        if (!SOURCE_CRAFTED.equals(source)) stack.set(HMRegistries.FOUND.get(), true);
         refreshName(stack);
         Durability.apply(stack);
         if (!sealedAway && finalGrade != null && finalGrade.announce() != null

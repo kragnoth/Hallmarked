@@ -124,6 +124,12 @@ public final class HMRegistries {
                     .persistent(Codec.STRING)
                     .networkSynchronized(ByteBufCodecs.STRING_UTF8));
 
+    /** Graded from loot, a mob or a parcel rather than crafted: only found gear can be sold at a Mountebank's Coffer. */
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Boolean>> FOUND =
+            COMPONENTS.registerComponentType("found", b -> b
+                    .persistent(Codec.BOOL)
+                    .networkSynchronized(ByteBufCodecs.BOOL));
+
     /** Marks an item as a piece of a named set. */
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<com.kragnoth.hallmarked.sets.SetPiece>> SET_PIECE =
             COMPONENTS.registerComponentType("set_piece", b -> b
@@ -189,6 +195,9 @@ public final class HMRegistries {
                     com.google.common.collect.ImmutableSet.of(), com.google.common.collect.ImmutableSet.of(),
                     net.minecraft.sounds.SoundEvents.VILLAGER_WORK_CARTOGRAPHER));
 
+    public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<com.kragnoth.hallmarked.gamble.CofferBlockEntity>> MOUNTEBANK_COFFER_BE =
+            BLOCK_ENTITIES.register("mountebank_coffer",
+                    () -> BlockEntityType.Builder.of(com.kragnoth.hallmarked.gamble.CofferBlockEntity::new, MOUNTEBANK_COFFER.get()).build(null));
     public static final DeferredHolder<BlockEntityType<?>, BlockEntityType<AssayAnvilBlockEntity>> ASSAY_ANVIL_BE =
             BLOCK_ENTITIES.register("assay_anvil",
                     () -> BlockEntityType.Builder.of(AssayAnvilBlockEntity::new, ASSAY_ANVIL.get()).build(null));

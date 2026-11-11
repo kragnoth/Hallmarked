@@ -32,6 +32,20 @@ guaranteed one of the two slots at its level. `"currency"` sets what the price i
 * **Contents** come from the `hallmarked:gamble/pool` item tag: vanilla gear plus the Emerald Ring and Amulet by default,
   so craft-only modded gear never turns up in a parcel. Add your own items to the tag.
 
+## The Mountebank's Coffer
+The coffer is worth placing even without a Mountebank:
+
+* **Locked storage.** Right-click to open 27 slots. Only the player who placed it can open it (creative players too);
+  anyone else hears the lock. Non-owners can't break it, explosions don't touch it, and hoppers can't reach into it.
+  Breaking it (as its owner) drops its contents.
+* **Fence.** Sneak and right-click it holding gear to sell:
+  * **Set pieces** earn a Mountebank's Token each.
+  * **Found graded gear** (from loot, mobs or parcels) earns emeralds by grade: Shoddy 1, Common 1, Journeyman 2,
+    Masterwork 4, Gearwrought 8, Unique 12 (the grade's `sell` key). +1 when the quality is all upside; a worn piece
+    pays down to half.
+  * **Crafted gear** is refused ("He won't buy what you made yourself"), so a pile of wooden swords isn't an emerald
+    printer. Gear graded before 1.19 isn't marked as found and can't be sold.
+
 ## Curses
 
 | Curse | On | Effect |

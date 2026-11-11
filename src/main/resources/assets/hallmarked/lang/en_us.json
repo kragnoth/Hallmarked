@@ -413,5 +413,9 @@
   "hallmarked.parcel.sworn_parcel": "Sworn Parcel",
   "hallmarked.trade_in.taken": "%s goes into the coffer (%s/%s toward a token)",
   "hallmarked.trade_in.token": "%s goes into the coffer. A token drops out.",
-  "tooltip.hallmarked.token": "Two buy a Sworn Parcel: a set piece, he swears it."
+  "tooltip.hallmarked.token": "Two buy a Sworn Parcel: a set piece, he swears it.",
+  "hallmarked.coffer.locked": "Locked. It belongs to %s.",
+  "hallmarked.coffer.sold": "%s goes into the coffer: %s emeralds",
+  "tooltip.hallmarked.coffer": "Locked storage only you can open. Sneak + right-click holding gear to sell it, or a set piece for a token.",
+  "hallmarked.coffer.crafted": "He won't buy what you made yourself."
 }

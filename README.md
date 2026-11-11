@@ -34,7 +34,8 @@ It was built for the **Gearwright's Hollow** modpack.
   on affixes, for players and for mobs carrying the gear. Affixes from other mods (Apothic Attributes, Caverns & Chasms, NeoVitae, Iron's Spellbooks,
   Lodestone, FTB Ultimine) only exist when those mods are installed. See [docs/PROCS.md](docs/PROCS.md).
 - **The Mountebank:** a shady villager who sells sealed parcels. Open one to find out what you paid for: cursed junk,
-  ordinary gear, or exceptional work that rolls past its normal limits. See [docs/GAMBLING.md](docs/GAMBLING.md).
+  ordinary gear, or exceptional work that rolls past its normal limits. His coffer is locked storage only you can open,
+  and fences your found gear for emeralds and your spare set pieces for tokens. See [docs/GAMBLING.md](docs/GAMBLING.md).
 - **Named sets:** fourteen of them, from the Free Lance and the Oathsworn to the Ashwalker (swim in lava), the Salvage
   Diver (mine underwater), the Silent Knife and the Reaver. Pieces mix looks (leather hood, chainmail body, plate boots)
   and many carry diamond or netherite stats under them. 2 to 5-piece bonuses, effects and procs; data-driven, any item

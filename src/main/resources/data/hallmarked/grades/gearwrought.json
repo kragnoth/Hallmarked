@@ -32,5 +32,6 @@
   "champion": true,
   "salvage": 8,
   "appraise": true,
-  "durability": 1.5
+  "durability": 1.5,
+  "sell": 8
 }

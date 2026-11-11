@@ -25,5 +25,6 @@
   "inlay_slots": 2,
   "inlay_tint": "#C87533",
   "salvage": 1,
-  "durability": 1.0
+  "durability": 1.0,
+  "sell": 1
 }

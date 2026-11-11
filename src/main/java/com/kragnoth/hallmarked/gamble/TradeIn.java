@@ -34,7 +34,10 @@ public final class TradeIn {
         if (event.getHand() != InteractionHand.MAIN_HAND || !event.getEntity().isShiftKeyDown()) return;
         if (!event.getLevel().getBlockState(event.getPos()).is(HMRegistries.MOUNTEBANK_COFFER.get())) return;
         ItemStack held = event.getEntity().getMainHandItem();
-        if (Sets.pieceOf(held) == null) return;
+        if (Sets.pieceOf(held) == null) {
+            sell(event, held);
+            return;
+        }
         // Both sides, so the client doesn't also try to use or place the held item.
         event.setCanceled(true);
         event.setCancellationResult(InteractionResult.SUCCESS);
@@ -58,6 +61,47 @@ public final class TradeIn {
             player.level().playSound(null, pos, SoundEvents.CHEST_LOCKED, SoundSource.BLOCKS, 0.8f, 1.0f);
         }
         data.putInt(TALLY, tally);
+    }
+
+    /**
+     * Fencing graded gear for emeralds: the grade's {@code sell} value, +1 when its quality is all upside, scaled
+     * down to half for a worn-out piece. Ungraded items and grades worth 0 are refused (the event passes through).
+     */
+    private static void sell(PlayerInteractEvent.RightClickBlock event, ItemStack held) {
+        var grade = com.kragnoth.hallmarked.grade.Grading.gradeOf(held);
+        if (grade == null || grade.sell() <= 0) return;
+        event.setCanceled(true);
+        event.setCancellationResult(InteractionResult.SUCCESS);
+        if (!(event.getEntity() instanceof ServerPlayer player)) return;
+        // Only found gear: crafted gear (a stack of wooden swords) would be an emerald printer.
+        if (!held.getOrDefault(HMRegistries.FOUND.get(), false)) {
+            player.displayClientMessage(Component.translatable("hallmarked.coffer.crafted").withStyle(ChatFormatting.GRAY), true);
+            player.level().playSound(null, event.getPos(), SoundEvents.CHEST_LOCKED, SoundSource.BLOCKS, 0.8f, 0.8f);
+            return;
+        }
+
+        int value = grade.sell();
+        var quality = com.kragnoth.hallmarked.quality.Reforging.qualityOf(held);
+        if (quality != null) {
+            boolean allUp = true, any = false;
+            for (var e : com.kragnoth.hallmarked.grade.Marks.of(held)) {
+                if (e.origin() != com.kragnoth.hallmarked.grade.Marks.Origin.QUALITY) continue;
+                any = true;
+                if (e.modifier().amount() < 0) allUp = false;
+            }
+            if (any && allUp) value += 1;
+        }
+        if (held.isDamageableItem() && held.getMaxDamage() > 0) {
+            double left = 1.0 - (double) held.getDamageValue() / held.getMaxDamage();
+            value = Math.max(1, (int) Math.round(value * (0.5 + 0.5 * left)));
+        }
+        Component name = held.getHoverName();
+        held.shrink(1);
+        ItemStack pay = new ItemStack(net.minecraft.world.item.Items.EMERALD, value);
+        if (!player.getInventory().add(pay)) player.drop(pay, false);
+        player.displayClientMessage(Component.translatable("hallmarked.coffer.sold", name, value).withStyle(ChatFormatting.GREEN), true);
+        player.level().playSound(null, event.getPos(), SoundEvents.CHEST_LOCKED, SoundSource.BLOCKS, 0.8f, 1.3f);
+        player.level().playSound(null, event.getPos(), SoundEvents.AMETHYST_BLOCK_CHIME, SoundSource.PLAYERS, 0.8f, 1.4f);
     }
 
     /** Keep the tally through death and returning from the End. */

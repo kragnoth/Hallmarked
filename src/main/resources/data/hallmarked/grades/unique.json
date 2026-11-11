@@ -32,5 +32,6 @@
     "pitch": 0.8,
     "scope": "server"
   },
-  "durability": 1.5
+  "durability": 1.5,
+  "sell": 12
 }

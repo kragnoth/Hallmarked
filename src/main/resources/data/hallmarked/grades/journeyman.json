@@ -24,5 +24,6 @@
   },
   "inlay_slots": 1,
   "salvage": 2,
-  "durability": 1.1
+  "durability": 1.1,
+  "sell": 2
 }
