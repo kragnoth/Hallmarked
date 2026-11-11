@@ -21,6 +21,7 @@ public final class Grading {
 
     public static final DataStore<Affix> AFFIXES = new DataStore<>("affixes", Affix::parse, Affix::name, Affix::source);
     public static final DataStore<Grade> GRADES = new DataStore<>("grades", Grade::parse, Grade::name, Grade::source);
+    public static final DataStore<Fusion> FUSIONS = new DataStore<>("fusions", Fusion::parse, Fusion::name, Fusion::source);
 
     /** Number of entries in each title word list (lang keys hallmarked.title.a.N / hallmarked.title.b.N). */
     public static final int TITLE_A = 40, TITLE_B = 40;
@@ -145,6 +146,46 @@ public final class Grading {
         return true;
     }
 
+    // ---- Fusion ----------------------------------------------------------------------------
+
+    /** A fused pair: indices into {@link GradeData#affixes()}. */
+    public record Fused(Fusion fusion, int first, int second) {}
+
+    /**
+     * Pairs up rolled affixes that match a fusion. Each affix joins at most one fusion; higher priority
+     * fusions claim first, then data order. Derived on demand, never stored, so fusion data can change freely.
+     */
+    public static List<Fused> fusions(GradeData d) {
+        List<Fused> out = new ArrayList<>();
+        if (d == null || d.affixes().size() < 2) return out;
+        List<Fusion> all = new ArrayList<>(FUSIONS.all());
+        all.sort((a, b) -> Integer.compare(b.priority(), a.priority()));
+        boolean[] used = new boolean[d.affixes().size()];
+        for (Fusion f : all) {
+            int a = indexOf(d, f.parts().get(0), used);
+            int b = indexOf(d, f.parts().get(1), used);
+            if (a < 0 || b < 0 || a == b) continue;
+            used[a] = true;
+            used[b] = true;
+            out.add(new Fused(f, Math.min(a, b), Math.max(a, b)));
+        }
+        return out;
+    }
+
+    private static int indexOf(GradeData d, String affix, boolean[] used) {
+        for (int i = 0; i < d.affixes().size(); i++) {
+            if (!used[i] && d.affixes().get(i).affix().equals(affix)) return i;
+        }
+        return -1;
+    }
+
+    /** Fused pair this affix index belongs to, if any. */
+    @Nullable
+    public static Fused fusedAt(List<Fused> fused, int index) {
+        for (Fused f : fused) if (f.first() == index || f.second() == index) return f;
+        return null;
+    }
+
     // ---- Names -----------------------------------------------------------------------------
 
     /**
@@ -158,24 +199,45 @@ public final class Grading {
         Grade g = GRADES.get(d.grade());
         if (g == null) return null;
 
+        List<Fused> fused = fusions(d);
+
         if (g.titled() && d.titleA() >= 0 && d.titleB() >= 0) {
+            // A fusion's title noun replaces the second word, so the name says what the piece does.
+            Component second = Component.translatable("hallmarked.title.b." + d.titleB());
+            for (Fused f : fused) {
+                if (f.fusion().title() != null) {
+                    second = Component.translatable(f.fusion().title());
+                    break;
+                }
+            }
             return Component.translatable("hallmarked.name.title",
-                    Component.translatable("hallmarked.title.a." + d.titleA()),
-                    Component.translatable("hallmarked.title.b." + d.titleB())).withStyle(g.color());
+                    Component.translatable("hallmarked.title.a." + d.titleA()), second).withStyle(g.color());
         }
 
-        Affix prefix = null, suffix = null;
-        for (GradeData.Rolled r : d.affixes()) {
-            Affix a = AFFIXES.get(r.affix());
-            if (a == null) continue;
-            if (prefix == null && (a.type() == Affix.Type.PREFIX || a.type() == Affix.Type.FLAW)) prefix = a;
-            if (suffix == null && a.type() == Affix.Type.SUFFIX) suffix = a;
+        // Display units in roll order: a fusion stands in for both its parts.
+        String prefix = null, suffix = null;
+        for (int i = 0; i < d.affixes().size(); i++) {
+            Fused f = fusedAt(fused, i);
+            String key;
+            Affix.Type type;
+            if (f != null) {
+                if (f.first() != i) continue; // count each fusion once
+                key = f.fusion().name();
+                type = f.fusion().type();
+            } else {
+                Affix a = AFFIXES.get(d.affixes().get(i).affix());
+                if (a == null) continue;
+                key = a.name();
+                type = a.type();
+            }
+            if (prefix == null && (type == Affix.Type.PREFIX || type == Affix.Type.FLAW)) prefix = key;
+            else if (suffix == null && type == Affix.Type.SUFFIX) suffix = key;
         }
         if (prefix == null && suffix == null) return null;
 
         MutableComponent name = Component.translatable(stack.getItem().getDescriptionId());
-        if (prefix != null) name = Component.translatable("hallmarked.name.prefixed", Component.translatable(prefix.name()), name);
-        if (suffix != null) name = Component.translatable("hallmarked.name.suffixed", name, Component.translatable(suffix.name()));
+        if (prefix != null) name = Component.translatable("hallmarked.name.prefixed", Component.translatable(prefix), name);
+        if (suffix != null) name = Component.translatable("hallmarked.name.suffixed", name, Component.translatable(suffix));
         return name.withStyle(g.color());
     }
 

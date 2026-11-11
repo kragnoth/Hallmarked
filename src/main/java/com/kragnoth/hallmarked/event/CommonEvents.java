@@ -44,6 +44,7 @@ public final class CommonEvents {
         event.addListener(new Qualities.Loader());
         event.addListener(Grading.GRADES.loader());
         event.addListener(Grading.AFFIXES.loader());
+        event.addListener(Grading.FUSIONS.loader());
     }
 
     /** Fires for each joining player and for everyone after /reload. */

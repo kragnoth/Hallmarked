@@ -1,0 +1,9 @@
+{
+  "name": "hallmarked.fusion.of_the_warden",
+  "type": "suffix",
+  "parts": [
+    "hallmarked.affix.hardened",
+    "hallmarked.affix.of_warding"
+  ],
+  "title": "hallmarked.fusion.of_the_warden.title"
+}

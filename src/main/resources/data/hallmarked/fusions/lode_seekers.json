@@ -1,0 +1,9 @@
+{
+  "name": "hallmarked.fusion.lode_seekers",
+  "type": "prefix",
+  "parts": [
+    "hallmarked.affix.gilded",
+    "hallmarked.affix.of_the_quarry"
+  ],
+  "title": "hallmarked.fusion.lode_seekers.title"
+}

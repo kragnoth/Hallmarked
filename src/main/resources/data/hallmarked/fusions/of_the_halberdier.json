@@ -1,0 +1,9 @@
+{
+  "name": "hallmarked.fusion.of_the_halberdier",
+  "type": "suffix",
+  "parts": [
+    "hallmarked.affix.long_hafted",
+    "hallmarked.affix.of_force"
+  ],
+  "title": "hallmarked.fusion.of_the_halberdier.title"
+}

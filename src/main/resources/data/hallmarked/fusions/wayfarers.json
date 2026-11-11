@@ -1,0 +1,9 @@
+{
+  "name": "hallmarked.fusion.wayfarers",
+  "type": "prefix",
+  "parts": [
+    "hallmarked.affix.fleet",
+    "hallmarked.affix.of_striding"
+  ],
+  "title": "hallmarked.fusion.wayfarers.title"
+}

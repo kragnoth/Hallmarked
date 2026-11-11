@@ -1,0 +1,9 @@
+{
+  "name": "hallmarked.fusion.marksmans",
+  "type": "prefix",
+  "parts": [
+    "hallmarked.affix.sharpshooters",
+    "hallmarked.affix.of_haste"
+  ],
+  "title": "hallmarked.fusion.marksmans.title"
+}

@@ -28,9 +28,10 @@ public final class Marks {
      * @param label translation key of the quality or affix this came from
      * @param min   affix range low end (equal to max for qualities)
      * @param max   affix range high end
+     * @param index index into the item's rolled affixes (-1 for quality modifiers)
      */
     public record Entry(Holder<Attribute> attribute, AttributeModifier modifier, @Nullable EquipmentSlotGroup slot,
-                        Origin origin, String label, double min, double max) {}
+                        Origin origin, String label, double min, double max, int index) {}
 
     public static List<Entry> of(ItemStack stack) {
         List<Entry> out = new ArrayList<>();
@@ -42,7 +43,7 @@ public final class Marks {
                 for (Quality.Mod m : q.section(ap.section())) {
                     m.attribute().ifPresent(attr -> out.add(new Entry(attr,
                             new AttributeModifier(Hallmarked.id(m.name() + ap.idSuffix()), m.value(), m.operation()),
-                            ap.slot(), Origin.QUALITY, q.name(), m.value(), m.value())));
+                            ap.slot(), Origin.QUALITY, q.name(), m.value(), m.value(), -1)));
                 }
             }
         }
@@ -59,7 +60,7 @@ public final class Marks {
                 for (Affix.Mod m : a.section(ap.section())) {
                     m.attribute().ifPresent(attr -> out.add(new Entry(attr,
                             new AttributeModifier(Hallmarked.id("affix/" + idx + "/" + m.name() + ap.idSuffix()), m.value(r.roll()), m.operation()),
-                            ap.slot(), Origin.AFFIX, a.name(), m.min(), m.max())));
+                            ap.slot(), Origin.AFFIX, a.name(), m.min(), m.max(), idx)));
                 }
             }
         }

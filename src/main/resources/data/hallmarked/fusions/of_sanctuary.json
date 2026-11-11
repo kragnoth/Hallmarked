@@ -1,0 +1,9 @@
+{
+  "name": "hallmarked.fusion.of_sanctuary",
+  "type": "suffix",
+  "parts": [
+    "hallmarked.affix.ward_etched",
+    "hallmarked.affix.of_warding"
+  ],
+  "title": "hallmarked.fusion.of_sanctuary.title"
+}

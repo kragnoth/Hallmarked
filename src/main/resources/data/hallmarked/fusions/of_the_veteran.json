@@ -1,0 +1,9 @@
+{
+  "name": "hallmarked.fusion.of_the_veteran",
+  "type": "suffix",
+  "parts": [
+    "hallmarked.affix.honed",
+    "hallmarked.affix.of_vigor"
+  ],
+  "title": "hallmarked.fusion.of_the_veteran.title"
+}

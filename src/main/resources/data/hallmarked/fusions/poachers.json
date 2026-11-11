@@ -1,0 +1,9 @@
+{
+  "name": "hallmarked.fusion.poachers",
+  "type": "prefix",
+  "parts": [
+    "hallmarked.affix.fletchers",
+    "hallmarked.affix.of_fortune"
+  ],
+  "title": "hallmarked.fusion.poachers.title"
+}

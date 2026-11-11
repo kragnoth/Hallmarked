@@ -1,0 +1,9 @@
+{
+  "name": "hallmarked.fusion.huntsmans",
+  "type": "prefix",
+  "parts": [
+    "hallmarked.affix.stout",
+    "hallmarked.affix.of_the_hunt"
+  ],
+  "title": "hallmarked.fusion.huntsmans.title"
+}

@@ -1,0 +1,9 @@
+{
+  "name": "hallmarked.fusion.crushing",
+  "type": "prefix",
+  "parts": [
+    "hallmarked.affix.weighted",
+    "hallmarked.affix.of_force"
+  ],
+  "title": "hallmarked.fusion.crushing.title"
+}

@@ -11,6 +11,7 @@ It was built for the **Gearwright's Hollow** modpack.
   *Gearwrought*. Higher grades roll more affixes with stronger values. Journeyman pieces get names like
   "Honed Iron Sword of Haste", and Masterwork and Gearwrought pieces get titles like "Ashen Vow". Loot rolls
   better than crafted gear, Luck tips the odds, and a crafted Gearwrought piece is rare but possible.
+  Matching affix pairs fuse into named compounds (Honed + of Haste becomes *Duelist's*) that also shape item titles.
   See [docs/GRADES.md](docs/GRADES.md).
 - **53 qualities** across tools, bows, shields, armor (per piece) and baubles, ranging from *Worthless* to *Ascended*.
 - **Auto-marking:** the first time a piece of equipment enters your inventory, it has a chance (50 % by default) to roll a quality.
@@ -40,7 +41,7 @@ Qualities are JSON files at `data/<namespace>/qualities/*.json`. A file whose `n
 Datapacks written for *Quality Equipment* (`quality_equipment.quality.*` names, `color_code`, and `quality_equipment:` attributes)
 still load. Items that carry the old mod's quality are converted automatically when they enter a player's inventory.
 
-Grades live in `data/<namespace>/grades/*.json` and affixes in `data/<namespace>/affixes/*.json`.
+Grades live in `data/<namespace>/grades/*.json`, affixes in `data/<namespace>/affixes/*.json` and fusions in `data/<namespace>/fusions/*.json`.
 See [docs/GRADES.md](docs/GRADES.md) for their formats.
 
 ## Config

@@ -1,0 +1,9 @@
+{
+  "name": "hallmarked.fusion.stalwart",
+  "type": "prefix",
+  "parts": [
+    "hallmarked.affix.braced",
+    "hallmarked.affix.of_the_ox"
+  ],
+  "title": "hallmarked.fusion.stalwart.title"
+}

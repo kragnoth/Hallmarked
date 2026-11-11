@@ -1,0 +1,9 @@
+{
+  "name": "hallmarked.fusion.deft",
+  "type": "prefix",
+  "parts": [
+    "hallmarked.affix.balanced",
+    "hallmarked.affix.of_haste"
+  ],
+  "title": "hallmarked.fusion.deft.title"
+}

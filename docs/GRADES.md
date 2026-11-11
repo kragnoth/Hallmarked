@@ -44,6 +44,25 @@ The two stack freely. A *Rusted*, Masterwork "Grim Ledger" sword is possible.
 An item can't roll two affixes from the same `group` (for example, Honed and Weighted share `melee_damage`).
 Turn on advanced tooltips (F3+H) to see each affix's name and min–max range next to its rolled value.
 
+## Fusions (24)
+
+Rolling is unchanged. After an item rolls, any two of its affixes that match a defined **fusion** are shown as one
+named compound with the same stats and values.
+
+* Each affix joins at most one fusion. Affixes that don't pair up stay as they are.
+* On a **Journeyman** piece, the fusion takes the prefix or suffix spot in the name: Honed + of Haste becomes
+  *Duelist's Iron Sword*.
+* On **titled** grades, the fusion's title noun replaces the second word of the title: *Ashen Vow* becomes
+  *Ashen Riposte*.
+* In the tooltip, each fused pair gets a named line with both of its stats grouped beneath it.
+
+| Slot | Fusions (parts → name / title noun) |
+|---|---|
+| Melee/tools | Honed + of Haste → Duelist's / Riposte · Weighted + of Force → Crushing / Ruin · Balanced + of Haste → Deft / Flourish · Long-Hafted + of Force → of the Halberdier / Halberd · Honed + of Vigor → of the Veteran / Veteran · Quarrier's + of the Quarry → Delver's / Lode · Quarrier's + of Fortune → Prospector's / Strike |
+| Bows | Stout + of the Hunt → Huntsman's / Quarry · Fletcher's + of Fortune → Poacher's / Snare · Stout + of Swiftness → Skirmisher's / Volley |
+| Shields & armor | Riveted + of the Ox → of the Bastion / Bastion · Braced + of the Ox → Stalwart / Stand · Ward-Etched + of Warding → of Sanctuary / Sanctuary *(shield)* · Riveted + Hardened → Ironclad / Rampart · Hardened + of Warding → of the Warden / Warden · Braced + of the Wall → Unyielding / Anchor *(chest)* · Fleet + of Striding → Wayfarer's / Road *(boots)* · Fleet + of Swiftness → Courier's / Errand *(boots)* · Braced + of Leaping → of the Climber / Ascent *(legs)* · Riveted + of Fortune → of the Gambler / Wager *(helmet)* |
+| Baubles | Gilded + of Vigor → Heirloom · Ward-Etched + of Vigor → of the Pilgrim / Pilgrimage · Sharpshooter's + of Haste → Marksman's / Aim · Gilded + of the Quarry → Lode-Seeker's / Lodestone |
+
 ## Data format
 
 `data/<ns>/grades/<id>.json`
@@ -65,5 +84,16 @@ Turn on advanced tooltips (F3+H) to see each affix's name and min–max range ne
   `leggings`, `boots`, `bauble`.
 * Items store a 0–1 roll per affix rather than a final number, so rebalancing an affix's range in data updates
   existing items.
+
+`data/<ns>/fusions/<id>.json`
+```json
+{ "name": "hallmarked.fusion.duelists", "type": "prefix",
+  "parts": [ "hallmarked.affix.honed", "hallmarked.affix.of_haste" ],
+  "title": "hallmarked.fusion.duelists.title", "priority": 0 }
+```
+* `type` sets where the fused name goes in a Journeyman name.
+* `title` is optional.
+* When two fusions want the same affix, the one with the higher `priority` claims it first.
+* Fusions are worked out when the item is displayed, not stored on it, so adding or changing them updates existing items.
 
 Any namespace can override an entry by reusing its `name`. Unique and Set items are planned for a later version.

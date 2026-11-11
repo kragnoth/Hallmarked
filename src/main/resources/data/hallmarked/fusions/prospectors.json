@@ -1,0 +1,9 @@
+{
+  "name": "hallmarked.fusion.prospectors",
+  "type": "prefix",
+  "parts": [
+    "hallmarked.affix.quarriers",
+    "hallmarked.affix.of_fortune"
+  ],
+  "title": "hallmarked.fusion.prospectors.title"
+}

@@ -1,0 +1,9 @@
+{
+  "name": "hallmarked.fusion.delvers",
+  "type": "prefix",
+  "parts": [
+    "hallmarked.affix.quarriers",
+    "hallmarked.affix.of_the_quarry"
+  ],
+  "title": "hallmarked.fusion.delvers.title"
+}

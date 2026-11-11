@@ -1,0 +1,9 @@
+{
+  "name": "hallmarked.fusion.unyielding",
+  "type": "prefix",
+  "parts": [
+    "hallmarked.affix.braced",
+    "hallmarked.affix.of_the_wall"
+  ],
+  "title": "hallmarked.fusion.unyielding.title"
+}

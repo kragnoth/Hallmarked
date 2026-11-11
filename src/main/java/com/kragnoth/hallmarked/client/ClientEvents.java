@@ -72,14 +72,14 @@ public final class ClientEvents {
                 block.add(Component.empty());
                 block.add(Component.translatable("tooltip.hallmarked.quality").withStyle(ChatFormatting.GRAY)
                         .append(Component.translatable(qualityName).withStyle(q != null ? q.color() : ChatFormatting.GRAY)));
-                addLines(block, entries, Marks.Origin.QUALITY, advanced, e.getFlags());
+                addLines(block, entries, Marks.Origin.QUALITY, advanced, List.of());
             }
 
             // Grade block
             if (grade != null && !grade.hidden()) {
                 block.add(Component.empty());
                 block.add(Component.translatable(grade.name()).withStyle(grade.color()));
-                addLines(block, entries, Marks.Origin.AFFIX, advanced, e.getFlags());
+                addLines(block, entries, Marks.Origin.AFFIX, advanced, Grading.fusions(Grading.dataOf(stack)));
             }
 
             List<Component> tip = e.getToolTip();
@@ -98,7 +98,8 @@ public final class ClientEvents {
             tip.addAll(insertAt, block);
         }
 
-        private static void addLines(List<Component> block, List<Marks.Entry> all, Marks.Origin origin, boolean advanced, TooltipFlag flag) {
+        private static void addLines(List<Component> block, List<Marks.Entry> all, Marks.Origin origin, boolean advanced,
+                                     List<Grading.Fused> fused) {
             List<Marks.Entry> list = new ArrayList<>();
             for (Marks.Entry en : all) if (en.origin() == origin) list.add(en);
             if (list.isEmpty()) return;
@@ -109,18 +110,34 @@ public final class ClientEvents {
                     : Component.translatable("item.modifiers." + slot.getSerializedName());
             block.add(heading.copy().withStyle(ChatFormatting.GRAY));
 
-            list.sort(Comparator.comparing((Marks.Entry en) -> en.modifier().amount() <= 0)); // positives first, stable
-            for (Marks.Entry en : list) {
-                AttributeModifier mod = en.modifier();
-                MutableComponent line = Component.literal(" ").append(en.attribute().value().toComponent(mod, TooltipFlag.NORMAL)
-                        .withStyle(mod.amount() > 0 ? ChatFormatting.BLUE : ChatFormatting.RED));
-                if (advanced && origin == Marks.Origin.AFFIX) {
-                    line.append(Component.literal("  ").append(Component.translatable(en.label()))
-                            .append(" [" + fmt(en, en.min()) + " .. " + fmt(en, en.max()) + "]")
-                            .withStyle(ChatFormatting.DARK_GRAY));
-                }
-                block.add(line);
+            Comparator<Marks.Entry> positivesFirst = Comparator.comparing((Marks.Entry en) -> en.modifier().amount() <= 0);
+
+            // Fused pairs first: a named line, then both parts' stats beneath it.
+            for (Grading.Fused f : fused) {
+                List<Marks.Entry> group = new ArrayList<>();
+                for (Marks.Entry en : list) if (en.index() == f.first() || en.index() == f.second()) group.add(en);
+                if (group.isEmpty()) continue;
+                block.add(Component.literal(" ").append(Component.translatable(f.fusion().name()))
+                        .withStyle(ChatFormatting.DARK_AQUA));
+                group.sort(positivesFirst);
+                for (Marks.Entry en : group) block.add(statLine(en, "   ", advanced));
+                list.removeAll(group);
             }
+
+            list.sort(positivesFirst);
+            for (Marks.Entry en : list) block.add(statLine(en, " ", advanced));
+        }
+
+        private static MutableComponent statLine(Marks.Entry en, String indent, boolean advanced) {
+            AttributeModifier mod = en.modifier();
+            MutableComponent line = Component.literal(indent).append(en.attribute().value().toComponent(mod, TooltipFlag.NORMAL)
+                    .withStyle(mod.amount() > 0 ? ChatFormatting.BLUE : ChatFormatting.RED));
+            if (advanced && en.origin() == Marks.Origin.AFFIX) {
+                line.append(Component.literal("  ").append(Component.translatable(en.label()))
+                        .append(" [" + fmt(en, en.min()) + " .. " + fmt(en, en.max()) + "]")
+                        .withStyle(ChatFormatting.DARK_GRAY));
+            }
+            return line;
         }
 
         private static String fmt(Marks.Entry en, double v) {

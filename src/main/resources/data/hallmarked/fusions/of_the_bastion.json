@@ -1,0 +1,9 @@
+{
+  "name": "hallmarked.fusion.of_the_bastion",
+  "type": "suffix",
+  "parts": [
+    "hallmarked.affix.riveted",
+    "hallmarked.affix.of_the_ox"
+  ],
+  "title": "hallmarked.fusion.of_the_bastion.title"
+}

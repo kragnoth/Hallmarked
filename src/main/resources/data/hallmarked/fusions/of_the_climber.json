@@ -1,0 +1,9 @@
+{
+  "name": "hallmarked.fusion.of_the_climber",
+  "type": "suffix",
+  "parts": [
+    "hallmarked.affix.braced",
+    "hallmarked.affix.of_leaping"
+  ],
+  "title": "hallmarked.fusion.of_the_climber.title"
+}

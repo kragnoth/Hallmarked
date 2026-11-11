@@ -1,0 +1,9 @@
+{
+  "name": "hallmarked.fusion.couriers",
+  "type": "prefix",
+  "parts": [
+    "hallmarked.affix.fleet",
+    "hallmarked.affix.of_swiftness"
+  ],
+  "title": "hallmarked.fusion.couriers.title"
+}

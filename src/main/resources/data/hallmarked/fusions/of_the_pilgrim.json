@@ -1,0 +1,9 @@
+{
+  "name": "hallmarked.fusion.of_the_pilgrim",
+  "type": "suffix",
+  "parts": [
+    "hallmarked.affix.ward_etched",
+    "hallmarked.affix.of_vigor"
+  ],
+  "title": "hallmarked.fusion.of_the_pilgrim.title"
+}

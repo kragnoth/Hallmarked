@@ -1,0 +1,9 @@
+{
+  "name": "hallmarked.fusion.ironclad",
+  "type": "prefix",
+  "parts": [
+    "hallmarked.affix.riveted",
+    "hallmarked.affix.hardened"
+  ],
+  "title": "hallmarked.fusion.ironclad.title"
+}

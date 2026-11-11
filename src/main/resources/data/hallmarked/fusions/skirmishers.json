@@ -1,0 +1,9 @@
+{
+  "name": "hallmarked.fusion.skirmishers",
+  "type": "prefix",
+  "parts": [
+    "hallmarked.affix.stout",
+    "hallmarked.affix.of_swiftness"
+  ],
+  "title": "hallmarked.fusion.skirmishers.title"
+}

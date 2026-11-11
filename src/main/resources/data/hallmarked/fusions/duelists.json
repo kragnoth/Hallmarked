@@ -1,0 +1,9 @@
+{
+  "name": "hallmarked.fusion.duelists",
+  "type": "prefix",
+  "parts": [
+    "hallmarked.affix.honed",
+    "hallmarked.affix.of_haste"
+  ],
+  "title": "hallmarked.fusion.duelists.title"
+}

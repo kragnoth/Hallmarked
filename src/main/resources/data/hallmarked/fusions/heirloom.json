@@ -1,0 +1,9 @@
+{
+  "name": "hallmarked.fusion.heirloom",
+  "type": "prefix",
+  "parts": [
+    "hallmarked.affix.gilded",
+    "hallmarked.affix.of_vigor"
+  ],
+  "title": "hallmarked.fusion.heirloom.title"
+}
