@@ -63,8 +63,8 @@ Suggestions compare each item to vanilla:
 
 | Kind | Golden | Crude | Plain | Left uncapped |
 |---|---|---|---|---|
-| Tools | enchantability 20+ and under 100 uses (gold: 22, 32) | 80 uses or fewer (wood: 59) | 200 or fewer (stone: 131) | iron-class and up (iron: 250) |
-| Armor | enchantability 20+ and set armor 12 or less (gold: 25, 11) | set armor 8 or less (leather: 7) | 13 or less (chainmail: 12) | iron-class and up (iron: 15) |
+| Tools | enchantability 18+ and under 250 uses (gold: 22, 32; silver: 18-20, 157-202) | 80 uses or fewer (wood: 59) | 200 or fewer (stone: 131) | iron-class and up (iron: 250) |
+| Armor | enchantability 17+ and set armor 9-14 (gold: 25, 11; silver: 17, 14) | set armor 8 or less (leather: 7) | 13 or less (chainmail: 12) | iron-class and up (iron: 15) |
 
 Items with no vanilla material to compare (modular tools, odd modded gear) are listed with no suggestion.
 `/hallmarked tiers export all` includes items that already have a tier, with their current tier, for a full audit.

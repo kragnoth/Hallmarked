@@ -38,8 +38,8 @@ public final class Equipment {
     public static final TagKey<Item> EXCLUDED = tag("excluded");
     /**
      * Curios that count as baubles. Opt-in by tag: Curios puts backpacks, terminals, jetpacks and crafting tables in
-     * slots too, and those shouldn't roll jewellery stats. Defaults: our own items plus the ring, necklace, charm,
-     * bracelet, belt and hands slot tags.
+     * slots too, and those shouldn't roll jewellery stats. Defaults: our own items plus the ring, necklace, bracelet and
+     * belt slot tags. (The charm slot is a catch-all that holds sigils, tomes, magnets and totems.)
      */
     public static final TagKey<Item> BAUBLE = tag("bauble");
     /** Tool roles, used by an affix's "for" key. Tags first; untagged items fall back to their class. */
@@ -99,7 +99,7 @@ public final class Equipment {
         return null;
     }
 
-    /** Swords, axes, tridents, maces and anything in hallmarked:equipment/weapon. */
+    /** Swords, axes, tridents, maces, knives (by tag) and anything in hallmarked:equipment/weapon. */
     public static boolean isWeapon(ItemStack stack) {
         if (stack.is(WEAPON)) return true;
         Item item = stack.getItem();

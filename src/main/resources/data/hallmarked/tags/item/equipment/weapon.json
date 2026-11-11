@@ -18,6 +18,14 @@
     {
       "id": "#c:tools/trident",
       "required": false
+    },
+    {
+      "id": "#c:tools/knife",
+      "required": false
+    },
+    {
+      "id": "#farmersdelight:tools/knives",
+      "required": false
     }
   ]
 }

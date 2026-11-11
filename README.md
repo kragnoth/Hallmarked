@@ -91,7 +91,7 @@ Grades live in `data/<namespace>/grades/*.json`, affixes in `data/<namespace>/af
 See [docs/GRADES.md](docs/GRADES.md) for their formats.
 
 Item tags (`hallmarked:equipment/*`) decide what counts as equipment. Baubles are opt-in through `hallmarked:equipment/bauble`
-(by default the ring, necklace, charm, bracelet, belt and hands Curios slots), so backpacks, terminals and other gear worn in
+(by default the ring, necklace, bracelet and belt Curios slots; the charm slot is a catch-all for sigils, tomes and totems), so backpacks, terminals and other gear worn in
 Curios slots stay unmarked. Horse and wolf armor is never marked. To dump every default into editable files,
 run `/hallmarked defaults rebuild world` (or `kubejs`); it backs up your existing files first.
 

@@ -147,12 +147,14 @@ final class TierCommands {
 
         if (item instanceof TieredItem t) {
             var mat = t.getTier();
-            String material = mat instanceof Tiers v ? "vanilla " + v.name().toLowerCase(Locale.ROOT) : mat.getClass().getSimpleName();
+            String cls = mat.getClass().getSimpleName().isEmpty() ? mat.getClass().getName() : mat.getClass().getSimpleName();
+            String material = mat instanceof Tiers v ? "vanilla " + v.name().toLowerCase(Locale.ROOT) : "modded tier " + cls;
             int uses = mat.getUses();
             String stats = "uses " + uses + ", damage bonus " + mat.getAttackDamageBonus() + ", speed " + mat.getSpeed();
             String suggested, why;
             // Vanilla reference: wood 59 uses / 15 ench, stone 131 / 5, gold 32 / 22, iron 250 / 14.
-            if (mat.getEnchantmentValue() >= 20 && uses < 100) { suggested = "golden"; why = "high enchantability, low durability (like gold)"; }
+            // Precious metals (gold, silver) take enchantments well without outlasting iron.
+            if (mat.getEnchantmentValue() >= 18 && uses < 250) { suggested = "golden"; why = "enchantability " + mat.getEnchantmentValue() + " with sub-iron durability (like gold or silver)"; }
             else if (uses <= 80) { suggested = "crude"; why = "durability at or below wood (" + uses + " <= 80)"; }
             else if (uses <= 200) { suggested = "plain"; why = "durability between stone and iron (" + uses + " <= 200)"; }
             else { suggested = ""; why = "iron-class or better (" + uses + " uses)"; }
@@ -167,7 +169,7 @@ final class TierCommands {
             String stats = "set armor " + total + ", toughness " + mat.toughness();
             String suggested, why;
             // Vanilla full-set armor: leather 7, gold 11, chainmail 12, iron 15, diamond 20, netherite 20.
-            if (mat.enchantmentValue() >= 20 && total <= 12) { suggested = "golden"; why = "high enchantability, light armor (like gold)"; }
+            if (mat.enchantmentValue() >= 17 && total >= 9 && total <= 14) { suggested = "golden"; why = "enchantability " + mat.enchantmentValue() + " with sub-iron armor (like gold or silver)"; }
             else if (total <= 8) { suggested = "crude"; why = "set armor " + total + " <= 8 (like leather)"; }
             else if (total <= 13) { suggested = "plain"; why = "set armor " + total + " <= 13 (like chainmail)"; }
             else { suggested = ""; why = "iron-class or better (set armor " + total + ")"; }
