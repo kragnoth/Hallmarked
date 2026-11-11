@@ -49,7 +49,7 @@ whose mod is missing is simply left out, so every set still works in a pack with
 **Smart drops.** When a set piece drops for a player (a chest they open, a parcel they buy), there's a 60 % chance
 (config `Sets.SmartDropChance`) that it's a piece they're missing from a set they've already started: one they own at
 least one piece of (inventory, armor, ender chest, Curios) but haven't finished, preferring the set the chest belongs to.
-Unwanted pieces can be traded to a Mountebank for tokens ([GAMBLING.md](GAMBLING.md)).
+Unwanted pieces can be traded to a Mountebank, one token each; two tokens buy a Sworn Parcel ([GAMBLING.md](GAMBLING.md)).
 
 Simulated five-day playthroughs (Overworld and some Nether, no End), chance to have a full set by the end:
 

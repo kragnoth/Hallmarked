@@ -19,7 +19,7 @@ import net.neoforged.neoforge.event.entity.player.PlayerInteractEvent;
 
 /**
  * Handing set pieces to a Mountebank: right-click him holding one. He keeps a tally per player, and every
- * {@code TradeInPieces} pieces (3 by default) pays out a Mountebank's Token, which buys a Sworn Parcel.
+ * {@code TradeInPieces} pieces (1 by default) pays out a Mountebank's Token; two tokens buy a Sworn Parcel.
  */
 @EventBusSubscriber(modid = Hallmarked.MODID)
 public final class TradeIn {

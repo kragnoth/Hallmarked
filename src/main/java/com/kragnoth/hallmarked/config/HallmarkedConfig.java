@@ -69,7 +69,7 @@ public final class HallmarkedConfig {
                         "they have already started, instead of a random piece.")
                 .defineInRange("SmartDropChance", 0.6, 0.0, 1.0);
         TRADE_IN = b.comment("Set pieces a Mountebank takes for one Mountebank's Token (hand them to him: right-click holding one).")
-                .defineInRange("TradeInPieces", 3, 1, 64);
+                .defineInRange("TradeInPieces", 1, 1, 64);
         b.pop();
 
         b.push("Balance");
