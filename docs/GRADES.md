@@ -132,9 +132,14 @@ named compound with the same stats and values.
 { "type": "hallmarked:grade_loot", "source": "boss",
   "conditions": [ { "condition": "neoforge:loot_table_id", "loot_table_id": "minecraft:entities/wither" } ] }
 ```
-* Register the file in `data/neoforge/loot_modifiers/global_loot_modifiers.json`, **before** `hallmarked:grade_loot`.
-* The first modifier to grade an item wins.
+* Register the file in `data/neoforge/loot_modifiers/global_loot_modifiers.json`.
+* Plain loot needs no modifier: every loot roll is graded as `"loot"` when it finishes, after all loot modifiers
+  (NeoForge's, other mods', LootJS scripts), so gear any of them adds is graded too. A `grade_loot` modifier always
+  runs before that and wins. NeoForge doesn't keep the listed order between modifiers, so if you add several, don't let
+  their conditions overlap.
 * Then give each grade a `"boss"` weight.
+* To leave tables out entirely, list them in the config (`[Grading] ExcludedLootTables`, `*` prefix wildcards);
+  `LootTables = false` turns off grading of plain loot.
 
 ## Overriding and disabling
 * **Override:** any namespace can replace an entry by reusing its `name`, or by replacing the file at the same path.

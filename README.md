@@ -10,7 +10,8 @@ It was built for the **Gearwright's Hollow** modpack.
 - **Grades of work, Diablo-style:** every piece of equipment is *Shoddy*, *Common*, *Journeyman*, *Masterwork* or
   *Gearwrought*. Higher grades roll more affixes with stronger values. Journeyman pieces get names like
   "Honed Iron Sword of Haste", and Masterwork and Gearwrought pieces get titles like "Ashen Vow". Loot rolls
-  better than crafted gear, Luck tips the odds, and a crafted Gearwrought piece is rare but possible.
+  better than crafted gear, Luck tips the odds, and a crafted Gearwrought piece is rare but possible. Loot is graded
+  after every other loot change, so gear added by other mods, LootJS scripts or Lootr counts as found loot too.
   Matching affix pairs fuse into named compounds (Honed + of Haste becomes *Duelist's*) that also shape item titles.
   See [docs/GRADES.md](docs/GRADES.md).
 - **Inlays:** add known, fixed stats at the smithing table with a Smith's Stamp and a common material. Quartz gives
@@ -109,6 +110,8 @@ run `/hallmarked defaults rebuild world` (or `kubejs`); it backs up your existin
 materials are recipes; both sync to clients, unlike the config.
 - `AutoReforge`, `AutoReforgeChance`
 - `Grading.Enabled`, `Grading.LuckFactor`, `Grading.MobEquipment`, `Grading.Appraisal` (off = no Unappraised gear; overrides the grade files)
+- `Grading.LootTables` (grade loot-table gear as found loot), `Grading.ExcludedLootTables` (tables to leave alone, `*` wildcards)
+- `Sets.SmartDropChance`, `Sets.TradeInPieces`
 - `hallmarked-client.toml`: `ItemBeams`, `MobBeams`, `MobTitles`, `Range`
 - `Procs.Enabled`, `Procs.MobsUseProcs`
 - `MaxDamageResistance`

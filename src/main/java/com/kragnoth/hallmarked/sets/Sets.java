@@ -268,6 +268,7 @@ public final class Sets {
                 if (!entry.matches(table) || random.nextDouble() >= entry.chance() * scale) continue;
                 ItemStack smart = smartPiece(player, set, random, access);
                 if (smart != null) {
+                    smart.set(HMRegistries.FOUND.get(), true);
                     loot.add(smart);
                     continue;
                 }
@@ -275,7 +276,10 @@ public final class Sets {
                 for (GearSet.Piece p : set.pieces()) if (entry.pieces().isEmpty() || entry.pieces().contains(p.key())) options.add(p);
                 if (options.isEmpty()) continue;
                 ItemStack piece = create(set, options.get(random.nextInt(options.size())), access);
-                if (piece != null) loot.add(piece);
+                if (piece != null) {
+                    piece.set(HMRegistries.FOUND.get(), true);
+                    loot.add(piece);
+                }
             }
         }
     }

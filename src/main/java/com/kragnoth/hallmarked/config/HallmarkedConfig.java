@@ -14,6 +14,8 @@ public final class HallmarkedConfig {
     public static final ModConfigSpec.BooleanValue GRADING;
     public static final ModConfigSpec.DoubleValue LUCK_FACTOR;
     public static final ModConfigSpec.BooleanValue MOB_EQUIPMENT;
+    public static final ModConfigSpec.BooleanValue LOOT_TABLES;
+    public static final ModConfigSpec.ConfigValue<java.util.List<? extends String>> LOOT_EXCLUDED;
     public static final ModConfigSpec.BooleanValue APPRAISAL;
     public static final ModConfigSpec.BooleanValue PROCS;
     public static final ModConfigSpec.BooleanValue MOB_PROCS;
@@ -45,6 +47,16 @@ public final class HallmarkedConfig {
                 .comment("How strongly the Luck attribute shifts grade odds. Each grade's weight is multiplied by",
                         "(1 + luck * LuckFactor * luck_scaling); luck_scaling is set per grade (negative for Shoddy).")
                 .defineInRange("LuckFactor", 0.15, 0.0, 10.0);
+        LOOT_TABLES = b
+                .comment("If true, gear from loot tables (chests, mob and block drops, archaeology, vaults) is graded as found loot,",
+                        "after every other loot modifier has run, including Iron's, LootJS scripts and other mods' additions.",
+                        "If false, loot is only graded by hallmarked:grade_loot modifiers a datapack adds, and the rest on pickup (as crafted).")
+                .define("LootTables", true);
+        LOOT_EXCLUDED = b
+                .comment("Loot tables never graded or given set pieces. A trailing * matches a prefix, e.g. \"somemod:chests/*\".",
+                        "Gear from them is graded on pickup as crafted instead.")
+                .defineListAllowEmpty("ExcludedLootTables", java.util.List.of(), () -> "minecraft:chests/*",
+                        o -> o instanceof String str && !str.isBlank());
         MOB_EQUIPMENT = b
                 .comment("If true, equipment mobs spawn with is graded (and may get a quality) when they enter the world,",
                         "using the grades' \"mob\" weights. Mobs fight with those stats, and drop graded gear.")

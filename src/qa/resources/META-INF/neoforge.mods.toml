@@ -1,0 +1,13 @@
+modLoader="javafml"
+loaderVersion="[1,)"
+license="MIT"
+[[mods]]
+modId="hallmarked_qa"
+version="1.0.0"
+displayName="Hallmarked QA harness"
+[[dependencies.hallmarked_qa]]
+modId="hallmarked"
+type="required"
+versionRange="[0,)"
+ordering="AFTER"
+side="BOTH"

@@ -7,19 +7,17 @@ import com.mojang.serialization.Codec;
 import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.level.storage.loot.predicates.LootItemCondition;
 import net.neoforged.neoforge.common.loot.IGlobalLootModifier;
 import net.neoforged.neoforge.common.loot.LootModifier;
 
 /**
- * Grades equipment as loot tables generate it, using the weights for {@code source} and the looting
- * player's Luck. The default instance uses "loot" for everything; packs can add more instances with
- * conditions (e.g. {@code neoforge:loot_table_id}) and their own source, such as "boss" or "deep".
- * The first modifier to grade an item wins, so list specific ones before the generic one.
+ * A custom grade source for some loot tables: grades their equipment with the weights for {@code source} and the
+ * looting player's Luck. Plain loot needs no modifier (see {@link LootGrading}, which runs after every modifier),
+ * so these always win over it, in any order. Two of these matching the same table: the first to run wins, and
+ * NeoForge doesn't keep the listed order, so keep their conditions from overlapping.
  *
  * <pre>{@code
  * { "type": "hallmarked:grade_loot", "source": "boss",
@@ -41,26 +39,12 @@ public class GradeLootModifier extends LootModifier {
     @Override
     protected ObjectArrayList<ItemStack> doApply(ObjectArrayList<ItemStack> loot, LootContext ctx) {
         if (!HallmarkedConfig.GRADING.get()) return loot;
-        // Some worldgen code fills containers on worker threads. Don't roll (or post events) off-thread;
-        // those items are graded on pickup instead.
+        var table = ctx.getQueriedLootTableId();
+        if (table != null && LootGrading.isExcluded(table)) return loot;
         var server = ctx.getLevel().getServer();
-        if (server != null && !server.isSameThread()) return loot;
-        for (ItemStack stack : loot) {
-            if (stack.has(HMRegistries.GRADE.get()) || !Grading.canGrade(stack)) continue;
-            Grading.grade(stack, source, ctx.getLuck(), ctx.getRandom(), context(ctx));
-        }
-        if (Grading.SOURCE_LOOT.equals(source) && ctx.getQueriedLootTableId() != null) {
-            com.kragnoth.hallmarked.sets.Sets.inject(loot, ctx.getQueriedLootTableId(), ctx.getLuck(), ctx.getRandom(),
-                    ctx.getLevel().registryAccess(), context(ctx).player());
-        }
+        if (server != null && !server.isSameThread()) return loot; // graded on pickup instead
+        LootGrading.grade(loot, ctx, source);
         return loot;
-    }
-
-    private static Grading.Context context(LootContext ctx) {
-        Player player = ctx.getParamOrNull(LootContextParams.LAST_DAMAGE_PLAYER);
-        if (player == null && ctx.getParamOrNull(LootContextParams.THIS_ENTITY) instanceof Player p) player = p;
-        if (player == null && ctx.getParamOrNull(LootContextParams.ATTACKING_ENTITY) instanceof Player p) player = p;
-        return new Grading.Context(player, ctx.getLevel(), ctx.getParamOrNull(LootContextParams.ORIGIN), ctx.getQueriedLootTableId());
     }
 
     @Override

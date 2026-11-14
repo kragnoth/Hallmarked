@@ -8,7 +8,7 @@ regions, uniques, appraisal and auto-quality), so these commands show what playe
 | `/hallmarked generate [count] [options]` | Random equipment into your inventory (up to 64; drops anything that won't fit) |
 | `/hallmarked generate for <players> <count> [options]` | The same for other players |
 | `/hallmarked lootbarrel [options]` | A barrel in front of you: 24 generated pieces plus 4 Stamps, 16 Scrap and a Seal |
-| `/hallmarked lootbarrel table <loot_table>` | A barrel carrying a real loot table; it rolls when opened, through every global loot modifier (grading, stamp and seal injections) and with the opener's Luck |
+| `/hallmarked lootbarrel table <loot_table>` | A barrel carrying a real loot table; it rolls when opened, through every loot modifier and LootJS script, then Hallmarked's grading and with the opener's Luck |
 | `/hallmarked champion <entity> [options]` | That mob 3 blocks in front of you, in generated gear (a weapon and four armor pieces) that always drops; it's persistent so it won't despawn mid-test |
 | `/hallmarked odds [source] [luck]` | Exact grade percentages for the held item (or an iron sword) at your position, after luck, regions and `GradeRollEvent` listeners; uniques are shown separately |
 | `/hallmarked appraise` | Reveals the held Unappraised item, with fanfare |

@@ -13,6 +13,18 @@ base {
 
 java.toolchain.languageVersion = JavaLanguageVersion.of(21)
 
+// QA harness: a separate test mod (never in the release jar) run on a headless dedicated server.
+sourceSets {
+    qa {
+        compileClasspath += sourceSets.main.output + sourceSets.main.compileClasspath
+        runtimeClasspath += sourceSets.main.output + sourceSets.main.runtimeClasspath
+    }
+}
+configurations {
+    qaImplementation.extendsFrom(implementation)
+    qaCompileOnly.extendsFrom(compileOnly)
+}
+
 neoForge {
     version = project.neo_version
 
@@ -30,6 +42,12 @@ neoForge {
             server()
             programArgument '--nogui'
         }
+        qaServer {
+            server()
+            programArgument '--nogui'
+            gameDirectory = project.file('run-qa')
+            sourceSet = sourceSets.qa
+        }
         configureEach {
             logLevel = org.slf4j.event.Level.INFO
         }
@@ -38,6 +56,9 @@ neoForge {
     mods {
         "${mod_id}" {
             sourceSet(sourceSets.main)
+        }
+        hallmarked_qa {
+            sourceSet(sourceSets.qa)
         }
     }
 }
@@ -84,3 +105,6 @@ tasks.withType(JavaCompile).configureEach {
 jar {
     from('LICENSE') { rename { "LICENSE_${mod_id}" } }
 }
+
+// The QA run loads both mods (declared after the mods block exists).
+neoForge.runs.named('qaServer').configure { it.loadedMods = [neoForge.mods.getByName(mod_id), neoForge.mods.getByName('hallmarked_qa')] }

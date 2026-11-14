@@ -1,0 +1,2 @@
+{ "type": "hallmarked:grade_loot", "source": "crafted",
+  "conditions": [ { "condition": "neoforge:loot_table_id", "loot_table_id": "minecraft:chests/igloo_chest" } ] }

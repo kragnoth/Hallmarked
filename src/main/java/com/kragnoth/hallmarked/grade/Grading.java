@@ -215,6 +215,7 @@ public final class Grading {
     public static boolean grade(ItemStack stack, String source, double luck, RandomSource random, Context ctx) {
         Unique unique = rollUnique(stack, source, random);
         if (unique == null && com.kragnoth.hallmarked.sets.Sets.tryRoll(stack, source, random)) {
+            if (!SOURCE_CRAFTED.equals(source)) stack.set(HMRegistries.FOUND.get(), true);
             return true; // a set piece: fixed by its set, so nothing to roll or report
         }
         Grade g = unique != null ? GRADES.get(UNIQUE_GRADE) : pickGrade(stack, source, luck, random, ctx);

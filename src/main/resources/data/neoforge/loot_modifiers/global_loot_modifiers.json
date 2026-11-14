@@ -1,7 +1,6 @@
 {
   "replace": false,
   "entries": [
-    "hallmarked:grade_loot",
     "hallmarked:inject_smiths_stamps",
     "hallmarked:inject_gearwrights_seal"
   ]
