@@ -112,6 +112,16 @@ public final class HMRegistries {
                     .persistent(Codec.BOOL)
                     .networkSynchronized(ByteBufCodecs.BOOL));
 
+    /**
+     * Graded somewhere other than a player's hands (loot, mob gear): the grade's fanfare waits until the stack first
+     * lands in a player's inventory. Loot rolls can be thrown away after grading (Loot Integrations sampling, a full
+     * chest), so announcing at roll time would report items the player never gets.
+     */
+    public static final DeferredHolder<DataComponentType<?>, DataComponentType<Boolean>> PENDING_ANNOUNCE =
+            COMPONENTS.registerComponentType("pending_announce", b -> b
+                    .persistent(Codec.BOOL)
+                    .networkSynchronized(ByteBufCodecs.BOOL));
+
     /** Inlay names applied at the smithing table, in order. */
     public static final DeferredHolder<DataComponentType<?>, DataComponentType<java.util.List<String>>> INLAYS =
             COMPONENTS.registerComponentType("inlays", b -> b

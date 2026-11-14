@@ -38,7 +38,9 @@ public final class LootGrading {
         for (ItemStack stack : loot) {
             if (stack.isEmpty() || stack.has(HMRegistries.GRADE.get()) || !Grading.canGrade(stack)) continue;
             if (gctx == null) gctx = context(ctx);
-            Grading.grade(stack, source, ctx.getLuck(), ctx.getRandom(), gctx);
+            // Fanfare deferred to pickup: a roll can still be thrown away (Loot Integrations samples whole rolls
+            // and keeps a few items, a full container drops the rest), and the player shouldn't hear about those.
+            Grading.grade(stack, source, ctx.getLuck(), ctx.getRandom(), gctx, true);
         }
     }
 

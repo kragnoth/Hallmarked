@@ -213,6 +213,14 @@ public final class Grading {
 
     /** Rolls and stamps a grade (plus affixes and title) onto the stack. */
     public static boolean grade(ItemStack stack, String source, double luck, RandomSource random, Context ctx) {
+        return grade(stack, source, luck, random, ctx, false);
+    }
+
+    /**
+     * As above. With {@code deferAnnounce}, the fanfare isn't played now: the stack is marked and announced the first
+     * time it enters a player's inventory (for loot and mob gear, which may never reach one).
+     */
+    public static boolean grade(ItemStack stack, String source, double luck, RandomSource random, Context ctx, boolean deferAnnounce) {
         Unique unique = rollUnique(stack, source, random);
         if (unique == null && com.kragnoth.hallmarked.sets.Sets.tryRoll(stack, source, random)) {
             if (!SOURCE_CRAFTED.equals(source)) stack.set(HMRegistries.FOUND.get(), true);
@@ -247,11 +255,19 @@ public final class Grading {
         if (!SOURCE_CRAFTED.equals(source)) stack.set(HMRegistries.FOUND.get(), true);
         refreshName(stack);
         Durability.apply(stack);
-        if (!sealedAway && finalGrade != null && finalGrade.announce() != null
-                && ctx.player() instanceof net.minecraft.server.level.ServerPlayer sp) {
-            announce(sp, stack, finalGrade);
+        if (!sealedAway && finalGrade != null && finalGrade.announce() != null) {
+            if (deferAnnounce) stack.set(HMRegistries.PENDING_ANNOUNCE.get(), true);
+            else if (ctx.player() instanceof net.minecraft.server.level.ServerPlayer sp) announce(sp, stack, finalGrade);
         }
         return true;
+    }
+
+    /** Plays a deferred fanfare (see {@link #grade(ItemStack, String, double, RandomSource, Context, boolean)}) once. */
+    public static void announcePending(net.minecraft.server.level.ServerPlayer player, ItemStack stack) {
+        if (stack.remove(HMRegistries.PENDING_ANNOUNCE.get()) == null) return;
+        if (isUnappraised(stack)) return; // sealed since: the reveal at the anvil has the fanfare
+        Grade g = gradeOf(stack);
+        if (g != null && g.announce() != null) announce(player, stack, g);
     }
 
     /** The effective material-tier cap for this item and roll, or null when uncapped. */

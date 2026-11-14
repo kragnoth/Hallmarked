@@ -164,7 +164,7 @@ public final class CommonEvents {
         for (net.minecraft.world.entity.EquipmentSlot slot : net.minecraft.world.entity.EquipmentSlot.values()) {
             ItemStack stack = mob.getItemBySlot(slot);
             if (stack.isEmpty() || stack.has(HMRegistries.GRADE.get()) || !Grading.canGrade(stack)) continue;
-            Grading.grade(stack, Grading.SOURCE_MOB, 0.0, mob.getRandom(), ctx);
+            Grading.grade(stack, Grading.SOURCE_MOB, 0.0, mob.getRandom(), ctx, true);
             if (HallmarkedConfig.AUTO_REFORGE.get() && !stack.has(HMRegistries.QUALITY.get()) && Reforging.isEligible(stack)) {
                 stack.set(HMRegistries.ROLLED.get(), true);
                 if (mob.getRandom().nextDouble() < HallmarkedConfig.AUTO_REFORGE_CHANCE.get()) Reforging.reforge(stack, mob.getRandom());
@@ -203,9 +203,12 @@ public final class CommonEvents {
             stack.remove(HMRegistries.QUALITY.get());
             stack.remove(HMRegistries.UNAPPRAISED.get());
             stack.remove(HMRegistries.UNIQUE.get());
+            stack.remove(HMRegistries.PENDING_ANNOUNCE.get());
             Grading.refreshName(stack);
             return;
         }
+        // Found gear graded elsewhere (loot, mob) gets its fanfare now that it's actually in hand.
+        Grading.announcePending(player, stack);
         // Appraisal switched off in the config: reveal anything still sealed from before.
         if (Grading.isUnappraised(stack) && !HallmarkedConfig.APPRAISAL.get()) Grading.appraise(stack, player);
 
