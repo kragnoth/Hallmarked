@@ -7,6 +7,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -34,12 +35,16 @@ public class ParcelItem extends Item {
             sp.displayClientMessage(Component.translatable("hallmarked.gamble.empty").withStyle(ChatFormatting.GRAY), true);
             return InteractionResultHolder.fail(held); // parcel not consumed
         }
-        // Inventory.add empties the stack it's given, so read the name first and hand over a copy.
+        // Read the name before the stack leaves our hands.
         Component itemName = result.stack().getHoverName();
-        ItemStack give = result.stack().copy();
         held.consume(1, player);
-        if (!player.getInventory().add(give)) player.drop(give, false);
-        Gamble.announce(sp, result, itemName); // after delivery: a failure here can't lose the item
+        // Drop the reward just above the player so it falls onto them and is picked up normally. This avoids
+        // Inventory.add, which can park the item in the hand slot that vanilla clears right after use() returns.
+        ItemEntity drop = new ItemEntity(level, player.getX(), player.getY() + 2.2, player.getZ(), result.stack());
+        drop.setDeltaMovement(0, 0, 0);
+        drop.setTarget(player.getUUID()); // only the opener can pick it up
+        level.addFreshEntity(drop);
+        Gamble.announce(sp, result, itemName);
         return InteractionResultHolder.consume(held);
     }
 

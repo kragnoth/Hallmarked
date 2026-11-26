@@ -101,6 +101,15 @@ neoForge.ideSyncTask generateModMetadata
 tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8'
 }
+// After each jar build, bump the last number in gradle.properties (1.20.3 -> 1.20.4)
+tasks.named('jar') {
+    doLast {
+        def parts = mod_version.tokenize('.')
+        parts[-1] = (parts[-1].toInteger() + 1).toString()
+        def f = file('gradle.properties')
+        f.text = f.text.replaceFirst(/(?m)^mod_version=.*$/, "mod_version=${parts.join('.')}")
+    }
+}
 
 jar {
     from('LICENSE') { rename { "LICENSE_${mod_id}" } }
