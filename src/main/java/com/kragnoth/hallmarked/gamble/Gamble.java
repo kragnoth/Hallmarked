@@ -136,8 +136,7 @@ public final class Gamble {
         return false;
     }
 
-    static void announce(ServerPlayer player, Result r) {
-        Component name = r.stack().getHoverName();
+    static void announce(ServerPlayer player, Result r, Component name) {
         Component msg = switch (r.outcome()) {
             case PLAIN -> Component.translatable("hallmarked.gamble.opened", name);
             case CURSED -> Component.translatable("hallmarked.gamble.cursed", name).withStyle(ChatFormatting.DARK_RED);
