@@ -35,11 +35,11 @@ public class ParcelItem extends Item {
             return InteractionResultHolder.fail(held); // parcel not consumed
         }
         // Inventory.add empties the stack it's given, so read the name first and hand over a copy.
-        Component name = result.stack().getHoverName();
+        Component itemName = result.stack().getHoverName();
         ItemStack give = result.stack().copy();
         held.consume(1, player);
         if (!player.getInventory().add(give)) player.drop(give, false);
-        Gamble.announce(sp, result, name); // after delivery: a failure here can't lose the item
+        Gamble.announce(sp, result, itemName); // after delivery: a failure here can't lose the item
         return InteractionResultHolder.consume(held);
     }
 
